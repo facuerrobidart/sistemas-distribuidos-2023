@@ -1,0 +1,11 @@
+{
+  "name": "modulo-administracion",
+  "version": "1.0.0",
+  "description": "Sistema distribuido para la gestion de permisos, ascensores y visitantes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Grupo 4",
+  "license": "ISC"
+}
