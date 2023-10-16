@@ -75,3 +75,11 @@ const eliminarAscensor = (id) => {
     ascensores.splice(index, 1);
     guardarDatos(pathArchivo, ascensores);
 }
+
+module.exports = {
+    obtenerAscensores,
+    obtenerAscensor,
+    crearAscensor,
+    actualizarAscensor,
+    eliminarAscensor
+};
