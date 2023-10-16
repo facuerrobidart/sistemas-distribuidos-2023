@@ -1,6 +1,6 @@
 import persistencia from '../persistencia/persistencia.js';
 
-const pathArchivo = './guests.json';
+const pathArchivo = './gestion/persistencia/guests.json';
 const obtenerGuests = () => {
     return persistencia.obtenerDatos(pathArchivo);
 }
@@ -57,3 +57,5 @@ const agregarPermisos = (id,piso) => {
         console.log(`No existe un visitante con id ${id}`);
     }
 }
+
+console.log( obtenerPermisos("A001"));
