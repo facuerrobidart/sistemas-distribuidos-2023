@@ -10,7 +10,7 @@ const guardarDatos = (pathArchivo, contenido) => {
     fs.writeFileSync(pathArchivo, contenidoString, 'utf-8');
 }
 
-module.exports = {
+export default {
     obtenerDatos,
     guardarDatos
 };

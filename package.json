@@ -8,5 +8,5 @@
   },
   "author": "Grupo 4",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "module"
 }

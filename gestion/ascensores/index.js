@@ -1,6 +1,6 @@
-import { obtenerDatos, guardarDatos } from '../persistencia/persistencia.js';
+import persistencia from '../persistencia/persistencia.js';
 import { randomUUID } from 'crypto';
-import { validarVacio } from '../utils/stringUtils.js';
+import stringUtils from '../utils/stringUtils.js';
 
 const pathArchivo = './elevators.json';
 
@@ -24,10 +24,10 @@ const validarAscensor = (ascensor) => {
     if (pisos === 0) {
         return 'El ascensor debe tener al menos un piso';
     }
-    if (validarVacio(nombre)) {
+    if (stringUtils.validarVacio(nombre)) {
         return 'El ascensor debe tener un nombre';
     }
-    if (validarVacio(estado)) {
+    if (stringUtils.validarVacio(estado)) {
         return 'Los pisos deben tener un nombre';
     }
 
@@ -46,7 +46,7 @@ const crearAscensor = (ascensor) => {
 
     const ascensores = obtenerAscensores();
     ascensores.push(ascensor);
-    guardarDatos(pathArchivo, ascensores);
+    persistencia.guardarDatos(pathArchivo, ascensores);
 }
 
 const actualizarAscensor = (id, ascensor) => {
@@ -65,7 +65,7 @@ const actualizarAscensor = (id, ascensor) => {
     }
 
     ascensores[index] = ascensor;
-    guardarDatos(pathArchivo, ascensores);
+    persistencia.guardarDatos(pathArchivo, ascensores);
 }
 
 const eliminarAscensor = (id) => {
@@ -78,10 +78,10 @@ const eliminarAscensor = (id) => {
     }
 
     ascensores.splice(index, 1);
-    guardarDatos(pathArchivo, ascensores);
+    persistencia.guardarDatos(pathArchivo, ascensores);
 }
 
-module.exports = {
+export default {
     obtenerAscensores,
     obtenerAscensor,
     crearAscensor,

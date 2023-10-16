@@ -1,8 +1,8 @@
-import { obtenerDatos, guardarDatos } from '../persistencia/persistencia.js';
+import persistencia from '../persistencia/persistencia.js';
 
 const pathArchivo = './guests.json';
 const obtenerGuests = () => {
-    return obtenerDatos(pathArchivo);
+    return persistencia.obtenerDatos(pathArchivo);
 }
 
 const obtenerPermisos = (id) => {
