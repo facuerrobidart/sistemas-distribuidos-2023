@@ -63,7 +63,7 @@ const actualizarVisitante = (id, visitante) => {
         return mensajeValidacion;
 
     }
-    
+
     visitantes[index] = visitante;
     guardarDatos(pathArchivo, visitantes);
 }
@@ -78,5 +78,5 @@ const eliminarVisitante = (id) => {
     }
 
     visitantes.splice(index, 1);
-    guardarDatos(pathArchivo, visitante);
+    guardarDatos(pathArchivo, visitantes);
 }
