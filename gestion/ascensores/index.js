@@ -15,21 +15,33 @@ const obtenerAscensor = (id) => {
     return ascensorObtenido !== undefined ? ascensorObtenido : console.log(`No existe un ascensor con id ${id}`);;
 }
 
+const validarAscensor = (ascensor) => {
+    
+    const pisos = ascensor.pisos.length;
+    const nombre = ascensor.nombre;
+    const estado = ascensor.estado;
+
+    if (pisos === 0) {
+        return 'El ascensor debe tener al menos un piso';
+    }
+    if (validarVacio(nombre)) {
+        return 'El ascensor debe tener un nombre';
+    }
+    if (validarVacio(estado)) {
+        return 'Los pisos deben tener un nombre';
+    }
+
+    return 'ok';
+
+}
+
 const crearAscensor = (ascensor) => {
     ascensor.id = randomUUID();
 
-    //TODO: Crear metodo que valide los datos del ascensor
-    if (ascensor.pisos.length === 0) {
-        console.log('El ascensor debe tener al menos un piso');
-        return;
-    }
-    if (validarVacio(ascensor.nombre)) {
-        console.log('El ascensor debe tener un nombre');
-        return;
-    }
-    if (validarVacio(ascensor.estado)) {
-        console.log('Los pisos deben tener un nombre');
-        return;
+    const mensajeValidacion = validarAscensor(ascensor);
+
+    if( mensajeValidacion !== 'ok' ) {
+        return mensajeValidacion ; 
     }
 
     const ascensores = obtenerAscensores();
@@ -46,17 +58,10 @@ const actualizarAscensor = (id, ascensor) => {
         return;
     }
 
-    if (ascensor.pisos.length === 0) {
-        console.log('El ascensor debe tener al menos un piso');
-        return;
-    }
-    if (validarVacio(ascensor.nombre)) {
-        console.log('El ascensor debe tener un nombre');
-        return;
-    }
-    if (validarVacio(ascensor.estado)) {
-        console.log('Los pisos deben tener un nombre');
-        return;
+    const mensajeValidacion = validarAscensor(ascensor);
+
+    if( mensajeValidacion !== 'ok' ) {
+        return mensajeValidacion; 
     }
 
     ascensores[index] = ascensor;
