@@ -19,7 +19,10 @@ const quitarPermiso = (id,piso) => {
     if (guestObtenido !== undefined){
         const pisos = guestObtenido.pisos_permitidos;
         const indicePiso = pisos.indexOf(piso);
-        if indicePiso !== -1? pisos.splice(indicePiso,1) :  console.log(`El visitante con el id ${id}, ya no podia ingresar al piso ${piso}`);
+        if (indicePiso !== -1 )
+         pisos.splice(indicePiso,1);
+        else
+         console.log(`El visitante con el id ${id}, ya no podia ingresar al piso ${piso}`);
     }
     else{
         console.log(`No existe un visitante con id ${id}`);
@@ -45,7 +48,10 @@ const agregarPermisos = (id,piso) => {
     if (guestObtenido !== undefined){
         const pisos = guestObtenido.pisos_permitidos;
         const indicePiso = pisos.indexOf(piso);
-        if indicePiso === -1? pisos.push(piso) :  console.log(`El visitante con el id ${id}, ya tenia permiso para ingresar al piso ${piso}`);
+        if (indicePiso === -1)
+          pisos.push(piso)
+        else
+          console.log(`El visitante con el id ${id}, ya tenia permiso para ingresar al piso ${piso}`);
     }
     else{
         console.log(`No existe un visitante con id ${id}`);
