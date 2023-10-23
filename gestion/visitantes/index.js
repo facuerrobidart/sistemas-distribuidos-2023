@@ -1,33 +1,39 @@
-import { obtenerDatos, guardarDatos } from '../persistencia/persistencia.js';
+import persistencia from '../persistencia/persistencia.js';
 import { validarVacio } from '../utils/stringUtils.js';
 
-const pathArchivo = './visitors.json';
+const pathArchivo = '../persistencia/guests.json';
 
 const obtenerVisitantes = () => {
-    return obtenerDatos(pathArchivo);
+    return persistencia.obtenerDatos(pathArchivo);
 };
 
 const obtenerVisitante = (id) => {
     const visitantes = obtenerVisitantes();
     const visitanteObtenido =visitantes.find(a => a.id === id);
 
-    return visitanteObtenido !== undefined ? visitanteObtenido : console.log(`No existe un visitante con id ${id}`);;
+    return visitanteObtenido !== undefined ? visitanteObtenido : `No existe un visitante con id ${id}`;
 }
 
 const validarVisitantes= (visitante) =>{
-    if (visitante.pisos_permitidos.length === 0) {
+    const pisos_permitidos=visitante.pisos_permitidos.length;
+    const nombre=visitante.nombre;
+    const email=visitante.email
+    const checkIn=visitante.fecha_checkIn
+    const checkOut=visitante.fecha_checkOut
+
+    if (pisos_permitidos === 0) {
         return 'El visitante debe tener al menos un piso permitido';
     }
-    if (validarVacio(visitante.nombre)) {
+    if (stringUtils.validarVacio(nombre)) {
         return 'El visitante debe tener un nombre';
     }
-    if (validarVacio(visitante.email)) {
+    if (validarVacio(email)) {
         return 'El visitante debe tener un email asignado';
     }
-    if(validarVacio(visitante.fecha_checkIn)){
+    if(validarVacio(checkIn)){
          return 'El visitante debe tener una fecha de check In asignada';
     }
-    if(validarVacio(visitante.fecha_checkOut)){
+    if(validarVacio(checkOut)){
        return 'El visitante debe tener una fecha de check out asignada';
     }
     
@@ -42,30 +48,37 @@ const crearVisitante = (visitante) => {
 
     const mensajeValidacion = validarVisitantes(visitante)
 
-    if(mensajeValidacion!='ok'){
+    if(mensajeValidacion !== 'ok'){
         return mensajeValidacion;
     }
 
     const visitantes = obtenerVisitantes();
     visitantes.push(visitante);
-    guardarDatos(pathArchivo, visitantes);
+    persistencia.guardarDatos(pathArchivo, visitantes);
 }
 
 const actualizarVisitante = (id, visitante) => {
     const visitantes = obtenerVisitantes();
     const index = visitantes.findIndex(a => a.id === id);
-    const mensajeValidacion = validarVisitantes(visitante)
+    
     if (index === -1) {
         console.log(`No existe un visitante con id ${id}`);
         return;
     }
-    if(mensajeValidacion!='ok'){
-        return mensajeValidacion;
 
-    }
+    const mensajeResultado = validarVisitantes(visitante)
 
-    visitantes[index] = visitante;
-    guardarDatos(pathArchivo, visitantes);
+    if(mensajeResultado === 'ok'){
+        visitantes[index] = visitante;
+        try{
+            persistencia.guardarDatos(pathArchivo, visitantes);
+        }catch(error){
+            console.log(error)
+            mensajeResultado='Error al actualizar el visitante'
+        }
+     }
+
+    return mensajeResultado;
 }
 
 const eliminarVisitante = (id) => {
@@ -73,12 +86,13 @@ const eliminarVisitante = (id) => {
     const index = visitantes.findIndex(a => a.id === id);
 
     if (index === -1) {
-        console.log(`No existe un visitante con id ${id}`);
-        return;
+        const error= `No existe un visitante con id ${id}`
+        console.log(error);
+        return error;
     }
 
     visitantes.splice(index, 1);
-    guardarDatos(pathArchivo, visitantes);
+    persistencia.guardarDatos(pathArchivo, visitantes);
 }
 
 export default {
