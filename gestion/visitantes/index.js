@@ -80,3 +80,11 @@ const eliminarVisitante = (id) => {
     visitantes.splice(index, 1);
     guardarDatos(pathArchivo, visitantes);
 }
+
+export default {
+    obtenerVisitantes,
+    obtenerVisitante,
+    crearVisitante,
+    actualizarVisitante,
+    eliminarVisitante
+};

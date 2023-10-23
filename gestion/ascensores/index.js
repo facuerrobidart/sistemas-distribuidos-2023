@@ -2,17 +2,17 @@ import persistencia from '../persistencia/persistencia.js';
 import { randomUUID } from 'crypto';
 import stringUtils from '../utils/stringUtils.js';
 
-const pathArchivo = './gestion/ascensores/elevators.json';
+const pathArchivo = '../persistencia/elevators.json';
 
 const obtenerAscensores = () => {
-    return obtenerDatos(pathArchivo);
+    return persistencia.obtenerDatos(pathArchivo);
 };
 
 const obtenerAscensor = (id) => {
     const ascensores = obtenerAscensores();
     const ascensorObtenido = ascensores.find(a => a.id === id);
 
-    return ascensorObtenido !== undefined ? ascensorObtenido : console.log(`No existe un ascensor con id ${id}`);;
+    return ascensorObtenido !== undefined ? ascensorObtenido : `No existe un ascensor con id ${id}`;
 }
 
 const validarAscensor = (ascensor) => {
@@ -32,7 +32,6 @@ const validarAscensor = (ascensor) => {
     }
 
     return 'ok';
-
 }
 
 const crearAscensor = (ascensor) => {
@@ -54,18 +53,24 @@ const actualizarAscensor = (id, ascensor) => {
     const index = ascensores.findIndex(a => a.id === id);
 
     if (index === -1) {
-        console.log(`No existe un ascensor con id ${id}`);
-        return;
+        const error = `No existe un ascensor con id ${id}`
+        console.log(error);
+        return error;
     }
 
-    const mensajeValidacion = validarAscensor(ascensor);
+    const mensajeResultado = validarAscensor(ascensor);
 
-    if( mensajeValidacion !== 'ok' ) {
-        return mensajeValidacion; 
+    if (mensajeResultado === 'ok') {
+        ascensores[index] = ascensor;
+        try {
+            persistencia.guardarDatos(pathArchivo, ascensores);
+        } catch (error) {
+            console.log(error);
+            mensajeResultado = 'Error al actualizar el ascensor';
+        }
     }
 
-    ascensores[index] = ascensor;
-    persistencia.guardarDatos(pathArchivo, ascensores);
+    return mensajeResultado; 
 }
 
 const eliminarAscensor = (id) => {
@@ -73,12 +78,15 @@ const eliminarAscensor = (id) => {
     const index = ascensores.findIndex(a => a.id === id);
 
     if (index === -1) {
-        console.log(`No existe un ascensor con id ${id}`);
-        return;
+        const error = `No existe un ascensor con id ${id}`
+        console.log(error);
+        return error;
     }
 
     ascensores.splice(index, 1);
     persistencia.guardarDatos(pathArchivo, ascensores);
+    
+    return "ok";
 }
 
 export default {

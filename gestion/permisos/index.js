@@ -58,4 +58,9 @@ const agregarPermisos = (id,piso) => {
     }
 }
 
-console.log( obtenerPermisos("A001"));
+export default {
+    obtenerPermisos,
+    quitarPermiso,
+    quitarTodosLosPermisos,
+    agregarPermisos
+};
