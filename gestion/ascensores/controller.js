@@ -29,7 +29,7 @@ const server = http.createServer((req, res) => {
         }
 
         return res.end(resultado);
-    } else if (req.method === 'PUT' && req.url === '/ascensores') {
+    } else if (req.method === 'PUT' && req.url.includes('/ascensores')) {
         const resultado = servicioAscensores.actualizarAscensor(query.idAscensor, stringUtils.parsearBody(req.body));
 
         if (resultado === 'ok') {
@@ -39,7 +39,7 @@ const server = http.createServer((req, res) => {
             res.statusCode = 400;
             return res.end(resultado);
         }
-    } else if (req.method === 'DELETE' && req.url === '/ascensores') {
+    } else if (req.method === 'DELETE' && req.url.includes('/ascensores')) {
         const resultado = servicioAscensores.eliminarAscensor(query.idAscensor);
 
         if (resultado === 'ok') {
