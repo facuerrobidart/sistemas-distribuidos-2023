@@ -17,7 +17,7 @@ Router.prototype = {
     rootElem: undefined,
     constructor: function (routes) {
         this.routes = routes;
-        this.rootElem = document.getElementById('panelAdmin');
+        this.rootElem = document.getElementById('app');
     },
     init: function () {
         var r = this.routes;
