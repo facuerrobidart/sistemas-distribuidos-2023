@@ -5,7 +5,6 @@ import servicioPermisos from './index.js';
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
 
@@ -18,7 +17,7 @@ const server = http.createServer((req, res) => {
             res.statusCode = 400;
             return res.end('Parametros incorrectos para el recurso requerido');
         }
-    } else if (req.method === 'POST' && req.url.includes('/permisos')) {
+    } else if (req.method === 'PUT' && req.url.includes('/permisos')) {
         const resultado = servicioPermisos.agregarPermisos(query.id,query.piso);
 
         if (resultado === 'ok') {
