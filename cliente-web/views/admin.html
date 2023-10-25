@@ -19,13 +19,15 @@
     </header>
     
     <main class="contenedor">
+        <div id="panelAdmin"></div>
         <article class="gestiones">
-            <div class="card">Gestión Visitantes</div>
-            <div class="card">Gestión Ascensores</div>
-            <div class="card">Gestión Permisos</div>
+            <a href="/gestion-visitantes" onclick="route()" class="card">Gestión Visitantes</a>
+            <a href="/gestion-ascensores" onclick="route()" class="card">Gestión Ascensores</a>
+            <a href="/gestion-permisos" onclick="route()" class="card">Gestión Permisos</a>
         </article>
     </main>
 
-
+    <script src="../js/route.js"></script>
+    <script src="../js/router.js"></script>
 </body>
 </html>
