@@ -1,4 +1,4 @@
-import visitanes from "../../gestion/persistencia/guests.json" assert {type: "json"};
+import visitantes from "../../gestion/persistencia/guests.json" assert {type: "json"};
 const cuerpoTabla = document.querySelector('#cuerpo-tabla');
 
 const cargarTabla = () => {
@@ -7,7 +7,7 @@ const cargarTabla = () => {
 
     cuerpoTabla.innerHTML = '';
 
-    visitanes.map( (vis) => {
+    visitantes.map( (vis) => {
     
         const fila = document.createElement('tr');
         
@@ -15,7 +15,7 @@ const cargarTabla = () => {
                         <td>${vis.nombre}</td>
                         <td>${vis.edad}</td>
                         <td>${vis.email}</td>
-                        <td>${vis.pisos}</td>
+                        <td>${vis.pisos_permitidos}</td>
                         <td>${vis.fecha_checkIn}</td>
                         <td>${vis.fecha_checkOut}</td>
                         <td class="table-actions">
