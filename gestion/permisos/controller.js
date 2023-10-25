@@ -9,16 +9,16 @@ const server = http.createServer((req, res) => {
     const query = urlParseada.query;
 
     if (req.method === 'GET' && req.url.includes('/permisos')) {
-        if (query.id !== undefined) {
+        if (query.idVisitante !== undefined) {
             return res.end(
-                JSON.stringify(servicioPermisos.obtenerPermisos(query.id))
+                JSON.stringify(servicioPermisos.obtenerPermisos(query.idVisitante))
             );
         } else {
             res.statusCode = 400;
             return res.end('Parametros incorrectos para el recurso requerido');
         }
     } else if (req.method === 'PUT' && req.url.includes('/permisos')) {
-        const resultado = servicioPermisos.agregarPermisos(query.id,query.piso);
+        const resultado = servicioPermisos.agregarPermisos(query.idVisitante,query.piso);
 
         if (resultado === 'ok') {
             res.statusCode = 201;
@@ -30,10 +30,10 @@ const server = http.createServer((req, res) => {
     } else if (req.method === 'DELETE' && req.url.includes('/permisos')) {
 
         var resultado = undefined;
-        if(query.id !== undefined && query.piso!==undefined)
-            resultado = servicioPermisos.quitarPermiso(query.id, query.piso);
-        else if (query.id !== undefined && query.piso === undefined)
-            resultado = servicioPermisos.quitarTodosLosPermisos(query.id);
+        if(query.idVisitante !== undefined && query.piso!==undefined)
+            resultado = servicioPermisos.quitarPermiso(query.idVisitante, query.piso);
+        else if (query.idVisitante !== undefined && query.piso === undefined)
+            resultado = servicioPermisos.quitarTodosLosPermisos(query.idVisitante);
         else{
             res.statusCode = 404;
             return res.end('Parametros incorrectos para el recurso requerido');
@@ -41,7 +41,7 @@ const server = http.createServer((req, res) => {
 
         if (resultado === 'ok') {
             res.statusCode = 200;
-            return res.end('El vistante con id '+ query.id +' ya no puede ingresar al piso '+query.piso);
+            return res.end('El vistante con id '+ query.idVisitante +' ya no puede ingresar al piso '+query.piso);
         } else {
             res.statusCode = 404;
             return res.end(resultado);
