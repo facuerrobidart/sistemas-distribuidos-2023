@@ -1,9 +1,9 @@
 import ascensores from "../../gestion/persistencia/elevators.json" assert {type: "json"};
 const cuerpoTabla = document.querySelector('#cuerpo-tabla');
 
-const cargarTabla = () => {
+async function cargarTabla() {
 
-    //GET (devuelve ascensores.json)
+    ascensores = await getAscensores();
 
     cuerpoTabla.innerHTML = '';
 
@@ -34,6 +34,7 @@ const cargarTabla = () => {
     
 };
 
+// TODO: testear
 const agregarAscensor = () => {
 
     let nombre = document.querySelector('#nombre').value;
@@ -41,7 +42,6 @@ const agregarAscensor = () => {
     let pisos = strPisos.split(',');
     let estado = document.querySelector('#estado').value;
 
-    //POST
     let ascensor = {
         id: null,
         nombre, 
@@ -49,18 +49,55 @@ const agregarAscensor = () => {
         estado
     };
 
-    //Realizo un GET y actualizo la tabla?
+    let url = 'http:/gw/ascensores';
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(ascensor)    
+    }
+    
+
+    cargarTabla();
+    
+}
+
+// TODO: testear
+async function getAscensores() {
+    
+    let url = 'http:/gw/ascensores';
+    const res = await fetch(url);
+
+    if( res.ok ) {
+        return await response.json();
+    }
+    
+    console.log('GET Request fallida')
+
+}
+
+// TODO: testear
+async function deleteAscensor(id) {
+    
+    let url = `http:/gw/ascensores/${id}`;
+    let options = {
+        method: 'DELETE'
+    }
+
+    const res = await fetch(url, options);
+
+    if( !res.ok ) {
+        console.log(`Falla al eliminar: ${res.status}`)
+    }
     
 }
 
 window.eliminarAscensor = (id) => {
+    
+    deleteAscensor(id);
 
-    console.log(id);
-
-    //DELETE 
-
-    //Realizo un GET y actualizo la tabla?
-
+    cargarTabla();
 }
 
 cargarTabla();
