@@ -28,11 +28,11 @@ const server = http.createServer((req, res) => {
         }
 
         return res.end(resultado);
-    } else if (req.method === 'DELETE' && req.url.includes('/visitantes')) {
+    } else if (req.method === 'DELETE' && req.url.includes('/permisos')) {
 
-        const resultado = undefined;
+        var resultado = undefined;
         if(query.id !== undefined && query.piso!==undefined)
-            resultado = servicioPermisos.eliminarPermiso(query.id, query.piso);
+            resultado = servicioPermisos.quitarPermiso(query.id, query.piso);
         else if (query.id !== undefined && query.piso === undefined)
             resultado = servicioPermisos.quitarTodosLosPermisos(query.id);
         else{
@@ -42,7 +42,7 @@ const server = http.createServer((req, res) => {
 
         if (resultado === 'ok') {
             res.statusCode = 200;
-            return res.end("Visitante eliminado correctamente");
+            return res.end('El vistante con id '+ query.id +' ya no puede ingresar al piso '+query.piso);
         } else {
             res.statusCode = 404;
             return res.end(resultado);
@@ -53,6 +53,6 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(8081, () => {
-  console.log('Server visitantes iniciado en puerto 8081');
+server.listen(8082, () => {
+  console.log('Server permisos iniciado en puerto 8082');
 });

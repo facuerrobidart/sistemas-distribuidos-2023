@@ -18,7 +18,7 @@ const quitarPermiso = (id,piso) => {
 
     if (guestObtenido !== undefined){
         const pisos = guestObtenido.pisos_permitidos;
-        const indicePiso = pisos.indexOf(piso);
+        const indicePiso = pisos.indexOf(parseInt(piso));
         if (indicePiso !== -1 )
          pisos.splice(indicePiso,1);
         else
@@ -28,6 +28,7 @@ const quitarPermiso = (id,piso) => {
         return `No existe un visitante con id ${id}`;
     }
 
+    persistencia.guardarDatos(pathArchivo,visitanes);
     return 'ok';
 }
 
@@ -42,6 +43,7 @@ const quitarTodosLosPermisos = (id) => {
         return `No existe un visitante con id ${id}`;
     }
 
+    persistencia.guardarDatos(pathArchivo,visitanes);
     return 'ok';
 }
 
@@ -50,17 +52,19 @@ const agregarPermisos = (id,piso) => {
     const guestObtenido = visitanes.find(a => a.id === id);
 
     if (guestObtenido !== undefined){
-        const pisos = guestObtenido.pisos_permitidos;
-        const indicePiso = pisos.indexOf(piso);
+        var pisos = guestObtenido.pisos_permitidos;
+        const indicePiso = pisos.indexOf(parseInt(piso));
         if (indicePiso === -1)
-          pisos.push(piso)
-        else
-          return `El visitante con el id ${id}, ya tenia permiso para ingresar al piso ${piso}`;
+          pisos.push(parseInt(piso));
+        else{
+            return `El visitante con el id ${id}, ya tenia permiso para ingresar al piso ${piso}`;
+            }
     }
     else{
         return `No existe un visitante con id ${id}` ;
     }
 
+    persistencia.guardarDatos(pathArchivo,visitanes);
     return 'ok';
 }
 
