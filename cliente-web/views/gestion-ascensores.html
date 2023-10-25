@@ -1,44 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="../styles/gestion.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../styles/gestion.css" />
     <script src="../js/gestion-ascensores.mjs" type="module"></script>
 
-    <script src="https://kit.fontawesome.com/b57dac5fed.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/b57dac5fed.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Administración Ascensores</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Gestión de Ascensores</h1>
     <form id="formAscensor">
-        <label for="nombre">Nombre</label><br>
-        <input type="text" id="nombre" name="nombre"><br>
+      <label for="nombre">Nombre</label><br />
+      <input type="text" id="nombre" name="nombre" /><br />
 
-        <label for="pisos">Pisos</label><br>
-        <input type="text" id="pisos" name="pisos"><br>
+      <label for="pisos">Pisos</label><br />
+      <input type="text" id="pisos" name="pisos" /><br />
 
-        <label for="estado">Estado</label><br>
-        <input type="text" id="estado" name="estado"><br>
+      <label for="estado">Estado</label><br />
+      <input type="text" id="estado" name="estado" /><br />
 
-        <input type="submit" value="Añadir Ascensor">
+      <input type="submit" value="Añadir Ascensor" />
     </form>
 
     <h3>Lista de Ascensores</h3>
     <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Pisos</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="cuerpo-tabla">
-            
-        </tbody>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Pisos</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-tabla"></tbody>
     </table>
-</body>
+  </body>
 </html>

@@ -1,9 +1,10 @@
-import ascensores from "../../gestion/persistencia/elevators.json" assert {type: "json"};
 const cuerpoTabla = document.querySelector('#cuerpo-tabla');
 
-async function cargarTabla() {
+const cargarTabla = async () => {
 
-    ascensores = await getAscensores();
+    const ascensores = await getAscensores();
+
+    console.log(ascensores);
 
     cuerpoTabla.innerHTML = '';
 
@@ -49,38 +50,65 @@ const agregarAscensor = () => {
         estado
     };
 
+    addAscensor(ascensor);
+
+    cargarTabla();
+    
+}
+
+const addAscensor = async (ascensor) => {
+
     let url = 'http:/gw/ascensores';
     let options = {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify(ascensor)    
+        body: JSON.stringify(ascensor)
     }
+    const res = await fetch(url, options);
     
-
-    cargarTabla();
-    
-}
-
-// TODO: testear
-async function getAscensores() {
-    
-    let url = 'http:/gw/ascensores';
-    const res = await fetch(url);
-
-    if( res.ok ) {
-        return await response.json();
+    if( !res.ok ) {
+        console.log(`Falla al eliminar: ${res.status}`)
     }
-    
-    console.log('GET Request fallida')
 
 }
 
 // TODO: testear
-async function deleteAscensor(id) {
+const getAscensores = async () => {
+
+    let url = 'http://localhost:8080/ascensores';
+
+    let options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+        }
+    }
+
+    try {
+        const res = await fetch(url, options);
+
+        if( !res.ok ){
+            throw new Error(`Error! status: ${res.status}`);
+        }
+
+        return await res.json();
     
-    let url = `http:/gw/ascensores/${id}`;
+    } catch (err) {
+        console.log('GET Request fallida');
+    }
+    
+    
+    
+    
+
+}
+
+// TODO: testear
+const deleteAscensor = async (id) => {
+    
+    let url = `http://localhost:8083/ascensores?id=${id}`;
     let options = {
         method: 'DELETE'
     }
@@ -101,5 +129,7 @@ window.eliminarAscensor = (id) => {
 }
 
 cargarTabla();
+
+getAscensores();
 
 document.querySelector('#formAscensor').addEventListener('submit', agregarAscensor);

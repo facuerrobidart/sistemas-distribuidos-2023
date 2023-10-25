@@ -5,6 +5,7 @@ import servicioAscensores from './index.js';
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;

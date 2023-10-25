@@ -2,7 +2,7 @@ import persistencia from '../persistencia/persistencia.js';
 import { randomUUID } from 'crypto';
 import stringUtils from '../utils/stringUtils.js';
 
-const pathArchivo = '../persistencia/elevators.json';
+const pathArchivo = './gestion/persistencia/elevators.json';
 
 const obtenerAscensores = () => {
     return persistencia.obtenerDatos(pathArchivo);
