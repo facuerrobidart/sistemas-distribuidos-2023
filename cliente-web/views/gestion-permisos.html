@@ -19,10 +19,22 @@
       <label for="estado">Nombre</label><br />
       <input type="text" id="nombre" name="nombre" /><br />
 
+<div>
+    <div class="genericHeader">
+        <h1 class="genericTitle">Gestión de Permisos</h1>
+    </div>
+    <div class="formContainer">
+        <form id="formPermisos" class="genericForm">
+            <label for="estado">Nombre</label><br>
+            <input type="text" id="nombre" name="nombre"><br>
+
       <label for="pisos">Pisos permitidos</label><br />
       <input type="text" id="pisos" name="pisos" /><br />
+            <label for="pisos">Pisos permitidos</label><br>
+            <input type="text" id="pisos" name="pisos"><br>
 
       <!-- VER -->
+             <!-- VER -->
 
       <input type="submit" value="Crear" />
     </form>
@@ -41,3 +53,27 @@
     </table>
   </body>
 </html>
+
+            <input class="botonS" type="submit" value="Crear">
+        </form>
+    </div>
+      
+    <div class="genericHeader">
+    <h3 class="genericTitle">Lista de Permisos</h3>
+    </div>
+    <div class="tableContainer">
+      <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Pisos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpo-tabla">
+            
+        </tbody>
+      </table>
+  </div>
+</div>
