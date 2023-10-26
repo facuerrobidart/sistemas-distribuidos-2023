@@ -53,12 +53,12 @@ const agregarAscensor = () => {
     addAscensor(ascensor);
 
     cargarTabla();
-    
+
 }
 
 const addAscensor = async (ascensor) => {
 
-    let url = 'http:/gw/ascensores';
+    let url = 'http://localhost:8080/ascensores';
     let options = {
         method: 'POST',
         headers: {
@@ -74,7 +74,6 @@ const addAscensor = async (ascensor) => {
 
 }
 
-// TODO: testear
 const getAscensores = async () => {
 
     let url = 'http://localhost:8080/ascensores';
@@ -98,27 +97,27 @@ const getAscensores = async () => {
     } catch (err) {
         console.log('GET Request fallida');
     }
-    
-    
-    
-    
 
 }
 
-// TODO: testear
 const deleteAscensor = async (id) => {
     
-    let url = `http://localhost:8083/ascensores?id=${id}`;
+    let url = `http://localhost:8080/ascensores?idAscensor=${id}`;
     let options = {
         method: 'DELETE'
     }
 
-    const res = await fetch(url, options);
+    try {
+        const res = await fetch(url, options);
 
-    if( !res.ok ) {
-        console.log(`Falla al eliminar: ${res.status}`)
+        if( !res.ok ){
+            throw new Error(`Error! status: ${res.status}`);
+        }
+
+    } catch (err) {
+        console.log('DELETE Request fallida');
     }
-    
+
 }
 
 window.eliminarAscensor = (id) => {

@@ -6,6 +6,7 @@ import servicioAscensores from './index.js';
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
@@ -40,7 +41,8 @@ const server = http.createServer((req, res) => {
             res.statusCode = 400;
             return res.end(resultado);
         }
-    } else if (req.method === 'DELETE' && req.url.includes('/ascensores')) {
+    } else if ( req.method === 'DELETE' && req.url.includes('/ascensores')) {
+
         const resultado = servicioAscensores.eliminarAscensor(query.idAscensor);
 
         if (resultado === 'ok') {
@@ -50,6 +52,11 @@ const server = http.createServer((req, res) => {
             res.statusCode = 404;
             return res.end(resultado);
         }
+    }else if (req.method === 'OPTIONS' && req.url.includes('/ascensores')) {
+
+        res.statusCode = 200;
+        return res.end();
+    
     } else {
         res.statusCode = 404;
         return res.end('Recurso no encontrado');

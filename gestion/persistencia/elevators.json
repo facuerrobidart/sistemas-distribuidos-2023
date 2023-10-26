@@ -1,15 +1,1 @@
-[
-    {
-        "id": "7408f6a4-564a-4511-b96c-0e9fa114e9c5",
-        "nombre": "A",
-        "pisos": [1, 3, 5],
-        "estado": "Disponible"
-    },
-    {
-        "id": "pepef6a4-564a-4511-b96c-0e9fa114e9c5",
-        "nombre": "B",
-        "pisos": [2, 4, 6],
-        "estado": "Disponible"
-    }
-]
-    
+[{"id":"pepef6a4-564a-4511-b96c-0e9fa114e9c5","nombre":"B","pisos":[2,4,6],"estado":"Disponible"}]
