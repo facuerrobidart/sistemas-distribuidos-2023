@@ -13,7 +13,7 @@ const server = http.createServer((req, res) => {
     if(req.method === 'GET'){
         if (req.url.includes('/permisos')){
             if (query.idVisitante !== undefined){
-                PasoReq(8082,'/permisos?idVisitante='+query.idVisitante,'GET',null, (error, responseBody) => {
+                PasoReq(8082, '/permisos?idVisitante='+ query.idVisitante,'GET',null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else

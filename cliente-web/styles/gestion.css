@@ -43,3 +43,35 @@ tr:hover {
     justify-content: space-around;
     align-items: center;
 }
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.genericForm {
+    background-color: #f2f2f2;
+    border-radius: 3em;
+    width: 30%;
+    padding: 2em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+.genericHeader {
+    background-color: #f2f2f2;
+}
+
+.genericTitle {
+    margin: 0;
+}
+
+.tableContainer {
+    padding: 1em;
+}
+
+#selectPisos {
+    width: 60%;
+}

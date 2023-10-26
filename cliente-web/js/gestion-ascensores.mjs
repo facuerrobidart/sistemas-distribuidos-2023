@@ -1,18 +1,18 @@
-const cuerpoTabla = document.querySelector('#cuerpo-tabla');
+const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores');
 
 const cargarTabla = async () => {
 
     const ascensores = await getAscensores();
 
     console.log(ascensores);
-
-    cuerpoTabla.innerHTML = '';
+    let tableContent = '';
 
     ascensores.map( (asc) => {
     
-        const fila = document.createElement('tr');
         
-        const celdas = `<td>${asc.id}</td>
+        const fila = `
+                    <tr>
+                        <td>${asc.id}</td>
                         <td>${asc.nombre}</td>
                         <td>${asc.pisos}</td>
                         <td>${asc.estado}</td>
@@ -27,12 +27,14 @@ const cargarTabla = async () => {
                                     <i class="fa-regular fa-circle-xmark"></i>
                                 </button>
                             </div>
-                        </td>`;
+                        </td>
+                    </tr>`;
 
-        fila.innerHTML = celdas;
-        cuerpoTabla.append(fila);
+        tableContent += fila;
+
     } )
     
+    cuerpoTabla.innerHTML = tableContent;
 };
 
 // TODO: testear
@@ -53,7 +55,6 @@ const agregarAscensor = () => {
     addAscensor(ascensor);
 
     cargarTabla();
-
 }
 
 const addAscensor = async (ascensor) => {
@@ -120,6 +121,17 @@ const deleteAscensor = async (id) => {
 
 }
 
+const generarOpciones = (pisos) => {
+    const target = document.getElementById('selectPisos');
+    let options = '';
+    console.log(select)
+    
+    for (let i = 0; i < pisos; i++) {
+        options += `<option value="${i}">${i}</option>`;
+    }
+    target.innerHTML = options;
+}
+
 window.eliminarAscensor = (id) => {
     
     deleteAscensor(id);
@@ -130,5 +142,8 @@ window.eliminarAscensor = (id) => {
 cargarTabla();
 
 getAscensores();
+
+var select = document.querySelector('#selectPisos');
+select && select.addEventListener('change', generarOpciones(25));
 
 document.querySelector('#formAscensor').addEventListener('submit', agregarAscensor);

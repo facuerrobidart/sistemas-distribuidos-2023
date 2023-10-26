@@ -1,5 +1,5 @@
 import visitantes from "../../gestion/persistencia/guests.json" assert {type: "json"};
-const cuerpoTabla = document.querySelector('#cuerpo-tabla');
+const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes');
 
 const cargarTabla = () => {
 
