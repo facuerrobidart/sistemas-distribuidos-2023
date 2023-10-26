@@ -8,10 +8,10 @@ const cargarTabla = async () => {
 
     cuerpoTabla.innerHTML = '';
 
-    ascensores.map( (asc) => {
-    
+    ascensores.map((asc) => {
+
         const fila = document.createElement('tr');
-        
+
         const celdas = `<td>${asc.id}</td>
                         <td>${asc.nombre}</td>
                         <td>${asc.pisos}</td>
@@ -31,12 +31,14 @@ const cargarTabla = async () => {
 
         fila.innerHTML = celdas;
         cuerpoTabla.append(fila);
-    } )
-    
+    })
+
 };
 
 // TODO: testear
-const agregarAscensor = () => {
+const agregarAscensor = (event) => {
+
+    event.preventDefault();
 
     let nombre = document.querySelector('#nombre').value;
     let strPisos = document.querySelector('#pisos').value;
@@ -45,8 +47,8 @@ const agregarAscensor = () => {
 
     let ascensor = {
         id: null,
-        nombre, 
-        pisos, 
+        nombre,
+        pisos,
         estado
     };
 
@@ -66,10 +68,17 @@ const addAscensor = async (ascensor) => {
         },
         body: JSON.stringify(ascensor)
     }
-    const res = await fetch(url, options);
-    
-    if( !res.ok ) {
-        console.log(`Falla al eliminar: ${res.status}`)
+
+    try {
+
+        const res = await fetch(url, options);
+
+        if (!res.ok) {
+            throw new Error(`Error! status: ${res.status}`);
+        }
+
+    } catch (err) {
+        console.log('POST Request fallida');
     }
 
 }
@@ -88,12 +97,12 @@ const getAscensores = async () => {
     try {
         const res = await fetch(url, options);
 
-        if( !res.ok ){
+        if (!res.ok) {
             throw new Error(`Error! status: ${res.status}`);
         }
 
         return await res.json();
-    
+
     } catch (err) {
         console.log('GET Request fallida');
     }
@@ -101,7 +110,7 @@ const getAscensores = async () => {
 }
 
 const deleteAscensor = async (id) => {
-    
+
     let url = `http://localhost:8080/ascensores?idAscensor=${id}`;
     let options = {
         method: 'DELETE'
@@ -110,7 +119,7 @@ const deleteAscensor = async (id) => {
     try {
         const res = await fetch(url, options);
 
-        if( !res.ok ){
+        if (!res.ok) {
             throw new Error(`Error! status: ${res.status}`);
         }
 
@@ -121,7 +130,7 @@ const deleteAscensor = async (id) => {
 }
 
 window.eliminarAscensor = (id) => {
-    
+
     deleteAscensor(id);
 
     cargarTabla();
