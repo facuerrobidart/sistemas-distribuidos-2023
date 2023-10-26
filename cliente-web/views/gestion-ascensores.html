@@ -1,34 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="stylesheet" href="../styles/gestion.css" />
-    <script src="../js/gestion-ascensores.mjs" type="module"></script>
-
-    <script
-      src="https://kit.fontawesome.com/b57dac5fed.js"
-      crossorigin="anonymous"
-    ></script>
-    <title>Administración Ascensores</title>
-  </head>
-  <body>
-    <h1>Gestión de Ascensores</h1>
-    <form id="formAscensor">
+<div>
+  <div class="genericHeader">
+    <h1 class="genericTitle">Gestión de Ascensores</h1>
+  </div>
+  <div class="formContainer">
+    <form id="formAscensor" class="genericForm">
       <label for="nombre">Nombre</label><br />
       <input type="text" id="nombre" name="nombre" /><br />
 
       <label for="pisos">Pisos</label><br />
-      <input type="text" id="pisos" name="pisos" /><br />
+      <select 
+        multiple 
+        id="selectPisos"
+        multiselect-search="true" 
+        multiselect-select-all="true"
+        onload="generarOpciones(25)">
+      </select><br />
 
       <label for="estado">Estado</label><br />
       <input type="text" id="estado" name="estado" /><br />
 
       <input type="submit" value="Añadir Ascensor" />
     </form>
+  </div>
 
-    <h3>Lista de Ascensores</h3>
+  <div class="genericHeader">
+    <h1 class="genericTitle">Lista de Ascensores</h1>
+  </div>
+  <div class="tableContainer">
     <table>
       <thead>
         <tr>
@@ -39,7 +37,8 @@
           <th>Acciones</th>
         </tr>
       </thead>
-      <tbody id="cuerpo-tabla"></tbody>
+      <tbody id="cuerpo-tabla-ascensores"></tbody>
     </table>
-  </body>
-</html>
+  </div>
+  <script src="/cliente-web/js/gestion-ascensores.mjs"></script>
+</div>
