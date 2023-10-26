@@ -5,9 +5,9 @@
   <div class="formContainer">
     <form id="formAscensor" class="genericForm">
       <label for="nombre">Nombre</label><br />
-      <input type="text" id="nombre" name="nombre" /><br />
+      <input class="textField" type="text" id="nombre" name="nombre" /><br />
 
-      <label for="pisos">Pisos</label><br />
+      <label for="selectPisos">Pisos</label><br />
       <select 
         multiple 
         id="selectPisos"
@@ -17,9 +17,13 @@
       </select><br />
 
       <label for="estado">Estado</label><br />
-      <input type="text" id="estado" name="estado" /><br />
-
+      <div class="contenedorEstado">
+        <input type="radio"  name="estado" value="Disponible"  />  Disponible <br />
+        <input type="radio"  name="estado" value="noDisponible"  />  No Disponible <br />
+      </div>
+      
       <input class="botonS" type="submit" value="Añadir Ascensor" />
+      
     </form>
   </div>
 
@@ -42,3 +46,4 @@
   </div>
   <script src="/cliente-web/js/gestion-ascensores.mjs"></script>
 </div>
+

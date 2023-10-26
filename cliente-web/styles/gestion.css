@@ -20,6 +20,9 @@ th {
 tr:hover {
     background-color: #ddd;
 }
+td{
+    background-color: #ddd;
+}
 
 .btn {
     background-color: #4CAF50;
@@ -49,6 +52,7 @@ tr:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 150%;
    
 }
 
@@ -66,12 +70,15 @@ tr:hover {
 }
 
 .botonS{
+        font-size:17px; 
         border-radius: 50rem; 
         color: white; 
         background-color: rgba(0,126,169,1);
         padding: 10px 20px; 
         border: none; 
         cursor: pointer; 
+        width: 150px; /* Ajusta el ancho del botón */
+        height: 50px;
 }
 
 .botonS:hover{
@@ -82,8 +89,15 @@ tr:hover {
     background-color:#001931;
     align-items: center;
     padding: 2rem 10%;   
-    
 }
+
+.textField{
+    width: 200px; /* Ajusta el ancho del campo de texto */
+    height: 30px; /* Ajusta la altura del campo de texto */
+    font-size: 14px; 
+  
+  }
+
 
 .genericTitle {
     color:#ecfcf3;
@@ -99,4 +113,12 @@ tr:hover {
 
 #selectPisos {
     width: 60%;
+}
+
+.contenedorEstado{
+    font-size:.8em ;
+    margin-bottom: 4em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
