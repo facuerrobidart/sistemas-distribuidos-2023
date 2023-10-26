@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    
     <link rel="stylesheet" href="../styles/gestion.css">
     <script src="../js/gestion-permisos.mjs" type="module"></script>
 
@@ -21,11 +22,12 @@
 
         <!-- VER -->
 
-        <input type="submit" value="Crear">
+        <input class="botonS" type="submit" value="Crear">
     </form>
 
     <h3>Lista de Permisos</h3>
-    <table>
+    <div class="tableContainer">
+      <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -37,6 +39,7 @@
         <tbody id="cuerpo-tabla">
             
         </tbody>
-    </table>
+      </table>
+  </div>
 </body>
 </html>
