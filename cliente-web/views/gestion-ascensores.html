@@ -7,14 +7,15 @@
       <label for="nombre">Nombre</label><br />
       <input type="text" id="nombre" name="nombre" /><br />
 
-      <label for="pisos">Pisos</label><br />
-      <select 
-        multiple 
+      <label for="selectPisos">Pisos</label><br />
+      <select
+        multiple
         id="selectPisos"
-        multiselect-search="true" 
+        multiselect-search="true"
         multiselect-select-all="true"
-        onload="generarOpciones(25)">
-      </select><br />
+        onload="generarOpciones(25)"
+      ></select
+      ><br />
 
       <label for="estado">Estado</label><br />
       <input type="text" id="estado" name="estado" /><br />
@@ -40,5 +41,4 @@
       <tbody id="cuerpo-tabla-ascensores"></tbody>
     </table>
   </div>
-  <script src="/cliente-web/js/gestion-ascensores.mjs"></script>
 </div>

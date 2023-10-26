@@ -23,10 +23,10 @@ const server = http.createServer((req, res) => {
             );
         }
     } else if (req.method === 'POST' && req.url.includes('/ascensores')) {
-        const resultado = servicioAscensores.crearAscensor(stringUtils.parsearBody(req.body));
+        const resultado = servicioAscensores.crearAscensor(JSON.parse(query.body));
         
         if (resultado === 'ok') {
-            res.statusCode = 201;
+            res.statusCode = 201; // Created status
         } else {
             res.statusCode = 400;
         }

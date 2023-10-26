@@ -1,15 +1,16 @@
+
+'use strict'
+
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores');
 
 const cargarTabla = async () => {
 
     const ascensores = await getAscensores();
 
-    console.log(ascensores);
     let tableContent = '';
 
     ascensores.map( (asc) => {
     
-        
         const fila = `
                     <tr>
                         <td>${asc.id}</td>
@@ -43,8 +44,7 @@ const agregarAscensor = (event) => {
     event.preventDefault();
 
     let nombre = document.querySelector('#nombre').value;
-    let strPisos = document.querySelector('#pisos').value;
-    let pisos = strPisos.split(',');
+    let pisos = document.querySelector('#selectPisos').value;
     let estado = document.querySelector('#estado').value;
 
     let ascensor = {
@@ -53,6 +53,8 @@ const agregarAscensor = (event) => {
         pisos,
         estado
     };
+
+    console.log(ascensor);
 
     addAscensor(ascensor);
 
@@ -65,14 +67,15 @@ const addAscensor = async (ascensor) => {
     let options = {
         method: 'POST',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            accept: 'application/json',
         },
         body: JSON.stringify(ascensor)
     }
 
     try {
 
-        const res = await fetch(url, options);
+        //const res = await fetch(url, options);
 
         if (!res.ok) {
             throw new Error(`Error! status: ${res.status}`);
@@ -133,7 +136,6 @@ const deleteAscensor = async (id) => {
 const generarOpciones = (pisos) => {
     const target = document.getElementById('selectPisos');
     let options = '';
-    console.log(select)
     
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
@@ -155,4 +157,4 @@ getAscensores();
 var select = document.querySelector('#selectPisos');
 select && select.addEventListener('change', generarOpciones(25));
 
-document.querySelector('#formAscensor').addEventListener('submit', agregarAscensor);
+document?.querySelector('#formAscensor').addEventListener('submit', agregarAscensor);
