@@ -1,3 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../styles/gestion.css" />
+    <script src="../js/gestion-permisos.mjs" type="module"></script>
+
+    <script
+      src="https://kit.fontawesome.com/b57dac5fed.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Administración Permisos</title>
+  </head>
+  <body>
+    <h1>Gestión de Permisos</h1>
+    <form id="formPermisos">
+      <label for="estado">Nombre</label><br />
+      <input type="text" id="nombre" name="nombre" /><br />
 
 <div>
     <div class="genericHeader">
@@ -8,10 +28,31 @@
             <label for="estado">Nombre</label><br>
             <input class="textField" type="text" id="nombre" name="nombre"><br>
 
+      <label for="pisos">Pisos permitidos</label><br />
+      <input type="text" id="pisos" name="pisos" /><br />
             <label for="pisos">Pisos permitidos</label><br>
             <input class="textField" type="text" id="pisos" name="pisos"><br>
 
+      <!-- VER -->
              <!-- VER -->
+
+      <input type="submit" value="Crear" />
+    </form>
+
+    <h3>Lista de Permisos</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Pisos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-tabla"></tbody>
+    </table>
+  </body>
+</html>
 
             <input class="botonS" type="submit" value="Crear">
         </form>

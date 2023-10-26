@@ -7,6 +7,7 @@ const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, accept, token")
     
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
@@ -22,10 +23,10 @@ const server = http.createServer((req, res) => {
             );
         }
     } else if (req.method === 'POST' && req.url.includes('/ascensores')) {
-        const resultado = servicioAscensores.crearAscensor(stringUtils.parsearBody(req.body));
-
+        const resultado = servicioAscensores.crearAscensor(JSON.parse(query.body));
+        
         if (resultado === 'ok') {
-            res.statusCode = 201;
+            res.statusCode = 201; // Created status
         } else {
             res.statusCode = 400;
         }
