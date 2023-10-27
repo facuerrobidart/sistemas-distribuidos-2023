@@ -45,7 +45,7 @@ const crearAscensor = (event) => {
 
     let nombre = document.querySelector('#nombre').value;
     let selectionPisos = document.querySelector('#selectPisos')
-    let estado = document.querySelector('#estado').value;
+    let estado = selectionEstado();
 
     let pisos = selectPisos(selectionPisos);
 
@@ -106,11 +106,26 @@ const generarOpciones = (pisos) => {
 
 const selectPisos = (selectionPisos) => {
     
-    var collection = selectionPisos.selectedOptions;
+    let collection = selectionPisos.selectedOptions;
 
-    const pisos = collection.map( item => item.label );
+    let pisos = [];
+
+    for (var i = 0; i < collection.length; i++) {
+        pisos.push(collection[i].label);
+    }
     
     return pisos;   
+
+}
+
+const selectionEstado = () => {
+
+    let elementoActivo = document.querySelector('input[name="estado"]:checked');
+    if(elementoActivo) {
+        return elementoActivo.value;
+    } else {
+        alert('No hay ninún elemento activo');
+    }
 
 }
 
