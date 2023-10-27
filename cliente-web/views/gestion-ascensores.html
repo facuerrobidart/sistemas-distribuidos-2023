@@ -4,26 +4,39 @@
   </div>
   <div class="formContainer">
     <form id="formAscensor" class="genericForm">
-      <label for="nombre">Nombre</label><br />
-      <input class="textField" type="text" id="nombre" name="nombre" /><br />
-
-      <label for="selectPisos">Pisos</label><br />
-      <select
-        multiple
-        id="selectPisos"
-        multiselect-search="true"
-        multiselect-select-all="true"
-        onload="generarOpciones(25)"
-      ></select
-      ><br />
-
-      <label for="estado">Estado</label><br />
-      <div class="contenedorEstado">
-        <input type="radio"  name="estado" value="Disponible"  />  Disponible <br />
-        <input type="radio"  name="estado" value="noDisponible"  />  No Disponible <br />
-      </div>
       
-      <input class="botonS" type="submit" value="Añadir Ascensor" />
+      <div class="input-group">
+        <label for="nombre">Nombre</label>
+        <input class="textField" type="text" id="nombre" name="nombre" />
+      </div>
+
+      <div class="input-group">
+        <label for="selectPisos">Pisos permitidos</label>
+        <select
+           multiple
+          id="selectPisos"
+          multiselect-search="true"
+          multiselect-select-all="true"
+          onload="generarOpciones(25)"
+        ></select>
+      </div>
+
+      <div class="input-group">
+            <label for="estado">Estado</label>
+            <div class="radio-group">
+              <label>
+               <input type="radio" id="disponible" name="estado" value="disponible">
+                Disponible 
+              </label>
+              <label>
+                
+                <input type="radio" id="no_disponible" name="estado" value="no_disponible">
+                No Disponible
+              </label>
+            </div>
+      </div>
+   
+    <input class="botonS" type="submit" value="Añadir Ascensor" />
       
     </form>
   </div>
