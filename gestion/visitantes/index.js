@@ -1,5 +1,5 @@
 import persistencia from '../persistencia/persistencia.js';
-import { validarVacio } from '../utils/stringUtils.js';
+import stringUtils from '../utils/stringUtils.js';
 
 const pathArchivo = '../persistencia/guests.json';
 

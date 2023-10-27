@@ -5,6 +5,7 @@ import servicioAscensores from './index.js';
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Accept','application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, accept, token")
@@ -23,25 +24,54 @@ const server = http.createServer((req, res) => {
             );
         }
     } else if (req.method === 'POST' && req.url.includes('/ascensores')) {
-        const resultado = servicioAscensores.crearAscensor(JSON.parse(query.body));
-        
-        if (resultado === 'ok') {
-            res.statusCode = 201; // Created status
-        } else {
-            res.statusCode = 400;
-        }
 
-        return res.end(resultado);
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            try {
+                const parsedData = JSON.parse(body);
+
+                const resultado = servicioAscensores.crearAscensor(parsedData);
+
+                if (resultado === 'ok') {
+                    res.statusCode = 201; // Created status
+                } else {
+                    res.statusCode = 400;
+                }
+                
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        });
+
     } else if (req.method === 'PUT' && req.url.includes('/ascensores')) {
-        const resultado = servicioAscensores.actualizarAscensor(query.idAscensor, stringUtils.parsearBody(req.body));
 
-        if (resultado === 'ok') {
-            res.statusCode = 200;
-            return res.end("Ascensor actualizado correctamente");
-        } else {
-            res.statusCode = 400;
-            return res.end(resultado);
-        }
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+            try {
+                const parsedData = JSON.parse(body);
+
+                const resultado = servicioAscensores.actualizarAscensor(query.idAscensor, parsedData);
+
+                if (resultado === 'ok') {
+                    res.statusCode = 200;
+                    res.body("Ascensor actualizado correctamente");
+                } else {
+                    res.statusCode = 400;
+                }
+                
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        });
+
     } else if ( req.method === 'DELETE' && req.url.includes('/ascensores')) {
 
         const resultado = servicioAscensores.eliminarAscensor(query.idAscensor);

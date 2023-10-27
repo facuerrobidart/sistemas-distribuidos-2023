@@ -1,4 +1,3 @@
-
 'use strict'
 
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores');
@@ -20,7 +19,7 @@ const cargarTabla = async () => {
                         <td class="table-actions">
                             <div>
                                 <button id="btn-edit">
-                                    <i class="fa-solid fa-pencil"></i>
+                                    <i class="fa-solid fa-pencil"></i> 
                                 </button>
                             </div>
                             <div>
@@ -44,8 +43,17 @@ const agregarAscensor = (event) => {
     event.preventDefault();
 
     let nombre = document.querySelector('#nombre').value;
-    let pisos = document.querySelector('#selectPisos').value;
+    let selectionPisos = document.querySelector('#selectPisos')
     let estado = document.querySelector('#estado').value;
+
+
+    var collection = selectionPisos.selectedOptions;
+
+    let pisos = [];
+
+    for (var i = 0; i < collection.length; i++) {
+        pisos.push(collection[i].label);
+    }
 
     let ascensor = {
         id: null,
@@ -53,8 +61,6 @@ const agregarAscensor = (event) => {
         pisos,
         estado
     };
-
-    console.log(ascensor);
 
     addAscensor(ascensor);
 
@@ -68,14 +74,14 @@ const addAscensor = async (ascensor) => {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
-            accept: 'application/json',
+            'Accept':'application/json' 
         },
         body: JSON.stringify(ascensor)
     }
 
     try {
 
-        //const res = await fetch(url, options);
+        const res = await fetch(url, options);
 
         if (!res.ok) {
             throw new Error(`Error! status: ${res.status}`);
