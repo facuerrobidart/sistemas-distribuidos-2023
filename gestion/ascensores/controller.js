@@ -58,7 +58,7 @@ const server = http.createServer((req, res) => {
             try {
                 const parsedData = JSON.parse(body);
 
-                const resultado = servicioAscensores.actualizarAscensor(query.idAscensor, parsedData);
+                const resultado = servicioAscensores.actualizarAscensor(parsedData);
 
                 if (resultado === 'ok') {
                     res.statusCode = 200;
