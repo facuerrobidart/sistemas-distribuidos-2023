@@ -1,8 +1,12 @@
 import persistencia from '../persistencia/persistencia.js';
 import { randomUUID } from 'crypto';
 import stringUtils from '../utils/stringUtils.js';
+import { resolve } from 'path';
+const scriptURL = import.meta.url;
+const url = new URL(scriptURL);
+let pathModulo = url.pathname.replace(/^\/[A-Za-z]:/, '');
 
-const pathArchivo = './gestion/persistencia/elevators.json';
+const pathArchivo = resolve(pathModulo, '../../persistencia/elevators.json');
 
 const obtenerAscensores = () => {
     return persistencia.obtenerDatos(pathArchivo);

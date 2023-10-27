@@ -1,6 +1,5 @@
 import http from 'http';
 import url from 'url';
-import stringUtils from '../utils/stringUtils.js';
 import servicioPermisos from './index.js';
 
 const server = http.createServer((req, res) => {

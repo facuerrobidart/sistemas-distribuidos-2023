@@ -1,7 +1,7 @@
 import http from 'http';
 import url from 'url';
-import stringUtils from '../utils/stringUtils.js';
 import servicioAscensores from './index.js';
+import errorUtils from '../utils/errorUtils.js';
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -12,15 +12,35 @@ const server = http.createServer((req, res) => {
     
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
+    let resultado;
 
     if (req.method === 'GET' && req.url.includes('/ascensores')) {
         if (query.idAscensor === undefined) {
+            try {
+                resultado = servicioAscensores.obtenerAscensores();
+            } catch (error) {
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al obtener los ascensores",
+                    error
+                )
+                res.statusCode = 500;
+            }
+             
             return res.end(
-                JSON.stringify(servicioAscensores.obtenerAscensores())
+                JSON.stringify(resultado)
             );
         } else {
+            try {
+                resultado = servicioAscensores.obtenerAscensor(query.idAscensor);
+            } catch (error) {
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al obtener el ascensor",
+                    error
+                )
+                res.statusCode = 500;
+            }
             return res.end(
-                JSON.stringify(servicioAscensores.obtenerAscensor(query.idAscensor))
+                JSON.stringify(resultado)
             );
         }
     } else if (req.method === 'POST' && req.url.includes('/ascensores')) {
@@ -34,11 +54,20 @@ const server = http.createServer((req, res) => {
             try {
                 const parsedData = JSON.parse(body);
 
-                const resultado = servicioAscensores.crearAscensor(parsedData);
+
+                try {
+                    resultado = servicioAscensores.crearAscensor(parsedData);
+                } catch (error) {
+                    resultado = errorUtils.generarRespuestaError(
+                        "Ocurrio un error al crear el ascensor",
+                        error
+                    )
+                    res.statusCode = 500;
+                }
 
                 if (resultado === 'ok') {
                     res.statusCode = 201; // Created status
-                } else {
+                } else if (typeof(resultado) === 'string') {
                     res.statusCode = 400;
                 }
                 
@@ -58,12 +87,20 @@ const server = http.createServer((req, res) => {
             try {
                 const parsedData = JSON.parse(body);
 
-                const resultado = servicioAscensores.actualizarAscensor(query.idAscensor, parsedData);
+                try {
+                    resultado = servicioAscensores.actualizarAscensor(query.idAscensor, parsedData);
+                } catch (error) {
+                    resultado = errorUtils.generarRespuestaError(
+                        "Ocurrio un error al actualizar el ascensor",
+                        error
+                    )
+                    res.statusCode = 500;
+                }
 
                 if (resultado === 'ok') {
                     res.statusCode = 200;
                     res.body("Ascensor actualizado correctamente");
-                } else {
+                } else if (typeof(resultado) === 'string') {
                     res.statusCode = 400;
                 }
                 
@@ -74,20 +111,26 @@ const server = http.createServer((req, res) => {
 
     } else if ( req.method === 'DELETE' && req.url.includes('/ascensores')) {
 
-        const resultado = servicioAscensores.eliminarAscensor(query.idAscensor);
+        try {
+            resultado = servicioAscensores.eliminarAscensor(query.idAscensor);
+        } catch (error) {
+            resultado = errorUtils.generarRespuestaError(
+                "Ocurrio un error al eliminar el ascensor",
+                error
+            )
+            res.statusCode = 500;
+        }
 
         if (resultado === 'ok') {
             res.statusCode = 200;
             return res.end("Ascensor eliminado correctamente");
-        } else {
+        } else if (typeof(resultado) === 'string') {
             res.statusCode = 404;
             return res.end(resultado);
         }
     }else if (req.method === 'OPTIONS' && req.url.includes('/ascensores')) {
-
         res.statusCode = 200;
         return res.end();
-    
     } else {
         res.statusCode = 404;
         return res.end('Recurso no encontrado');

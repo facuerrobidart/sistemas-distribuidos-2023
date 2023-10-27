@@ -1,6 +1,12 @@
 import persistencia from '../persistencia/persistencia.js';
+import { resolve } from 'path';
+const scriptURL = import.meta.url;
+const url = new URL(scriptURL);
+let pathModulo = url.pathname.replace(/^\/[A-Za-z]:/, '');
 
-const pathArchivo = './gestion/persistencia/guests.json';
+const pathArchivo = resolve(pathModulo, '../../persistencia/guests.json');
+console.log(pathArchivo);
+
 const obtenerGuests = () => {
     return persistencia.obtenerDatos(pathArchivo);
 }

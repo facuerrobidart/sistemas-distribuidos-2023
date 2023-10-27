@@ -1,8 +1,11 @@
-import query from 'express/lib/middleware/query';
 import http from 'http';
 import url from 'url';
 
 // TODO: TESTEAR TODO
+
+const puertoVisitantes = 8081;
+const puertoAscensores = 8080;
+const puertoPermisos = 8082;
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -13,7 +16,7 @@ const server = http.createServer((req, res) => {
     if(req.method === 'GET'){
         if (req.url.includes('/permisos')){
             if (query.idVisitante !== undefined){
-                PasoReq(8082, '/permisos?idVisitante='+ query.idVisitante,'GET',null, (error, responseBody) => {
+                PasoReq(puertoPermisos, '/permisos?idVisitante='+ query.idVisitante, 'GET', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
@@ -29,19 +32,20 @@ const server = http.createServer((req, res) => {
             else
                 path = '/visitantes?idVisitante='+query.idVisitante;
 
-            PasoReq(8081,path,'GET', null, (error, responseBody) => {
+            PasoReq(puertoVisitantes, path,'GET', null, (error, responseBody) => {
                 if (error)
                     return res.end(error);
                 else
                     return res.end(responseBody)});
         }else if (req.url.includes('/ascensores')){
             let path;
+            
             if(query.idAscensor === undefined)
                 path = '/ascensores';
             else
                 path = '/ascensores?idAscensores='+query.idAscensor;
 
-            PasoReq(8080,path,'GET', null, (error, responseBody) => {
+            PasoReq(puertoAscensores, path, 'GET', null, (error, responseBody) => {
                 if (error)
                     return res.end(error);
                 else
@@ -136,7 +140,7 @@ const server = http.createServer((req, res) => {
                 }       
         }else if (req.url.includes('/ascensores')){
             if(query.idAscensor !== undefined){
-                PasoReq(8080,'/ascensores?idAscensor='+query.idAscensor,'DELETE',null, (error, responseBody) => {
+                PasoReq(8080,'/ascensores?idAscensor='+ query.idAscensor,'DELETE',null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
@@ -156,9 +160,8 @@ server.listen(8083, () => {
     console.log('API Gateway iniciada en el puerto 8083');
 });
 
-const PasoReq = function (puerto, queryPath, queryMethod,body,callback){
-    
-    if(body==null){
+const PasoReq = function (puerto, queryPath, queryMethod, body, callback){
+    if(body == null){
         var options = {
             hostname: 'localhost', // Cambia esto a la dirección del servidor si es diferente
             port: puerto,            // Puerto en el que se ejecuta el servidor
@@ -176,7 +179,7 @@ const PasoReq = function (puerto, queryPath, queryMethod,body,callback){
     }  
     
     const req = http.request(options, (res) => {
-    let responseBody= '';
+        let responseBody= '';
     
         res.on('data', (chunk) => {
             responseBody += chunk;
@@ -189,7 +192,7 @@ const PasoReq = function (puerto, queryPath, queryMethod,body,callback){
     
     req.on('error', (error) => {
         console.error('Error en la solicitud:', error);
-        callback(error,null);	
+        callback(error);	
     });
     
     req.end(); // Envía la solicitud al servidor
