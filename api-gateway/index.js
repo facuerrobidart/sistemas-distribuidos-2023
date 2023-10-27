@@ -1,4 +1,4 @@
-import query from 'express/lib/middleware/query';
+//import query from 'express/lib/middleware/query';
 import http from 'http';
 import url from 'url';
 

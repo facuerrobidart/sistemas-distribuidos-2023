@@ -10,9 +10,12 @@ const server = http.createServer((req, res) => {
 
     if (req.method === 'GET' && req.url.includes('/permisos')) {
         if (query.idVisitante !== undefined) {
-            return res.end(
-                JSON.stringify(servicioPermisos.obtenerPermisos(query.idVisitante))
-            );
+            const resultado = servicioPermisos.obtenerPermisos(query.idVisitante);
+            if (resultado === 'NoExisteID') {
+                return res.end('No existe un visitante con ID = '+query.idVisitante)
+            } else {
+                return res.end(JSON.stringify(resultado));
+            }
         } else {
             res.statusCode = 400;
             return res.end('Parametros incorrectos para el recurso requerido');
