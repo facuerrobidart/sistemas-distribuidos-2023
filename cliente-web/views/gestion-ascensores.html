@@ -4,7 +4,6 @@
   </div>
   <div class="formContainer">
     <form id="formAscensor" class="genericForm">
-      
       <div class="input-group">
         <label for="nombre">Nombre</label>
         <input class="textField" type="text" id="nombre" name="nombre" />
@@ -13,7 +12,7 @@
       <div class="input-group">
         <label for="selectPisos">Pisos permitidos</label>
         <select
-           multiple
+          multiple
           id="selectPisos"
           multiselect-search="true"
           multiselect-select-all="true"
@@ -22,22 +21,31 @@
       </div>
 
       <div class="input-group">
-            <label for="estado">Estado</label>
-            <div class="radio-group">
-              <label>
-               <input type="radio" id="disponible" name="estado" value="disponible">
-                Disponible 
-              </label>
-              <label>
-                
-                <input type="radio" id="no_disponible" name="estado" value="no_disponible">
-                No Disponible
-              </label>
-            </div>
+        <label for="estado">Estado</label>
+        <div class="radio-group">
+          <label>
+            <input
+              type="radio"
+              id="disponible"
+              name="estado"
+              value="Disponible"
+              checked
+            />
+            Disponible
+          </label>
+          <label>
+            <input
+              type="radio"
+              id="no_disponible"
+              name="estado"
+              value="No disponible"
+            />
+            No Disponible
+          </label>
+        </div>
       </div>
-   
-    <input class="botonS" type="submit" value="Añadir Ascensor" />
-      
+
+      <input class="botonS" type="submit" value="Añadir Ascensor" />
     </form>
   </div>
 
@@ -59,4 +67,3 @@
     </table>
   </div>
 </div>
-

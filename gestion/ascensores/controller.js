@@ -88,7 +88,7 @@ const server = http.createServer((req, res) => {
                 const parsedData = JSON.parse(body);
 
                 try {
-                    resultado = servicioAscensores.actualizarAscensor(query.idAscensor, parsedData);
+                    resultado = servicioAscensores.actualizarAscensor(parsedData);
                 } catch (error) {
                     resultado = errorUtils.generarRespuestaError(
                         "Ocurrio un error al actualizar el ascensor",

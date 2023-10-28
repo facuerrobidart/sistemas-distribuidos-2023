@@ -1,5 +1,7 @@
 'use strict'
 
+import { getAscensores, postAscensor, putAscensor, deleteAscensor } from '../../gestion/utils/httpRequestUtils.js';
+
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores');
 
 const cargarTabla = async () => {
@@ -18,7 +20,7 @@ const cargarTabla = async () => {
                         <td>${asc.estado}</td>
                         <td class="table-actions">
                             <div>
-                                <button id="btn-edit">
+                                <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')>
                                     <i class="fa-solid fa-pencil"></i> 
                                 </button>
                             </div>
@@ -37,23 +39,15 @@ const cargarTabla = async () => {
     cuerpoTabla.innerHTML = tableContent;
 };
 
-// TODO: testear
-const agregarAscensor = (event) => {
+const crearAscensor = (event) => {
 
     event.preventDefault();
 
     let nombre = document.querySelector('#nombre').value;
     let selectionPisos = document.querySelector('#selectPisos')
-    let estado = document.querySelector('#estado').value;
+    let estado = selectionEstado();
 
-
-    var collection = selectionPisos.selectedOptions;
-
-    let pisos = [];
-
-    for (var i = 0; i < collection.length; i++) {
-        pisos.push(collection[i].label);
-    }
+    let pisos = selectPisos(selectionPisos);
 
     let ascensor = {
         id: null,
@@ -62,82 +56,43 @@ const agregarAscensor = (event) => {
         estado
     };
 
-    addAscensor(ascensor);
+    postAscensor(ascensor);
 
     cargarTabla();
 }
 
-const addAscensor = async (ascensor) => {
 
-    let url = 'http://localhost:8080/ascensores';
-    let options = {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json',
-            'Accept':'application/json' 
-        },
-        body: JSON.stringify(ascensor)
-    }
+const actualizarAscensor = (event, id) => {
 
-    try {
+    event.preventDefault();
 
-        const res = await fetch(url, options);
+    //TODO: ventana modal para la actualizacion
 
-        if (!res.ok) {
-            throw new Error(`Error! status: ${res.status}`);
-        }
+    let nombre = document.querySelector('#nombre-modal').value;
+    let selectionPisos = document.querySelector('#selectPisos-modal')
+    let estado = document.querySelector('#estado-modal').value;
 
-    } catch (err) {
-        console.log('POST Request fallida');
-    }
+    let pisos = selectPisos(selectionPisos);
 
+    let ascensor = {
+        id,
+        nombre,
+        pisos,
+        estado
+    };
+
+    putAscensor(ascensor);
+
+    cargarTabla();
 }
 
-const getAscensores = async () => {
+window.eliminarAscensor = (id) => {
 
-    let url = 'http://localhost:8080/ascensores';
+    deleteAscensor(id);
 
-    let options = {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-        }
-    }
-
-    try {
-        const res = await fetch(url, options);
-
-        if (!res.ok) {
-            throw new Error(`Error! status: ${res.status}`);
-        }
-
-        return await res.json();
-
-    } catch (err) {
-        console.log('GET Request fallida');
-    }
-
+    cargarTabla();
 }
 
-const deleteAscensor = async (id) => {
-
-    let url = `http://localhost:8080/ascensores?idAscensor=${id}`;
-    let options = {
-        method: 'DELETE'
-    }
-
-    try {
-        const res = await fetch(url, options);
-
-        if (!res.ok) {
-            throw new Error(`Error! status: ${res.status}`);
-        }
-
-    } catch (err) {
-        console.log('DELETE Request fallida');
-    }
-
-}
 
 const generarOpciones = (pisos) => {
     const target = document.getElementById('selectPisos');
@@ -149,18 +104,38 @@ const generarOpciones = (pisos) => {
     target.innerHTML = options;
 }
 
-window.eliminarAscensor = (id) => {
+const selectPisos = (selectionPisos) => {
+    
+    let collection = selectionPisos.selectedOptions;
 
-    deleteAscensor(id);
+    let pisos = [];
 
-    cargarTabla();
+    for (var i = 0; i < collection.length; i++) {
+        pisos.push(collection[i].label);
+    }
+    
+    return pisos;   
+
 }
+
+const selectionEstado = () => {
+
+    let elementoActivo = document.querySelector('input[name="estado"]:checked');
+    if(elementoActivo) {
+        return elementoActivo.value;
+    } else {
+        alert('No hay ninún elemento activo');
+    }
+
+}
+
+var select = document.querySelector('#selectPisos');
+select && select.addEventListener('change', generarOpciones(25));
+
+document?.querySelector('#formAscensor').addEventListener('submit', crearAscensor);
 
 cargarTabla();
 
 getAscensores();
 
-var select = document.querySelector('#selectPisos');
-select && select.addEventListener('change', generarOpciones(25));
 
-document?.querySelector('#formAscensor').addEventListener('submit', agregarAscensor);

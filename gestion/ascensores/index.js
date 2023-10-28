@@ -54,7 +54,7 @@ const crearAscensor = (ascensor) => {
 
 const actualizarAscensor = (id, ascensor) => {
     const ascensores = obtenerAscensores();
-    const index = ascensores.findIndex(a => a.id === id);
+    const index = ascensores.findIndex(a => a.id === ascensor.id);
 
     if (index === -1) {
         const error = `No existe un ascensor con id ${id}`
