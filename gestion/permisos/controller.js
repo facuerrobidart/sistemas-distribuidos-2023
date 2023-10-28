@@ -6,10 +6,21 @@ const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
+    let resultado;
 
     if (req.method === 'GET' && req.url.includes('/permisos')) {
         if (query.idVisitante !== undefined) {
-            const resultado = servicioPermisos.obtenerPermisos(query.idVisitante);
+            try{
+                resultado = servicioPermisos.obtenerPermisos(query.idVisitante);
+            }
+            catch(error){
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al obtener los permisos",
+                    error
+                )
+                res.statusCode = 500;
+            }
+
             if (resultado === 'NoExisteID') {
                 return res.end('No existe un visitante con ID = '+query.idVisitante)
             } else {
@@ -20,8 +31,16 @@ const server = http.createServer((req, res) => {
             return res.end('Parametros incorrectos para el recurso requerido');
         }
     } else if (req.method === 'PUT' && req.url.includes('/permisos')) {
-        const resultado = servicioPermisos.agregarPermisos(query.idVisitante,query.piso);
-
+        try{
+            resultado = servicioPermisos.agregarPermisos(query.idVisitante,query.piso);
+        }
+        catch(error){
+            resultado = errorUtils.generarRespuestaError(
+                "Ocurrio un error al agregar el permiso",
+                error
+            )
+            res.statusCode = 500;
+        }    
         if (resultado === 'ok') {
             res.statusCode = 201;
         } else {
@@ -31,11 +50,29 @@ const server = http.createServer((req, res) => {
         return res.end(resultado);
     } else if (req.method === 'DELETE' && req.url.includes('/permisos')) {
 
-        var resultado = undefined;
+        resultado = undefined;
         if(query.idVisitante !== undefined && query.piso!==undefined)
-            resultado = servicioPermisos.quitarPermiso(query.idVisitante, query.piso);
+            try{
+                resultado = servicioPermisos.quitarPermiso(query.idVisitante, query.piso);
+            }
+            catch(error){
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al eliminar el permiso",
+                    error
+                )
+                res.statusCode = 500;
+            }
         else if (query.idVisitante !== undefined && query.piso === undefined)
-            resultado = servicioPermisos.quitarTodosLosPermisos(query.idVisitante);
+            try{
+                resultado = servicioPermisos.quitarTodosLosPermisos(query.idVisitante);
+            }
+            catch(error){
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al eliminar los permisos",
+                    error
+                )
+                res.statusCode = 500;
+            }
         else{
             res.statusCode = 404;
             return res.end('Parametros incorrectos para el recurso requerido');
