@@ -8,19 +8,46 @@ const server = http.createServer((req, res) => {
     
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
+    let resultado
 
     if (req.method === 'GET' && req.url.includes('/visitantes')) {
+        
         if (query.idVisitante === undefined) {
-            return res.end(
-                JSON.stringify(servicioVisitantes.obtenerVisitantes())
-            );
+            try{
+                resultado = servicioVisitantes.obtenerVisitantes();
+            }
+            catch(error){
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al obtener los visitantes",
+                    error
+                )
+                res.statusCode = 500;
+            }
+            return res.end(JSON.stringify(resultado));
         } else {
-            return res.end(
-                JSON.stringify(servicioVisitantes.obtenerVisitante(query.idVisitante))
-            );
+            try{
+                resultado = servicioVisitantes.obtenerVisitante(query.idVisitante);
+            }
+            catch(error){
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al obtener el visitante",
+                    error
+                )
+                res.statusCode = 500;
+            }
+            return res.end(JSON.stringify(resultado));
         }
     } else if (req.method === 'POST' && req.url.includes('/visitantes')) {
-        const resultado = servicioVisitantes.crearVisitante(stringUtils.parsearBody(req.body));
+        try{
+            resultado = servicioVisitantes.crearVisitante(stringUtils.parsearBody(req.body));
+        }
+        catch(error){
+            resultado = errorUtils.generarRespuestaError(
+                "Ocurrio un error al agregar el visitante",
+                error
+            )
+            res.statusCode = 500;
+        }
 
         if (resultado === 'ok') {
             res.statusCode = 201;
@@ -30,7 +57,16 @@ const server = http.createServer((req, res) => {
 
         return res.end(resultado);
     } else if (req.method === 'PUT' && req.url.includes('/visitantes')) {
-        const resultado = servicioVisitantes.actualizarVisitante(query.idVisitante, stringUtils.parsearBody(req.body));
+        try{
+            resultado = servicioVisitantes.actualizarVisitante(query.idVisitante, stringUtils.parsearBody(req.body));
+        }
+        catch(error){
+            resultado = errorUtils.generarRespuestaError(
+                "Ocurrio un error al actualizar el visitante",
+                error
+            )
+            res.statusCode = 500;
+        }
 
         if (resultado === 'ok') {
             res.statusCode = 200;
@@ -40,7 +76,16 @@ const server = http.createServer((req, res) => {
             return res.end(resultado);
         }
     } else if (req.method === 'DELETE' && req.url.includes('/visitantes')) {
-        const resultado = servicioVisitantes.eliminarVisitante(query.idVisitante);
+        try{
+            resultado = servicioVisitantes.eliminarVisitante(query.idVisitante);
+        }
+        catch(error){
+            resultado = errorUtils.generarRespuestaError(
+                "Ocurrio un error al eliminar el visitante",
+                error
+            )
+            res.statusCode = 500;
+        }    
 
         if (resultado === 'ok') {
             res.statusCode = 200;
