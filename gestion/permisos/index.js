@@ -15,7 +15,8 @@ const obtenerPermisos = (id) => {
     const visitanes = obtenerGuests();
     const guestObtenido = visitanes.find(a => a.id === id);
 
-    return guestObtenido !== undefined ? guestObtenido.pisos_permitidos : `No existe un visitante con id ${id}`;
+    //return guestObtenido !== undefined ? guestObtenido.pisos_permitidos : `No existe un visitante con id ${id}`;
+    return guestObtenido !== undefined ? guestObtenido.pisos_permitidos : `NoExisteID`;
 }
 
 const quitarPermiso = (id,piso) => {
