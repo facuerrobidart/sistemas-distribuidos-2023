@@ -5,7 +5,6 @@ const url = new URL(scriptURL);
 let pathModulo = url.pathname.replace(/^\/[A-Za-z]:/, '');
 
 const pathArchivo = resolve(pathModulo, '../../persistencia/guests.json');
-console.log(pathArchivo);
 
 const obtenerGuests = () => {
     return persistencia.obtenerDatos(pathArchivo);

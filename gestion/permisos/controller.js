@@ -30,7 +30,6 @@ const server = http.createServer((req, res) => {
 
         return res.end(resultado);
     } else if (req.method === 'DELETE' && req.url.includes('/permisos')) {
-
         var resultado = undefined;
         if(query.idVisitante !== undefined && query.piso!==undefined)
             resultado = servicioPermisos.quitarPermiso(query.idVisitante, query.piso);

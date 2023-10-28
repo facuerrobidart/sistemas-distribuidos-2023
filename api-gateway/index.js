@@ -1,11 +1,13 @@
 import http from 'http';
 import url from 'url';
+import stringUtils from '../gestion/utils/stringUtils.js';
 
 // TODO: TESTEAR TODO
 
 const puertoVisitantes = 8081;
 const puertoAscensores = 8080;
 const puertoPermisos = 8082;
+const puertoGateway = 8083;
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -16,7 +18,7 @@ const server = http.createServer((req, res) => {
     if(req.method === 'GET'){
         if (req.url.includes('/permisos')){
             if (query.idVisitante !== undefined){
-                PasoReq(puertoPermisos, '/permisos?idVisitante='+ query.idVisitante, 'GET', null, (error, responseBody) => {
+                PasoReq(puertoPermisos, `/permisos?idVisitante=${query.idVisitante}`, 'GET', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
@@ -30,9 +32,9 @@ const server = http.createServer((req, res) => {
             if(query.idVisitante === undefined)
                 path = '/visitantes';
             else
-                path = '/visitantes?idVisitante='+query.idVisitante;
+                path = `/visitantes?idVisitante=${query.idVisitante}`;
 
-            PasoReq(puertoVisitantes, path,'GET', null, (error, responseBody) => {
+            PasoReq(puertoVisitantes, path, 'GET', null, (error, responseBody) => {
                 if (error)
                     return res.end(error);
                 else
@@ -43,7 +45,7 @@ const server = http.createServer((req, res) => {
             if(query.idAscensor === undefined)
                 path = '/ascensores';
             else
-                path = '/ascensores?idAscensores='+query.idAscensor;
+                path = `/ascensores?idAscensores=${query.idAscensor}`;
 
             PasoReq(puertoAscensores, path, 'GET', null, (error, responseBody) => {
                 if (error)
@@ -56,25 +58,32 @@ const server = http.createServer((req, res) => {
         }
     }else if (req.method === 'POST'){        ///Permisos no tiene Post
         if (req.url.includes('/visitantes')){
-            PasoReq(8080,'/visitantes','POST', req.body, (error, responseBody) => {
-                if (error)
-                    return res.end(error);
-                else
-                    return res.end(responseBody)});
+            stringUtils.obtenerBody(req).then(body => {
+                PasoReq(puertoVisitantes, '/visitantes' , 'POST', body, (error, responseBody) => {
+                    if (error)
+                        return res.end(error);
+                    else
+                        return res.end(responseBody)});
+            });
         }else if (req.url.includes('/ascensores')){
-            PasoReq(8080,'/ascensores','POST', req.body, (error, responseBody) => {
-                if (error)
-                    return res.end(error);
-                else
-                    return res.end(responseBody)});
+            stringUtils.obtenerBody(req).then(body => {
+                PasoReq(puertoAscensores, '/ascensores', 'POST', body, (error, responseBody) => {
+                    if (error)
+                        return res.end(error);
+                    else
+                        return res.end(responseBody)});
+            }).catch(error => {
+                res.statusCode = 500;
+                return res.end('Error al obtener el body');
+            });
         } else{
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
         }
-    }else if (req.method === 'PUT'){
+    } else if (req.method === 'PUT'){
         if (req.url.includes('/permisos')){
-            if(query.idVisitante !== undefined && query.piso!==undefined){
-                PasoReq(8082,'/permisos?idVisitante='+query.idVisitante+'&piso='+query.piso,'PUT',null, (error, responseBody) => {
+            if(query.idVisitante !== undefined && query.piso !== undefined){
+                PasoReq(puertoPermisos, `/permisos?idVisitante=${query.idVisitante}&piso=${query.piso}`, 'PUT', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
@@ -83,53 +92,51 @@ const server = http.createServer((req, res) => {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
             }
-        }else if (req.url.includes('/visitantes')){
-            if(query.idVisitante !== undefined){
-                PasoReq(8081,'/visitantes?idVisitante='+query.idVisitante,'POST', req.body, (error, responseBody) => {
+        } else if (req.url.includes('/visitantes')){
+            if (query.idVisitante !== undefined) {
+                stringUtils.obtenerBody(req).then(body => {
+                    PasoReq(puertoVisitantes, `/visitantes?idVisitante=${query.idVisitante}`,'PUT', body, (error, responseBody) => {
+                        if (error)
+                            return res.end(error);
+                        else
+                            return res.end(responseBody)});
+                });
+            } else {
+                res.statusCode = 400;
+                return res.end('Parametros incorrectos para la operacion solicitada');
+            }
+        } else if (req.url.includes('/ascensores')){
+            stringUtils.obtenerBody(req).then(body => {
+                PasoReq(puertoAscensores, `/ascensores`, 'PUT', body, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
                         return res.end(responseBody)});
-            }
-            else{
-                res.statusCode = 400;
-                return res.end('Parametros incorrectos para la operacion solicitada');
-            }
-        }else if (req.url.includes('/ascensores')){
-            if(query.idAscensor !== undefined)
-                PasoReq(8080,'/visitantes?idVisitante='+query.idAscensor,'POST', req.body, (error, responseBody) => {
-                    if (error)
-                        return res.end(error);
-                    else
-                        return res.end(responseBody)});
-            else{
-                res.statusCode = 400;
-                return res.end('Parametros incorrectos para la operacion solicitada');
-            }
-        }else{
+            });
+        } else {
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
         }
-    }else //Caso method = 'DELETE'
+    } else { //Caso method = 'DELETE'
         if (req.url.includes('/permisos')){
-            if(query.idVisitante === undefined && query.piso==undefined){
+            if (query.idVisitante === undefined && query.piso==undefined) {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
-            }else{ 
+            } else { 
                 let path;
-                if(query.piso==undefined)
-                    path = '/permisos?idVisitante='+query.idVisitante;
+                if (query.piso==undefined)
+                    path = `/permisos?idVisitante=${query.idVisitante}`;
                 else
-                    path = '/permisos?idVisitante='+query.idVisitante+'&piso='+query.piso;
-                PasoReq(8082,path,'DELETE',null, (error, responseBody) => {
+                    path = `/permisos?idVisitante=${query.idVisitante}&piso=${query.piso}`;
+                PasoReq(puertoPermisos, path, 'DELETE', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
                         return res.end(responseBody)});
             }
-        }else if (req.url.includes('/visitantes')){
+        } else if (req.url.includes('/visitantes')) {
                 if(query.idVisitante !== undefined)
-                    PasoReq(8081,'/visitantes?idVisitante='+query.idVisitante,'DELETE',null, (error, responseBody) => {
+                    PasoReq(puertoVisitantes, `/visitantes?idVisitante=${query.idVisitante}`, 'DELETE', null, (error, responseBody) => {
                         if (error)
                             return res.end(error);
                         else
@@ -138,46 +145,36 @@ const server = http.createServer((req, res) => {
                     res.statusCode = 400;
                     return res.end('Parametros incorrectos para la operacion solicitada');
                 }       
-        }else if (req.url.includes('/ascensores')){
-            if(query.idAscensor !== undefined){
-                PasoReq(8080,'/ascensores?idAscensor='+ query.idAscensor,'DELETE',null, (error, responseBody) => {
+        } else if (req.url.includes('/ascensores')) {
+            if (query.idAscensor !== undefined) {
+                PasoReq(puertoAscensores, `/ascensores?idAscensor=${query.idAscensor}`, 'DELETE', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
                         return res.end(responseBody)});
-            }else{
+            } else {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
             }
-        } else{
+        } else {
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
         }
     }
-    );
+});
 
-server.listen(8083, () => {
-    console.log('API Gateway iniciada en el puerto 8083');
+server.listen(puertoGateway, () => {
+    console.log(`API Gateway iniciada en el puerto ${puertoGateway}`);
 });
 
 const PasoReq = function (puerto, queryPath, queryMethod, body, callback){
-    if(body == null){
-        var options = {
+    let options = {
             hostname: 'localhost', // Cambia esto a la dirección del servidor si es diferente
             port: puerto,            // Puerto en el que se ejecuta el servidor
             path: queryPath,
-            method: queryMethod,          // Método de solicitud (GET en este caso)
-        };
-    }
-    else{
-        var options = {
-            hostname: 'localhost', // Cambia esto a la dirección del servidor si es diferente
-            port: puerto,            // Puerto en el que se ejecuta el servidor
-            path: queryPath,
-            method: queryMethod,          // Método de solicitud (GET en este caso)
-          };
-    }  
-    
+            method: queryMethod          // Método de solicitud (GET en este caso)
+    };
+
     const req = http.request(options, (res) => {
         let responseBody= '';
     
@@ -186,9 +183,13 @@ const PasoReq = function (puerto, queryPath, queryMethod, body, callback){
         });
         
         res.on('end', () => {
-            callback(null,responseBody); 
+            callback(null, responseBody); 
         });
     });
+
+    if (body !== null) {
+        req.write(body);
+    }
     
     req.on('error', (error) => {
         console.error('Error en la solicitud:', error);
