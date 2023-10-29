@@ -14,7 +14,6 @@ const server = http.createServer((req, res) => {
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
     let resultado;
-    console.log(req.method);
 
     if (req.method === 'GET' && req.url.includes('/ascensores')) {
         if (query.idAscensor === undefined) {

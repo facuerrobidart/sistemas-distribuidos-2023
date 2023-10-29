@@ -18,12 +18,12 @@ const obtenerVisitante = (id) => {
     return visitanteObtenido !== undefined ? visitanteObtenido : `No existe un visitante con id ${id}`;
 }
 
-const validarVisitantes= (visitante) =>{
-    const pisos_permitidos=visitante.pisos_permitidos.length;
-    const nombre=visitante.nombre;
-    const email=visitante.email
-    const checkIn=visitante.fecha_checkIn
-    const checkOut=visitante.fecha_checkOut
+const validarVisitantes = (visitante) => {
+    const pisos_permitidos = visitante.pisos_permitidos.length;
+    const nombre = visitante.nombre;
+    const email = visitante.email
+    const checkIn = visitante.fecha_checkIn
+    const checkOut = visitante.fecha_checkOut
 
     if (pisos_permitidos === 0) {
         return 'El visitante debe tener al menos un piso permitido';
@@ -31,13 +31,13 @@ const validarVisitantes= (visitante) =>{
     if (stringUtils.validarVacio(nombre)) {
         return 'El visitante debe tener un nombre';
     }
-    if (validarVacio(email)) {
+    if (stringUtils.validarVacio(email)) {
         return 'El visitante debe tener un email asignado';
     }
-    if(validarVacio(checkIn)){
+    if (stringUtils.validarVacio(checkIn)){
          return 'El visitante debe tener una fecha de check In asignada';
     }
-    if(validarVacio(checkOut)){
+    if (stringUtils.validarVacio(checkOut)){
        return 'El visitante debe tener una fecha de check out asignada';
     }
     
@@ -47,8 +47,11 @@ const validarVisitantes= (visitante) =>{
 const crearVisitante = (visitante) => {
     const max = obtenerVisitantes().reduce(function(prev, current) {
         return (prev && prev.id > current.id) ? prev : current
-    }) 
-    visitante.id = max + 1 ;
+    })
+    
+    console.log(`ID max anterior: ${max.id}`)
+    visitante.id = generarId(max.id);
+    console.log(`Nuevo ID max: ${visitante.id}`)
 
     const mensajeValidacion = validarVisitantes(visitante)
 
@@ -72,11 +75,11 @@ const actualizarVisitante = (id, visitante) => {
 
     const mensajeResultado = validarVisitantes(visitante)
 
-    if(mensajeResultado === 'ok'){
+    if (mensajeResultado === 'ok') {
         visitantes[index] = visitante;
-        try{
+        try {
             persistencia.guardarDatos(pathArchivo, visitantes);
-        }catch(error){
+        } catch(error) {
             console.log(error)
             mensajeResultado='Error al actualizar el visitante'
         }
@@ -97,6 +100,30 @@ const eliminarVisitante = (id) => {
 
     visitantes.splice(index, 1);
     persistencia.guardarDatos(pathArchivo, visitantes);
+}
+
+function generarId(idAnterior) {
+    let letra;
+    let number;
+    
+    try {
+        // Extraer la letra y el número del ID anterior
+        letra = idAnterior.charAt(0);
+        number = parseInt(idAnterior.slice(1));
+    } catch (error) {
+        return 'A000';
+    }
+   
+    if (isNaN(number) || idAnterior.length !== 4 || letra !== letra.toUpperCase()) {
+      return 'A000';
+    }
+  
+    // Incrementar el numero en uno
+    const newNumber = number + 1;
+  
+    // Me quedo solo con los ultimos tres numeros, si newNumber es 1000, me quedo con 000
+    const formattedNumber = String(newNumber).padStart(3, '0');
+    return `${letra}${formattedNumber}`;
 }
 
 export default {

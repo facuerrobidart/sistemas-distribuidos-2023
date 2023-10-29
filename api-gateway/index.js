@@ -56,7 +56,7 @@ const server = http.createServer((req, res) => {
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
         }
-    }else if (req.method === 'POST'){        ///Permisos no tiene Post
+    } else if (req.method === 'POST') {        ///Permisos no tiene Post
         if (req.url.includes('/visitantes')){
             stringUtils.obtenerBody(req).then(body => {
                 PasoReq(puertoVisitantes, '/visitantes' , 'POST', body, (error, responseBody) => {
@@ -65,7 +65,9 @@ const server = http.createServer((req, res) => {
                     else
                         return res.end(responseBody)});
             });
-        }else if (req.url.includes('/ascensores')){
+
+            return res.end("Visitante agregado");
+        } else if (req.url.includes('/ascensores')){
             stringUtils.obtenerBody(req).then(body => {
                 PasoReq(puertoAscensores, '/ascensores', 'POST', body, (error, responseBody) => {
                     if (error)
@@ -76,6 +78,8 @@ const server = http.createServer((req, res) => {
                 res.statusCode = 500;
                 return res.end('Error al obtener el body');
             });
+
+            return res.end("Ascensor agregado");
         } else{
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
@@ -93,18 +97,13 @@ const server = http.createServer((req, res) => {
                 return res.end('Parametros incorrectos para la operacion solicitada');
             }
         } else if (req.url.includes('/visitantes')){
-            if (query.idVisitante !== undefined) {
-                stringUtils.obtenerBody(req).then(body => {
-                    PasoReq(puertoVisitantes, `/visitantes?idVisitante=${query.idVisitante}`,'PUT', body, (error, responseBody) => {
-                        if (error)
-                            return res.end(error);
-                        else
-                            return res.end(responseBody)});
-                });
-            } else {
-                res.statusCode = 400;
-                return res.end('Parametros incorrectos para la operacion solicitada');
-            }
+            stringUtils.obtenerBody(req).then(body => {
+                PasoReq(puertoVisitantes, `/visitantes`,'PUT', body, (error, responseBody) => {
+                    if (error)
+                        return res.end(error);
+                    else
+                        return res.end(responseBody)});
+            });
         } else if (req.url.includes('/ascensores')){
             stringUtils.obtenerBody(req).then(body => {
                 PasoReq(puertoAscensores, `/ascensores`, 'PUT', body, (error, responseBody) => {
@@ -124,24 +123,30 @@ const server = http.createServer((req, res) => {
                 return res.end('Parametros incorrectos para la operacion solicitada');
             } else { 
                 let path;
-                if (query.piso==undefined)
+                if (query.piso == undefined) {
                     path = `/permisos?idVisitante=${query.idVisitante}`;
-                else
+                } else {
                     path = `/permisos?idVisitante=${query.idVisitante}&piso=${query.piso}`;
+                }
+
                 PasoReq(puertoPermisos, path, 'DELETE', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
                         return res.end(responseBody)});
+
+                return res.end("Permiso eliminado");
             }
         } else if (req.url.includes('/visitantes')) {
-                if(query.idVisitante !== undefined)
+                if (query.idVisitante !== undefined) {
                     PasoReq(puertoVisitantes, `/visitantes?idVisitante=${query.idVisitante}`, 'DELETE', null, (error, responseBody) => {
                         if (error)
                             return res.end(error);
                         else
                             return res.end(responseBody)});
-                else{
+                    
+                    return res.end("Visitante eliminado");
+                } else {
                     res.statusCode = 400;
                     return res.end('Parametros incorrectos para la operacion solicitada');
                 }       
@@ -152,6 +157,8 @@ const server = http.createServer((req, res) => {
                         return res.end(error);
                     else
                         return res.end(responseBody)});
+                
+                return res.end("Ascensor eliminado");
             } else {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
