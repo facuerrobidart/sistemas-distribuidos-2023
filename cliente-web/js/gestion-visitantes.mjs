@@ -1,75 +1,168 @@
-import visitantes from "../../gestion/persistencia/guests.json" assert {type: "json"};
-const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes');
+'use strict'
 
-const cargarTabla = () => {
+import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
+import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
 
-    //GET (devuelve ascensores.json)
+const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes'); 
 
-    cuerpoTabla.innerHTML = '';
+const cargarTabla = async () => {
 
-    visitantes.map( (vis) => {
+    const path = '/visitantes';
+
+    const visitantes = await getRequest(path);
+
+    let tableContent = '';
+
+    visitantes.map( (v) => {
     
-        const fila = document.createElement('tr');
-        
-        const celdas = `<td>${vis.id}</td>
-                        <td>${vis.nombre}</td>
-                        <td>${vis.edad}</td>
-                        <td>${vis.email}</td>
-                        <td>${vis.pisos_permitidos}</td>
-                        <td>${vis.fecha_checkIn}</td>
-                        <td>${vis.fecha_checkOut}</td>
+        const fila = `
+                    <tr>
+                        <td>${v.id}</td>
+                        <td>${v.nombre}</td>
+                        <td>${v.edad}</td>
+                        <td>${v.email}</td>
+                        <td>${v.pisos_permitidos}</td>
+                        <td>${v.fecha_checkIn}</td>
+                        <td>${v.fecha_checkOut}</td>
                         <td class="table-actions">
                             <div>
-                                <button id="btn-edit">
-                                    <i class="fa-solid fa-pencil"></i>
+                                <button id="btn-edit" onclick="actualizarVisitante('${v.id}')">
+                                    <i class="fa-solid fa-pencil"></i> 
                                 </button>
                             </div>
                             <div>
-                                <button id="btn-remove" onclick="eliminarVisitante('${vis.id}')">
+                                <button id="btn-remove" onclick="eliminarVisitante('${v.id}')">
                                     <i class="fa-regular fa-circle-xmark"></i>
                                 </button>
                             </div>
-                        </td>`;
+                        </td>
+                    </tr>`;
 
-        fila.innerHTML = celdas;
-        cuerpoTabla.append(fila);
+        tableContent += fila;
+
     } )
     
+    cuerpoTabla.innerHTML = tableContent;
 };
 
-const agregarVisitante = () => {
+const crearVisitante = (event) => {
+
+    event.preventDefault();
 
     let nombre = document.querySelector('#nombre').value;
     let edad = document.querySelector('#edad').value;
     let email = document.querySelector('#email').value;
-    let strPisos = document.querySelector('#pisos').value;
-    let pisos_permitidos = strPisos.split(',');
-    
-    //(?) Fecha checkIn, checkOut 
+    let selectionPisos = document.querySelector('#selectPisos');
 
-    //POST
+    //TODO: logica para fechas
+    let fecha_checkIn = document.querySelector('#');
+    let fecha_checkOut = document.querySelector('#');
+
+    let pisos_permitidos = selectPisos(selectionPisos);
+
     let visitante = {
         id: null,
         nombre,
         edad,
-        email, 
-        pisos_permitidos, 
+        email,
+        pisos_permitidos,
+        fecha_checkIn,
+        fecha_checkOut
     };
 
-    //Realizo un GET y actualizo la tabla?
-    
+    const path = '/visitantes';
+
+    postRequest(path, visitante);
+
+    cargarTabla();
+}
+
+
+window.actualizarVisitante = (id) => {
+
+    modalWindow();
+
+    //TODO: extraer values de la ventana modal
+    let nombre = document.querySelector('#nombre').value;
+    let edad = document.querySelector('#edad').value;
+    let email = document.querySelector('#email').value;
+    let selectionPisos = document.querySelector('#selectPisos');
+
+    //TODO: logica para fechas
+    let fecha_checkIn = document.querySelector('#');
+    let fecha_checkOut = document.querySelector('#');
+
+    let pisos_permitidos = selectPisos(selectionPisos);
+
+    let visitante = {
+        id,
+        nombre,
+        edad,
+        email,
+        pisos_permitidos,
+        fecha_checkIn,
+        fecha_checkOut
+    };
+
+    const path = '/visitantes';
+
+    putRequest(path, visitante);
+
+    cargarTabla();
 }
 
 window.eliminarVisitante = (id) => {
+    
+    const path = '/visitantes?idVisitante';
+    
+    deleteRequest(path, id);
 
-    console.log(id);
+    cargarTabla();
+}
 
-    //DELETE 
 
-    //Realizo un GET y actualizo la tabla?
+const generarOpciones = (pisos) => {
+    const target = document.getElementById('selectPisos');
+    let options = '';
+    
+    for (let i = 0; i < pisos; i++) {
+        options += `<option value="${i}">${i}</option>`;
+    }
+    target.innerHTML = options;
+}
+
+const selectPisos = (selectionPisos) => {
+    
+    let collection = selectionPisos.selectedOptions;
+
+    let pisos = [];
+
+    for (var i = 0; i < collection.length; i++) {
+        pisos.push(collection[i].label);
+    }
+    
+    return pisos;   
 
 }
 
+const selectionEstado = () => {
+
+    let elementoActivo = document.querySelector('input[name="estado"]:checked');
+    if(elementoActivo) {
+        return elementoActivo.value;
+    } else {
+        alert('No hay ninún elemento activo');
+    }
+
+}
+
+var select = document.querySelector('#selectPisos');
+select && select.addEventListener('change', generarOpciones(25));
+
+document?.querySelector('#formVisitante').addEventListener('submit', crearVisitante);
+
 cargarTabla();
 
-document.querySelector('#formVisitante').addEventListener('submit', agregarVisitante);
+getRequest('/visitantes');
+
+

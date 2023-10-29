@@ -1,7 +1,7 @@
 'use strict'
 
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
-import modalWindow from '../../gestion/utils/modalWindowUtil.js';
+import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
 
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores'); 
 
@@ -23,7 +23,7 @@ const cargarTabla = async () => {
                         <td>${asc.estado}</td>
                         <td class="table-actions">
                             <div>
-                                <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')>
+                                <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')">
                                     <i class="fa-solid fa-pencil"></i> 
                                 </button>
                             </div>
@@ -67,12 +67,11 @@ const crearAscensor = (event) => {
 }
 
 
-const actualizarAscensor = (event, id) => {
-
-    event.preventDefault();
+window.actualizarAscensor = (id) => {
 
     modalWindow();
 
+    //TODO: extraer values de la ventana modal
     let nombre = document.querySelector('#nombre-modal').value;
     let selectionPisos = document.querySelector('#selectPisos-modal')
     let estado = document.querySelector('#estado-modal').value;
