@@ -1,12 +1,17 @@
 'use strict'
 
-import { getAscensores, postAscensor, putAscensor, deleteAscensor } from '../../gestion/utils/httpRequestUtils.js';
+import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
+import modalWindow from '../../gestion/utils/modalWindowUtil.js';
 
-const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores');
+
+
+const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores'); 
 
 const cargarTabla = async () => {
 
-    const ascensores = await getAscensores();
+    const path = '/ascensores';
+
+    const ascensores = await getRequest(path);
 
     let tableContent = '';
 
@@ -56,7 +61,9 @@ const crearAscensor = (event) => {
         estado
     };
 
-    postAscensor(ascensor);
+    const path = '/ascensores';
+
+    postRequest(path, ascensor);
 
     cargarTabla();
 }
@@ -66,7 +73,7 @@ const actualizarAscensor = (event, id) => {
 
     event.preventDefault();
 
-    //TODO: ventana modal para la actualizacion
+    modalWindow();
 
     let nombre = document.querySelector('#nombre-modal').value;
     let selectionPisos = document.querySelector('#selectPisos-modal')
@@ -81,14 +88,18 @@ const actualizarAscensor = (event, id) => {
         estado
     };
 
-    putAscensor(ascensor);
+    const path = '/ascensores';
+
+    putRequest(path, ascensor);
 
     cargarTabla();
 }
 
 window.eliminarAscensor = (id) => {
-
-    deleteAscensor(id);
+    
+    const path = '/ascensores?idAscensor';
+    
+    deleteRequest(path,id);
 
     cargarTabla();
 }
@@ -136,6 +147,6 @@ document?.querySelector('#formAscensor').addEventListener('submit', crearAscenso
 
 cargarTabla();
 
-getAscensores();
+getRequest();
 
 
