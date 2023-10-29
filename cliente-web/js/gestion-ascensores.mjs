@@ -3,8 +3,6 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 import modalWindow from '../../gestion/utils/modalWindowUtil.js';
 
-
-
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores'); 
 
 const cargarTabla = async () => {
@@ -147,6 +145,6 @@ document?.querySelector('#formAscensor').addEventListener('submit', crearAscenso
 
 cargarTabla();
 
-getRequest();
+getRequest('/ascensores');
 
 

@@ -11,6 +11,10 @@ const puertoGateway = 8083;
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Accept','application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, accept, token")
 
     const urlParseada = url.parse(req.url, true);
     const query = urlParseada.query;
@@ -117,7 +121,7 @@ const server = http.createServer((req, res) => {
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
         }
-    } else { //Caso method = 'DELETE'
+    } else if( req.method === 'DELETE' ) { //Caso method = 'DELETE'
         if (req.url.includes('/permisos')){
             if (query.idVisitante === undefined && query.piso==undefined) {
                 res.statusCode = 400;
@@ -156,10 +160,13 @@ const server = http.createServer((req, res) => {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
             }
-        } else {
-            res.statusCode = 400;
-            return res.end('Recurso no encontrado');
-        }
+        } 
+    } else if(req.method === 'OPTIONS'){ //PREFLIGHT
+        res.statusCode = 200;
+        return res.end();
+    } else {
+        res.statusCode = 400;
+        return res.end('Recurso no encontrado');
     }
 });
 

@@ -4,7 +4,9 @@ const scriptURL = import.meta.url;
 const url = new URL(scriptURL);
 let pathModulo = url.pathname.replace(/^\/[A-Za-z]:/, '');
 
-const pathArchivo = resolve(pathModulo, '../../persistencia/guests.json');
+let pathArchivo = resolve(pathModulo, '../../persistencia/guests.json');
+pathArchivo = decodeURI(pathArchivo); //Problema con %20. No lo reconocia como espacio en blanco
+
 
 const obtenerGuests = () => {
     return persistencia.obtenerDatos(pathArchivo);

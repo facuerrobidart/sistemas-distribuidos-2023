@@ -3,7 +3,7 @@ const urlGateway = 'http://localhost:8083';
 
 const getRequest = async (path) => {
 
-    let url = `${urlGateway}/${path}`;
+    let url = `${urlGateway}${path}`;
 
     let options = {
         method: 'GET',
@@ -29,7 +29,7 @@ const getRequest = async (path) => {
 
 const postRequest = async (path, item) => {
 
-    let url = `${urlGateway}/${path}`;
+    let url = `${urlGateway}${path}`;
     let options = {
         method: 'POST',
         headers: {
@@ -55,7 +55,7 @@ const postRequest = async (path, item) => {
 
 const putRequest = async (path, item) => {
 
-    let url = `${urlGateway}/${path}`;
+    let url = `${urlGateway}${path}`;
     let options = {
         method: 'PUT',
         headers: {
@@ -81,7 +81,7 @@ const putRequest = async (path, item) => {
 
 const deleteRequest = async (path, id) => {
 
-    let url = `${urlGateway}/${path}=${id}`;
+    let url = `${urlGateway}${path}=${id}`;
     let options = {
         method: 'DELETE'
     }

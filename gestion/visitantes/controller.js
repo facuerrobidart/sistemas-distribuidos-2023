@@ -94,6 +94,9 @@ const server = http.createServer((req, res) => {
             res.statusCode = 404;
             return res.end(resultado);
         }
+    } else if (req.method === 'OPTIONS' && req.url.includes('/visitantes')) {
+        res.statusCode = 200;
+        return res.end();
     } else {
         res.statusCode = 404;
         return res.end('Recurso no encontrado');
