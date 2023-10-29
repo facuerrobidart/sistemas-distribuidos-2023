@@ -1,7 +1,9 @@
 
-const getAscensores = async () => {
+const urlGateway = 'http://localhost:8083';
 
-    let url = 'http://localhost:8080/ascensores';
+const getRequest = async (path) => {
+
+    let url = `${urlGateway}${path}`;
 
     let options = {
         method: 'GET',
@@ -25,16 +27,16 @@ const getAscensores = async () => {
 
 }
 
-const postAscensor = async (ascensor) => {
+const postRequest = async (path, item) => {
 
-    let url = 'http://localhost:8080/ascensores';
+    let url = `${urlGateway}${path}`;
     let options = {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
             'Accept':'application/json' 
         },
-        body: JSON.stringify(ascensor)
+        body: JSON.stringify(item)
     }
 
     try {
@@ -51,16 +53,16 @@ const postAscensor = async (ascensor) => {
 
 }
 
-const putAscensor = async (ascensor) => {
+const putRequest = async (path, item) => {
 
-    let url = 'http://localhost:8080/ascensores';
+    let url = `${urlGateway}${path}`;
     let options = {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
             'Accept':'application/json' 
         },
-        body: JSON.stringify(ascensor)
+        body: JSON.stringify(item)
     }
 
     try {
@@ -77,9 +79,9 @@ const putAscensor = async (ascensor) => {
 
 }
 
-const deleteAscensor = async (id) => {
+const deleteRequest = async (path, id) => {
 
-    let url = `http://localhost:8080/ascensores?idAscensor=${id}`;
+    let url = `${urlGateway}${path}=${id}`;
     let options = {
         method: 'DELETE'
     }
@@ -98,8 +100,8 @@ const deleteAscensor = async (id) => {
 }
 
 export {
-    getAscensores,
-    postAscensor,
-    putAscensor,
-    deleteAscensor,
+    getRequest,
+    postRequest,
+    putRequest,
+    deleteRequest,
 }
