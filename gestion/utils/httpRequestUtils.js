@@ -81,7 +81,7 @@ const putRequest = async (path, item) => {
 
 const deleteRequest = async (path, id) => {
 
-    let url = `${urlGateway}${path}=${id}`;
+    let url = `${urlGateway}${path}/${id}`;
     let options = {
         method: 'DELETE'
     }

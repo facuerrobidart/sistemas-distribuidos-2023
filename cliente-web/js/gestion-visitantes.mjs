@@ -109,7 +109,7 @@ window.actualizarVisitante = (id) => {
 
 window.eliminarVisitante = (id) => {
     
-    const path = '/visitantes?idVisitante';
+    const path = '/visitantes';
     
     deleteRequest(path, id);
 

@@ -94,7 +94,7 @@ window.actualizarAscensor = (id) => {
 
 window.eliminarAscensor = (id) => {
     
-    const path = '/ascensores?idAscensor';
+    const path = '/ascensores';
     
     deleteRequest(path,id);
 
