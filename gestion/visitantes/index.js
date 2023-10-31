@@ -24,8 +24,7 @@ const validarVisitantes = (visitante) => {
     const nombre = visitante.nombre;
     const email = visitante.email
     const checkIn = visitante.fecha_checkIn
-    const checkOut = visitante.fecha_checkOut
-
+   
     if (pisos_permitidos === 0) {
         return 'El visitante debe tener al menos un piso permitido';
     }
@@ -38,10 +37,6 @@ const validarVisitantes = (visitante) => {
     if (stringUtils.validarVacio(checkIn)){
          return 'El visitante debe tener una fecha de check In asignada';
     }
-    if (stringUtils.validarVacio(checkOut)){
-       return 'El visitante debe tener una fecha de check out asignada';
-    }
-    
     return 'ok';
 }
 

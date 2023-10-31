@@ -23,7 +23,6 @@ const cargarTabla = async () => {
                         <td>${v.email}</td>
                         <td>${v.pisos_permitidos}</td>
                         <td>${v.fecha_checkIn}</td>
-                        <td>${v.fecha_checkOut}</td>
                         <td class="table-actions">
                             <div>
                                 <button id="btn-edit" onclick="actualizarVisitante('${v.id}')">
@@ -56,8 +55,6 @@ const crearVisitante = (event) => {
 
     //TODO: logica para fechas
     let fecha_checkIn = document.querySelector('#');
-    let fecha_checkOut = document.querySelector('#');
-
     let pisos_permitidos = selectPisos(selectionPisos);
 
     let visitante = {
@@ -67,7 +64,6 @@ const crearVisitante = (event) => {
         email,
         pisos_permitidos,
         fecha_checkIn,
-        fecha_checkOut
     };
 
     const path = '/visitantes';
@@ -90,7 +86,7 @@ window.actualizarVisitante = (id) => {
 
     //TODO: logica para fechas
     let fecha_checkIn = document.querySelector('#');
-    let fecha_checkOut = document.querySelector('#');
+    
 
     let pisos_permitidos = selectPisos(selectionPisos);
 
@@ -101,7 +97,7 @@ window.actualizarVisitante = (id) => {
         email,
         pisos_permitidos,
         fecha_checkIn,
-        fecha_checkOut
+        
     };
 
     const path = '/visitantes';
