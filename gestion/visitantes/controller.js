@@ -1,6 +1,7 @@
 import http from 'http';
 import url from 'url';
 import stringUtils from '../utils/stringUtils.js';
+import errorUtils from '../utils/errorUtils.js';
 import servicioVisitantes from './index.js';
 
 const server = http.createServer((req, res) => {
@@ -11,12 +12,10 @@ const server = http.createServer((req, res) => {
     let resultado
 
     if (req.method === 'GET' && req.url.includes('/visitantes')) {
-        
         if (query.idVisitante === undefined) {
-            try{
+            try {
                 resultado = servicioVisitantes.obtenerVisitantes();
-            }
-            catch(error){
+            } catch(error){
                 resultado = errorUtils.generarRespuestaError(
                     "Ocurrio un error al obtener los visitantes",
                     error
@@ -27,8 +26,7 @@ const server = http.createServer((req, res) => {
         } else {
             try{
                 resultado = servicioVisitantes.obtenerVisitante(query.idVisitante);
-            }
-            catch(error){
+            } catch(error) {
                 resultado = errorUtils.generarRespuestaError(
                     "Ocurrio un error al obtener el visitante",
                     error
@@ -38,45 +36,49 @@ const server = http.createServer((req, res) => {
             return res.end(JSON.stringify(resultado));
         }
     } else if (req.method === 'POST' && req.url.includes('/visitantes')) {
-        try{
-            resultado = servicioVisitantes.crearVisitante(stringUtils.parsearBody(req.body));
-        }
-        catch(error){
-            resultado = errorUtils.generarRespuestaError(
-                "Ocurrio un error al agregar el visitante",
-                error
-            )
-            res.statusCode = 500;
-        }
+        stringUtils.obtenerBody(req).then(body => {
+            const parsedData = stringUtils.parsearBody(body);
+            try {
+                resultado = servicioVisitantes.crearVisitante(parsedData);
+            } catch (error) {
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al agregar el visitante",
+                    error
+                )
+                res.statusCode = 500;
+            }
 
-        if (resultado === 'ok') {
-            res.statusCode = 201;
-        } else {
-            res.statusCode = 400;
-        }
+            if (resultado === 'ok') {
+                res.statusCode = 201;
+            } else if (typeof resultado === 'string') {
+                res.statusCode = 400;
+            }
 
-        return res.end(resultado);
-    } else if (req.method === 'PUT' && req.url.includes('/visitantes')) {
-        try{
-            resultado = servicioVisitantes.actualizarVisitante(query.idVisitante, stringUtils.parsearBody(req.body));
-        }
-        catch(error){
-            resultado = errorUtils.generarRespuestaError(
-                "Ocurrio un error al actualizar el visitante",
-                error
-            )
-            res.statusCode = 500;
-        }
-
-        if (resultado === 'ok') {
-            res.statusCode = 200;
-            return res.end("Visitante actualizado correctamente");
-        } else {
-            res.statusCode = 400;
             return res.end(resultado);
-        }
+        });
+    } else if (req.method === 'PUT' && req.url.includes('/visitantes')) {
+        stringUtils.obtenerBody(req).then(body => {
+            const parsedData = stringUtils.parsearBody(body);
+            try {
+                resultado = servicioVisitantes.actualizarVisitante(parsedData.id, parsedData);
+            } catch(error) {
+                resultado = errorUtils.generarRespuestaError(
+                    "Ocurrio un error al actualizar el visitante",
+                    error
+                )
+                res.statusCode = 500;
+            }
+
+            if (resultado === 'ok') {
+                res.statusCode = 200;
+                return res.end("Visitante actualizado correctamente");
+            } else if (typeof resultado === 'string') {
+                res.statusCode = 400;
+                return res.end(resultado);
+            }
+        });
     } else if (req.method === 'DELETE' && req.url.includes('/visitantes')) {
-        try{
+        try {
             resultado = servicioVisitantes.eliminarVisitante(query.idVisitante);
         }
         catch(error){
@@ -90,10 +92,13 @@ const server = http.createServer((req, res) => {
         if (resultado === 'ok') {
             res.statusCode = 200;
             return res.end("Visitante eliminado correctamente");
-        } else {
+        } else if (typeof resultado === 'string') {
             res.statusCode = 404;
             return res.end(resultado);
         }
+    } else if (req.method === 'OPTIONS' && req.url.includes('/visitantes')) {
+        res.statusCode = 200;
+        return res.end();
     } else {
         res.statusCode = 404;
         return res.end('Recurso no encontrado');

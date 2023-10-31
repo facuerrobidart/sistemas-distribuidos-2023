@@ -1,12 +1,15 @@
 'use strict'
 
-import { getAscensores, postAscensor, putAscensor, deleteAscensor } from '../../gestion/utils/httpRequestUtils.js';
+import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
+import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
 
-const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores');
+const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores'); 
 
 const cargarTabla = async () => {
 
-    const ascensores = await getAscensores();
+    const path = '/ascensores';
+
+    const ascensores = await getRequest(path);
 
     let tableContent = '';
 
@@ -20,7 +23,7 @@ const cargarTabla = async () => {
                         <td>${asc.estado}</td>
                         <td class="table-actions">
                             <div>
-                                <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')>
+                                <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')">
                                     <i class="fa-solid fa-pencil"></i> 
                                 </button>
                             </div>
@@ -56,18 +59,19 @@ const crearAscensor = (event) => {
         estado
     };
 
-    postAscensor(ascensor);
+    const path = '/ascensores';
+
+    postRequest(path, ascensor);
 
     cargarTabla();
 }
 
 
-const actualizarAscensor = (event, id) => {
+window.actualizarAscensor = (id) => {
 
-    event.preventDefault();
+    modalWindow();
 
-    //TODO: ventana modal para la actualizacion
-
+    //TODO: extraer values de la ventana modal
     let nombre = document.querySelector('#nombre-modal').value;
     let selectionPisos = document.querySelector('#selectPisos-modal')
     let estado = document.querySelector('#estado-modal').value;
@@ -81,14 +85,18 @@ const actualizarAscensor = (event, id) => {
         estado
     };
 
-    putAscensor(ascensor);
+    const path = '/ascensores';
+
+    putRequest(path, ascensor);
 
     cargarTabla();
 }
 
 window.eliminarAscensor = (id) => {
-
-    deleteAscensor(id);
+    
+    const path = '/ascensores?idAscensor';
+    
+    deleteRequest(path,id);
 
     cargarTabla();
 }
@@ -136,6 +144,6 @@ document?.querySelector('#formAscensor').addEventListener('submit', crearAscenso
 
 cargarTabla();
 
-getAscensores();
+getRequest('/ascensores');
 
 
