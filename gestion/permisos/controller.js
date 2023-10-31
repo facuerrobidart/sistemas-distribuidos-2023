@@ -1,6 +1,7 @@
 import http from 'http';
 import servicioPermisos from './index.js';
 import stringUtils from '../utils/stringUtils.js';
+import errorUtils from '../utils/errorUtils.js';
 import { parseUrlPermisos } from '../utils/parseUrlUtils.js';
 
 const server = http.createServer((req, res) => {
@@ -34,23 +35,31 @@ const server = http.createServer((req, res) => {
                 return res.end('Parametros incorrectos para el recurso requerido');
             }
         } else if (req.method === 'PUT') {
-            try{
-                resultado = servicioPermisos.agregarPermisos(params.idVisitante,stringUtils.parsearBody(req.body));
-            }
-            catch(error){
-                resultado = errorUtils.generarRespuestaError(
-                    "Ocurrio un error al agregar el permiso",
-                    error
-                )
-                res.statusCode = 500;
-            }    
-            if (resultado === 'ok') {
-                res.statusCode = 201;
-            } else {
-                res.statusCode = 400;
-            }
 
-            return res.end(resultado);
+            stringUtils.obtenerBody(req).then( body => {
+
+                const parsedData = stringUtils.parsearBody(body);
+
+                try{
+                    resultado = servicioPermisos.agregarPermisos(params.idVisitante, parsedData.pisos_permitidos);
+                }
+                catch(error){
+                    resultado = errorUtils.generarRespuestaError(
+                        "Ocurrio un error al agregar el permiso",
+                        error
+                    )
+                    res.statusCode = 500;
+                }    
+                if (resultado === 'ok') {
+                    res.statusCode = 201;
+                } else {
+                    res.statusCode = 400;
+                }
+    
+                return res.end(resultado);
+
+            });
+            
         } else if (req.method === 'DELETE') {
 
             resultado = undefined;

@@ -94,14 +94,18 @@ const server = http.createServer((req, res) => {
         }
     } else if (req.method === 'PUT'){
         if (req.url.includes('/visitantes') && req.url.includes('/permisos') ){
+
             const params = parseUrlPermisos(req.url);
-            if(params.idVisitante !== undefined && params.piso !== undefined){
-                stringUtils.obtenerBody(req).then(body =>{
+
+            if(params.idVisitante !== undefined){
+                stringUtils.obtenerBody(req).then( body =>{
+
                     PasoReq(puertoPermisos, `/visitantes/${params.idVisitante}/permisos`, 'PUT', body, (error, responseBody) => {
                         if (error)
                             return res.end(error);
                         else
                             return res.end(responseBody)});
+                        
                     });
             }else{
                 res.statusCode = 400;

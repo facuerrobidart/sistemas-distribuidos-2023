@@ -55,21 +55,25 @@ const quitarTodosLosPermisos = (id) => {
     return 'ok';
 }
 
-const agregarPermisos = (id,pisos) => {
-    const visitanes = obtenerGuests();
-    const guestObtenido = visitanes.find(a => a.id === id);
+const agregarPermisos = (id, pisos) => {
+    const visitantes = obtenerGuests();
+    const guestObtenido = visitantes.find(a => a.id === id);
+    const objIndex = visitantes.findIndex(a => a.id === id);
 
     if (guestObtenido !== undefined){
+        
         let pisosAnt = guestObtenido.pisos_permitidos;
         let aux = [].concat(pisosAnt, pisos);
         let resultado = new Set(aux);
-        guestObtenido.pisos_permitidos = resultado;
+
+        visitantes[objIndex].pisos_permitidos = Array.from(resultado);
+
     }
     else{
         return `No existe un visitante con id ${id}` ;
     }
 
-    persistencia.guardarDatos(pathArchivo,visitanes);
+    persistencia.guardarDatos(pathArchivo, visitantes);
     return 'ok';
 }
 
