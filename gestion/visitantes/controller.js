@@ -3,103 +3,107 @@ import url from 'url';
 import stringUtils from '../utils/stringUtils.js';
 import errorUtils from '../utils/errorUtils.js';
 import servicioVisitantes from './index.js';
+import { parseUrlVisitantes } from '../utils/parseUrlUtils.js';
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
+
+    if( req.url.includes('/visitantes') ) {
     
-    const urlParseada = url.parse(req.url, true);
-    const query = urlParseada.query;
-    let resultado
+        const params = parseUrlVisitantes(req.url);
+        let resultado;
 
-    if (req.method === 'GET' && req.url.includes('/visitantes')) {
-        if (query.idVisitante === undefined) {
-            try {
-                resultado = servicioVisitantes.obtenerVisitantes();
-            } catch(error){
-                resultado = errorUtils.generarRespuestaError(
-                    "Ocurrio un error al obtener los visitantes",
-                    error
-                )
-                res.statusCode = 500;
+        if (req.method === 'GET') {
+            if (params.idVisitante === undefined) {
+                try {
+                    resultado = servicioVisitantes.obtenerVisitantes();
+                } catch(error){
+                    resultado = errorUtils.generarRespuestaError(
+                        "Ocurrio un error al obtener los visitantes",
+                        error
+                    )
+                    res.statusCode = 500;
+                }
+                return res.end(JSON.stringify(resultado));
+            } else {
+                try{
+                    resultado = servicioVisitantes.obtenerVisitante(params.idVisitante);
+                } catch(error) {
+                    resultado = errorUtils.generarRespuestaError(
+                        "Ocurrio un error al obtener el visitante",
+                        error
+                    )
+                    res.statusCode = 500;
+                }
+                return res.end(JSON.stringify(resultado));
             }
-            return res.end(JSON.stringify(resultado));
-        } else {
-            try{
-                resultado = servicioVisitantes.obtenerVisitante(query.idVisitante);
-            } catch(error) {
-                resultado = errorUtils.generarRespuestaError(
-                    "Ocurrio un error al obtener el visitante",
-                    error
-                )
-                res.statusCode = 500;
-            }
-            return res.end(JSON.stringify(resultado));
-        }
-    } else if (req.method === 'POST' && req.url.includes('/visitantes')) {
-        stringUtils.obtenerBody(req).then(body => {
-            const parsedData = stringUtils.parsearBody(body);
-            try {
-                resultado = servicioVisitantes.crearVisitante(parsedData);
-            } catch (error) {
-                resultado = errorUtils.generarRespuestaError(
-                    "Ocurrio un error al agregar el visitante",
-                    error
-                )
-                res.statusCode = 500;
-            }
+        } else if (req.method === 'POST') {
+            stringUtils.obtenerBody(req).then(body => {
+                const parsedData = stringUtils.parsearBody(body);
+                try {
+                    resultado = servicioVisitantes.crearVisitante(parsedData);
+                } catch (error) {
+                    resultado = errorUtils.generarRespuestaError(
+                        "Ocurrio un error al agregar el visitante",
+                        error
+                    )
+                    res.statusCode = 500;
+                }
 
-            if (resultado === 'ok') {
-                res.statusCode = 201;
-            } else if (typeof resultado === 'string') {
-                res.statusCode = 400;
-            }
+                if (resultado === 'ok') {
+                    res.statusCode = 201;
+                } else if (typeof resultado === 'string') {
+                    res.statusCode = 400;
+                }
 
-            return res.end(resultado);
-        });
-    } else if (req.method === 'PUT' && req.url.includes('/visitantes')) {
-        stringUtils.obtenerBody(req).then(body => {
-            const parsedData = stringUtils.parsearBody(body);
+                return res.end(resultado);
+            });
+        } else if (req.method === 'PUT') {
+            stringUtils.obtenerBody(req).then(body => {
+                const parsedData = stringUtils.parsearBody(body);
+                try {
+                    resultado = servicioVisitantes.actualizarVisitante(parsedData.id, parsedData);
+                } catch(error) {
+                    resultado = errorUtils.generarRespuestaError(
+                        "Ocurrio un error al actualizar el visitante",
+                        error
+                    )
+                    res.statusCode = 500;
+                }
+
+                if (resultado === 'ok') {
+                    res.statusCode = 200;
+                    return res.end("Visitante actualizado correctamente");
+                } else if (typeof resultado === 'string') {
+                    res.statusCode = 400;
+                    return res.end(resultado);
+                }
+            });
+        } else if (req.method === 'DELETE') {
             try {
-                resultado = servicioVisitantes.actualizarVisitante(parsedData.id, parsedData);
-            } catch(error) {
+                resultado = servicioVisitantes.eliminarVisitante(params.idVisitante);
+            }
+            catch(error){
                 resultado = errorUtils.generarRespuestaError(
-                    "Ocurrio un error al actualizar el visitante",
+                    "Ocurrio un error al eliminar el visitante",
                     error
                 )
                 res.statusCode = 500;
-            }
+            }    
 
             if (resultado === 'ok') {
                 res.statusCode = 200;
-                return res.end("Visitante actualizado correctamente");
+                return res.end("Visitante eliminado correctamente");
             } else if (typeof resultado === 'string') {
-                res.statusCode = 400;
+                res.statusCode = 404;
                 return res.end(resultado);
             }
-        });
-    } else if (req.method === 'DELETE' && req.url.includes('/visitantes')) {
-        try {
-            resultado = servicioVisitantes.eliminarVisitante(query.idVisitante);
-        }
-        catch(error){
-            resultado = errorUtils.generarRespuestaError(
-                "Ocurrio un error al eliminar el visitante",
-                error
-            )
-            res.statusCode = 500;
-        }    
-
-        if (resultado === 'ok') {
+        } else if (req.method === 'OPTIONS') {
             res.statusCode = 200;
-            return res.end("Visitante eliminado correctamente");
-        } else if (typeof resultado === 'string') {
-            res.statusCode = 404;
-            return res.end(resultado);
-        }
-    } else if (req.method === 'OPTIONS' && req.url.includes('/visitantes')) {
-        res.statusCode = 200;
-        return res.end();
-    } else {
+            return res.end();
+        } 
+    }   
+    else {
         res.statusCode = 404;
         return res.end('Recurso no encontrado');
     }
