@@ -1,8 +1,6 @@
-
 const urlGateway = 'http://localhost:8083';
 
 const getRequest = async (path) => {
-
     let url = `${urlGateway}${path}`;
 
     let options = {
@@ -14,21 +12,17 @@ const getRequest = async (path) => {
 
     try {
         const res = await fetch(url, options);
-
         if (!res.ok) {
             throw new Error(`Error! status: ${res.status}`);
         }
 
         return await res.json();
-
     } catch (err) {
         console.log('GET Request fallida');
     }
-
 }
 
 const postRequest = async (path, item) => {
-
     let url = `${urlGateway}${path}`;
     let options = {
         method: 'POST',
@@ -40,13 +34,10 @@ const postRequest = async (path, item) => {
     }
 
     try {
-
         const res = await fetch(url, options);
-
         if (!res.ok) {
             throw new Error(`Error! status: ${res.status}`);
         }
-
     } catch (err) {
         console.log('POST Request fallida');
     }
@@ -88,11 +79,9 @@ const deleteRequest = async (path, id) => {
 
     try {
         const res = await fetch(url, options);
-
         if (!res.ok) {
             throw new Error(`Error! status: ${res.status}`);
         }
-
     } catch (err) {
         console.log('DELETE Request fallida');
     }

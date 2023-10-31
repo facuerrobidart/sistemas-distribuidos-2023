@@ -8,8 +8,7 @@ import { parseUrlVisitantes } from '../utils/parseUrlUtils.js';
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
-    if( req.url.includes('/visitantes') && !req.url.includes('/permisos')) {
-    
+    if(req.url.includes('/visitantes') && !req.url.includes('/permisos')) {
         const params = parseUrlVisitantes(req.url);
         let resultado;
 
@@ -82,8 +81,7 @@ const server = http.createServer((req, res) => {
         } else if (req.method === 'DELETE') {
             try {
                 resultado = servicioVisitantes.eliminarVisitante(params.idVisitante);
-            }
-            catch(error){
+            } catch(error) {
                 resultado = errorUtils.generarRespuestaError(
                     "Ocurrio un error al eliminar el visitante",
                     error
