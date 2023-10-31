@@ -83,11 +83,13 @@ const server = http.createServer((req, res) => {
     } else if (req.method === 'PUT'){
         if (req.url.includes('/permisos')){
             if(query.idVisitante !== undefined && query.piso !== undefined){
-                PasoReq(puertoPermisos, `/permisos?idVisitante=${query.idVisitante}&piso=${query.piso}`, 'PUT', null, (error, responseBody) => {
-                    if (error)
-                        return res.end(error);
-                    else
-                        return res.end(responseBody)});
+                stringUtils.obtenerBody(req).then(body =>{
+                    PasoReq(puertoPermisos, `/permisos?idVisitante=${query.idVisitante}`, 'PUT', body, (error, responseBody) => {
+                        if (error)
+                            return res.end(error);
+                        else
+                            return res.end(responseBody)});
+                    });
             }else{
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');

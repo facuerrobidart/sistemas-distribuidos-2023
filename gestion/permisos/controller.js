@@ -1,6 +1,7 @@
 import http from 'http';
 import url from 'url';
 import servicioPermisos from './index.js';
+import stringUtils from '../utils/stringUtils.js';
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -32,7 +33,7 @@ const server = http.createServer((req, res) => {
         }
     } else if (req.method === 'PUT' && req.url.includes('/permisos')) {
         try{
-            resultado = servicioPermisos.agregarPermisos(query.idVisitante,query.piso);
+            resultado = servicioPermisos.agregarPermisos(query.idVisitante,stringUtils.parsearBody(req.body));
         }
         catch(error){
             resultado = errorUtils.generarRespuestaError(

@@ -53,18 +53,15 @@ const quitarTodosLosPermisos = (id) => {
     return 'ok';
 }
 
-const agregarPermisos = (id,piso) => {
+const agregarPermisos = (id,pisos) => {
     const visitanes = obtenerGuests();
     const guestObtenido = visitanes.find(a => a.id === id);
 
     if (guestObtenido !== undefined){
-        var pisos = guestObtenido.pisos_permitidos;
-        const indicePiso = pisos.indexOf(parseInt(piso));
-        if (indicePiso === -1)
-          pisos.push(parseInt(piso));
-        else{
-            return `El visitante con el id ${id}, ya tenia permiso para ingresar al piso ${piso}`;
-            }
+        let pisosAnt = guestObtenido.pisos_permitidos;
+        let aux = [].concat(pisosAnt, pisos);
+        let resultado = new Set(aux);
+        guestObtenido.pisos_permitidos = resultado;
     }
     else{
         return `No existe un visitante con id ${id}` ;
