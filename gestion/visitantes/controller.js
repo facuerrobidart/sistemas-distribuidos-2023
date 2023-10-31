@@ -8,7 +8,7 @@ import { parseUrlVisitantes } from '../utils/parseUrlUtils.js';
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
 
-    if( req.url.includes('/visitantes') ) {
+    if( req.url.includes('/visitantes') && !req.url.includes('/permisos')) {
     
         const params = parseUrlVisitantes(req.url);
         let resultado;

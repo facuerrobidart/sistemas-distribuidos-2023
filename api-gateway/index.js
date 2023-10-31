@@ -1,6 +1,7 @@
 import http from 'http';
 import url from 'url';
 import stringUtils from '../gestion/utils/stringUtils.js';
+import { parseUrlAscensores, parseUrlPermisos, parseUrlVisitantes } from '../gestion/utils/parseUrlUtils.js';
 
 // TODO: TESTEAR TODO
 
@@ -16,13 +17,15 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, accept, token")
 
-    const urlParseada = url.parse(req.url, true);
-    const query = urlParseada.query;
+    //const urlParseada = url.parse(req.url, true);
+    //const query = urlParseada.query;
 
     if(req.method === 'GET'){
-        if (req.url.includes('/permisos')){
-            if (query.idVisitante !== undefined){
-                PasoReq(puertoPermisos, `/permisos?idVisitante=${query.idVisitante}`, 'GET', null, (error, responseBody) => {
+        if (req.url.includes('/visitantes') && req.url.includes('/permisos') ){
+            const params = parseUrlPermisos(req.url);
+            
+            if (params.idVisitante !== undefined){
+                PasoReq(puertoPermisos, `/visitantes/${params.idVisitante}/permisos`, 'GET', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else
@@ -32,11 +35,12 @@ const server = http.createServer((req, res) => {
                 return res.end('Parametros incorrectos para el recurso requerido');
             }    
         }else if (req.url.includes('/visitantes')){
+            const params = parseUrlVisitantes(req.url);
             let path;
-            if(query.idVisitante === undefined)
+            if(params.idVisitante === undefined)
                 path = '/visitantes';
             else
-                path = `/visitantes?idVisitante=${query.idVisitante}`;
+                path = `/visitantes/${params.idVisitante}`;
 
             PasoReq(puertoVisitantes, path, 'GET', null, (error, responseBody) => {
                 if (error)
@@ -45,11 +49,11 @@ const server = http.createServer((req, res) => {
                     return res.end(responseBody)});
         }else if (req.url.includes('/ascensores')){
             let path;
-            
-            if(query.idAscensor === undefined)
+            const params = parseUrlAscensores(req.url);
+            if(params.idAscensor === undefined)
                 path = '/ascensores';
             else
-                path = `/ascensores?idAscensores=${query.idAscensor}`;
+                path = `/ascensores/${params.idAscensor}`;
 
             PasoReq(puertoAscensores, path, 'GET', null, (error, responseBody) => {
                 if (error)
@@ -89,10 +93,11 @@ const server = http.createServer((req, res) => {
             return res.end('Recurso no encontrado');
         }
     } else if (req.method === 'PUT'){
-        if (req.url.includes('/permisos')){
-            if(query.idVisitante !== undefined && query.piso !== undefined){
+        if (req.url.includes('/visitantes') && req.url.includes('/permisos') ){
+            const params = parseUrlPermisos(req.url);
+            if(params.idVisitante !== undefined && params.piso !== undefined){
                 stringUtils.obtenerBody(req).then(body =>{
-                    PasoReq(puertoPermisos, `/permisos?idVisitante=${query.idVisitante}`, 'PUT', body, (error, responseBody) => {
+                    PasoReq(puertoPermisos, `/visitantes/${params.idVisitante}/permisos`, 'PUT', body, (error, responseBody) => {
                         if (error)
                             return res.end(error);
                         else
@@ -123,16 +128,17 @@ const server = http.createServer((req, res) => {
             return res.end('Recurso no encontrado');
         }
     } else if( req.method === 'DELETE' ) { //Caso method = 'DELETE'
-        if (req.url.includes('/permisos')){
-            if (query.idVisitante === undefined && query.piso==undefined) {
+        if ( req.url.includes('/visitantes') && req.url.includes('/permisos')){
+            const params = parseUrlPermisos(req.url);
+            if (params.idVisitante === undefined && params.piso==undefined) {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
             } else { 
                 let path;
-                if (query.piso == undefined) {
-                    path = `/permisos?idVisitante=${query.idVisitante}`;
+                if (params.piso == undefined) {
+                    path = `/visitantes/${params.idVisitante}/permisos`;
                 } else {
-                    path = `/permisos?idVisitante=${query.idVisitante}&piso=${query.piso}`;
+                    path = `/visitantes/${params.idVisitante}/${params.piso}/permisos`;
                 }
 
                 PasoReq(puertoPermisos, path, 'DELETE', null, (error, responseBody) => {
@@ -144,8 +150,9 @@ const server = http.createServer((req, res) => {
                 return res.end("Permiso eliminado");
             }
         } else if (req.url.includes('/visitantes')) {
-                if (query.idVisitante !== undefined) {
-                    PasoReq(puertoVisitantes, `/visitantes?idVisitante=${query.idVisitante}`, 'DELETE', null, (error, responseBody) => {
+                const params = parseUrlVisitantes(req.url);
+                if (params.idVisitante !== undefined) {
+                    PasoReq(puertoVisitantes, `/visitantes/${params.idVisitante}`, 'DELETE', null, (error, responseBody) => {
                         if (error)
                             return res.end(error);
                         else
@@ -157,8 +164,9 @@ const server = http.createServer((req, res) => {
                     return res.end('Parametros incorrectos para la operacion solicitada');
                 }       
         } else if (req.url.includes('/ascensores')) {
-            if (query.idAscensor !== undefined) {
-                PasoReq(puertoAscensores, `/ascensores?idAscensor=${query.idAscensor}`, 'DELETE', null, (error, responseBody) => {
+            const params=parseUrlAscensores(req.url)
+            if (params.idAscensor !== undefined) {
+                PasoReq(puertoAscensores, `/ascensores/${params.idAscensor}`, 'DELETE', null, (error, responseBody) => {
                     if (error)
                         return res.end(error);
                     else

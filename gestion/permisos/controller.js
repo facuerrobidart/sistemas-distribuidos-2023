@@ -9,7 +9,7 @@ const server = http.createServer((req, res) => {
     const params = parseUrlPermisos(req.url);
     let resultado;
 
-    if( req.url.includes('/visitantes') ){
+    if( req.url.includes('/visitantes') && req.url.includes('/permisos') ){
 
         if (req.method === 'GET') {
             if (params.idVisitante !== undefined) {

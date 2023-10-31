@@ -1,3 +1,5 @@
+import servicioPermisos from '../permisos/index.js';
+
 const parseUrlAscensores = (url) => {
 
     const urlParts = url.split('/');
@@ -26,33 +28,21 @@ const parseUrlPermisos = (url) => {
 
     const lastItem = urlParts[urlParts.length - 1];
     const ScndLastItem = urlParts[urlParts.length - 2];
+    const thirdLastItem=urlParts[urlParts.length-3];
 
-    //http://endpoint.host/visitantes
-    //http://endpoint.host/visitantes/<id visitante>
-    //http://endpoint.host/visitantes/<id visitante>/<piso>
+    //http://endpoint.host/visitantes/<id visitante>/<piso>/permisos
 
-    if( lastItem === 'visitantes' ){
-        
-        return {
-            idVisitante: undefined,
-            piso: undefined
+   //http://endpoint.host/visitantes/<id visitante>/permisos
+
+    if(thirdLastItem === 'visitantes'){
+        return {   piso:undefined,
+                idVisitante: ScndLastItem}
         }
-
-    } else if ( ScndLastItem === 'visitantes' ) {
-
-        return {
-            idVisitante: lastItem,
-            piso: undefined
+        else{//caso del delete
+            return {
+                piso:ScndLastItem,
+                idVisitante: thirdLastItem}
         }
-    
-    } else {
-
-        return {
-            idVisitante: ScndLastItem,
-            piso: lastItem
-        }
-
-    }
 
 }
 
