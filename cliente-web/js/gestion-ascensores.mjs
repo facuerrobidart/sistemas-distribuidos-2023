@@ -13,8 +13,6 @@ const cargarTabla = async () => {
 
     let tableContent = '';
 
-  // ... Tu código existente
-
 ascensores.map((asc) => {
     const fila = `
         <tr>
