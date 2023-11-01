@@ -13,31 +13,34 @@ const cargarTabla = async () => {
 
     let tableContent = '';
 
-    ascensores.map( (asc) => {
-    
-        const fila = `
-                    <tr>
-                        <td>${asc.id}</td>
-                        <td>${asc.nombre}</td>
-                        <td>${asc.pisos}</td>
-                        <td>${asc.estado}</td>
-                        <td class="table-actions">
-                            <div>
-                                <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')">
-                                    <i class="fa-solid fa-pencil"></i> 
-                                </button>
-                            </div>
-                            <div>
-                                <button id="btn-remove" onclick="eliminarAscensor('${asc.id}')">
-                                    <i class="fa-regular fa-circle-xmark"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>`;
+  // ... Tu código existente
 
-        tableContent += fila;
+ascensores.map((asc) => {
+    const fila = `
+        <tr>
+            <td>${asc.id}</td>
+            <td>${asc.nombre}</td>
+            <td>${asc.pisos}</td>
+            <td>${asc.estado}</td>
+            <td class="table-actions">
+                <div>
+                    <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')"
+                        style="color: #007ea9;"> 
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                </div>
+                <div>
+                    <button id="btn-remove" onclick="eliminarAscensor('${asc.id}')"
+                        style="color: red;"> 
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>`;
 
-    } )
+    tableContent += fila;
+})
+
     
     cuerpoTabla.innerHTML = tableContent;
 };
