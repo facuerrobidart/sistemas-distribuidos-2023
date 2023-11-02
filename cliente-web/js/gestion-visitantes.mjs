@@ -25,12 +25,14 @@ const cargarTabla = async () => {
                         <td>${v.fecha_checkIn}</td>
                         <td class="table-actions">
                             <div>
-                                <button id="btn-edit" onclick="actualizarVisitante('${v.id}')">
+                                <button id="btn-edit" onclick="actualizarVisitante('${v.id}')"
+                                     style="color: #007ea9;"> 
                                     <i class="fa-solid fa-pencil"></i> 
                                 </button>
                             </div>
                             <div>
-                                <button id="btn-remove" onclick="eliminarVisitante('${v.id}')">
+                                <button id="btn-remove" onclick="eliminarVisitante('${v.id}')"
+                                    style="color: red;">     
                                     <i class="fa-regular fa-circle-xmark"></i>
                                 </button>
                             </div>
@@ -141,21 +143,12 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-const selectionEstado = () => {
 
-    let elementoActivo = document.querySelector('input[name="estado"]:checked');
-    if(elementoActivo) {
-        return elementoActivo.value;
-    } else {
-        alert('No hay ninún elemento activo');
-    }
-
-}
 
 var select = document.querySelector('#selectPisos');
 select && select.addEventListener('change', generarOpciones(25));
 
-document?.querySelector('#formVisitante').addEventListener('submit', crearVisitante);
+document?.querySelector('#formVisitantes').addEventListener('submit', crearVisitante);
 
 cargarTabla();
 
