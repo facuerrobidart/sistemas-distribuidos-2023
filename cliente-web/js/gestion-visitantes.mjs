@@ -25,7 +25,7 @@ const cargarTabla = async () => {
                         <td>${v.fecha_checkIn}</td>
                         <td class="table-actions">
                             <div>
-                                <button id="btn-edit" onclick="actualizarVisitante('${v.id}')"
+                                <button id="btn-edit" onclick="actualizarVisitante('${v.id}', '${v.fecha_checkIn}')"
                                      style="color: #007ea9;"> 
                                     <i class="fa-solid fa-pencil"></i> 
                                 </button>
@@ -55,8 +55,6 @@ const crearVisitante = (event) => {
     let email = document.querySelector('#email').value;
     let selectionPisos = document.querySelector('#selectPisos');
 
-    //TODO: logica para fechas
-    let fecha_checkIn = document.querySelector('#');
     let pisos_permitidos = selectPisos(selectionPisos);
 
     let visitante = {
@@ -65,7 +63,7 @@ const crearVisitante = (event) => {
         edad,
         email,
         pisos_permitidos,
-        fecha_checkIn,
+        fecha_checkIn: null
     };
 
     const path = '/visitantes';
@@ -76,37 +74,40 @@ const crearVisitante = (event) => {
 }
 
 
-window.actualizarVisitante = (id) => {
+window.actualizarVisitante = (id, fecha_checkIn) => {
 
     modalWindow();
 
-    //TODO: extraer values de la ventana modal
-    let nombre = document.querySelector('#nombre').value;
-    let edad = document.querySelector('#edad').value;
-    let email = document.querySelector('#email').value;
-    let selectionPisos = document.querySelector('#selectPisos');
+    document?.querySelector('#formVisitantes-modal').addEventListener('submit', function(event) {
 
-    //TODO: logica para fechas
-    let fecha_checkIn = document.querySelector('#');
+        event.preventDefault();
+
+        let nombre = document.querySelector('#nombre-modal').value;
+        let edad = document.querySelector('#edad-modal').value;
+        let email = document.querySelector('#email-modal').value;
+        let selectionPisos = document.querySelector('#selectPisos-modal');
+
+        let pisos_permitidos = selectPisos(selectionPisos);
+
+        let visitante = {
+            id,
+            nombre,
+            edad,
+            email,
+            pisos_permitidos,
+            fecha_checkIn
+        };
+
+        console.log(visitante);
+
+        const path = '/visitantes';
+
+        putRequest(path, visitante);
+
+        cargarTabla();
+
+    });
     
-
-    let pisos_permitidos = selectPisos(selectionPisos);
-
-    let visitante = {
-        id,
-        nombre,
-        edad,
-        email,
-        pisos_permitidos,
-        fecha_checkIn,
-        
-    };
-
-    const path = '/visitantes';
-
-    putRequest(path, visitante);
-
-    cargarTabla();
 }
 
 window.eliminarVisitante = (id) => {
@@ -118,9 +119,18 @@ window.eliminarVisitante = (id) => {
     cargarTabla();
 }
 
-
 const generarOpciones = (pisos) => {
     const target = document.getElementById('selectPisos');
+    let options = '';
+    
+    for (let i = 0; i < pisos; i++) {
+        options += `<option value="${i}">${i}</option>`;
+    }
+    target.innerHTML = options;
+}
+
+const generarOpcionesModal = (pisos) => {
+    const target = document.getElementById('selectPisos-modal');
     let options = '';
     
     for (let i = 0; i < pisos; i++) {
@@ -144,9 +154,11 @@ const selectPisos = (selectionPisos) => {
 }
 
 
-
 var select = document.querySelector('#selectPisos');
 select && select.addEventListener('change', generarOpciones(25));
+
+var selectModal = document.querySelector('#selectPisos-modal');
+selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
 
 document?.querySelector('#formVisitantes').addEventListener('submit', crearVisitante);
 
