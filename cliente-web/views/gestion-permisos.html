@@ -1,49 +1,44 @@
 <div>
-    <div class="genericHeader">
-        <h1 class="genericTitle">Gestión de Permisos</h1>
-    </div>
-    <div class="formContainer">
-
-        <form id="formPermisos" class="genericForm">
-          <div class="input-group">
-            <label for="estado">Nombre</label>
-            <input class="textField" type="text" id="nombre" name="nombre">
-          </div>
-            <br>
-
-            <div class="input-group">
-          <label for="selectPisos">Pisos permitidos</label>
-              <select
-                multiple
-                id="selectPisos"
-                multiselect-search="true"
-                multiselect-select-all="true"
-                onload="generarOpciones(25)"
-              ></select>
-            </div>
-            
-            <input class="botonS" type="submit" value="Crear">
-       
-          </form>
-   
+  <div class="genericHeader">
+    <h1 class="genericTitle">Gestión de Permisos</h1>
+  </div>
+  <div class="formContainer">
+    <form id="formPermisos" class="genericForm">
+      <div class="input-group">
+        <label for="estado">Nombre</label>
+        <input class="textField" type="text" id="nombre" name="nombre" />
       </div>
-      
-    <div class="genericHeader">
+      <br />
+
+      <div class="input-group">
+        <label for="selectPisos">Pisos permitidos</label>
+        <select
+          multiple
+          id="selectPisos"
+          multiselect-search="true"
+          multiselect-select-all="true"
+          onload="generarOpciones(25)"
+        ></select>
+      </div>
+
+      <input class="botonS" type="submit" value="Crear" />
+    </form>
+  </div>
+
+  <div class="genericHeader">
     <h3 class="genericTitle">Lista de Permisos</h3>
-    </div>
-    <div class="tableContainer">
-      <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Pisos</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="cuerpo-tabla-permisos">
-            
-        </tbody>
-      </table>
+  </div>
+  <div class="tableContainer">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Pisos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-tabla-permisos"></tbody>
+    </table>
   </div>
 </div>

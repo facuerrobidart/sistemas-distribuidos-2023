@@ -53,7 +53,7 @@
     <h3 class="genericTitle">Lista de Ascensores</h3>
   </div>
   <div class="tableContainer">
-    <table>
+    <table class="ascTable">
       <thead>
         <tr>
           <th>ID</th>
@@ -71,39 +71,38 @@
   <div id="myModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-      <span class="close">&times;</span>
-
       <div class="formContainer">
-        <form id="formAscensor" class="genericForm">
+        <span class="close">&times;</span>
+        <form id="formAscensor-modal" class="genericForm">
           <div class="input-group">
-            <label for="nombre">Nombre</label>
+            <label for="nombre-modal">Nombre</label>
             <input
               class="textField"
               type="text"
-              id="nombre_modal"
-              name="nombre"
+              id="nombre-modal"
+              name="nombre-modal"
             />
           </div>
 
           <div class="input-group">
-            <label for="selectPisos">Pisos permitidos</label>
+            <label for="selectPisos-modal">Pisos permitidos</label>
             <select
               multiple
-              id="selectPisos"
+              id="selectPisos-modal"
               multiselect-search="true"
               multiselect-select-all="true"
-              onload="generarOpciones(25)"
+              onload="generarOpcionesModal(25)"
             ></select>
           </div>
 
           <div class="input-group">
-            <label for="estado">Estado</label>
+            <label for="estado-modal">Estado</label>
             <div class="radio-group">
               <label>
                 <input
                   type="radio"
                   id="disponible"
-                  name="estado"
+                  name="estado-modal"
                   value="Disponible"
                   checked
                 />
@@ -112,8 +111,8 @@
               <label>
                 <input
                   type="radio"
-                  id="no_disponible"
-                  name="estado"
+                  id="no-disponible"
+                  name="estado-modal"
                   value="No disponible"
                 />
                 No Disponible
@@ -121,7 +120,7 @@
             </div>
           </div>
 
-          <input class="botonS" type="submit" value="Añadir Ascensor" />
+          <input class="botonS" type="submit" value="Actualizar Ascensor" />
         </form>
       </div>
     </div>

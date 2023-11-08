@@ -114,7 +114,7 @@ function MultiselectDropdown(options){
   
   document.querySelectorAll("select[multiple]").forEach((el,k)=>{
     
-    var div=newEl('div',{class:'multiselect-dropdown',style:{width:config.style?.width??el.clientWidth+'px',padding:config.style?.padding??''}});
+    var div=newEl('div',{class:'multiselect-dropdown',style:{width:20+'rem',padding:config.style?.padding??''}});
     el.style.display='none';
     el.parentNode.insertBefore(div,el.nextSibling);
     var listWrap=newEl('div',{class:'multiselect-dropdown-list-wrapper'});

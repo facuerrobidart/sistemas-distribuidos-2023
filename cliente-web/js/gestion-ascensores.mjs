@@ -13,32 +13,31 @@ const cargarTabla = async () => {
 
     let tableContent = '';
 
-    ascensores.map( (asc) => {
-    
-        const fila = `
-                    <tr>
-                        <td>${asc.id}</td>
-                        <td>${asc.nombre}</td>
-                        <td>${asc.pisos}</td>
-                        <td>${asc.estado}</td>
-                        <td class="table-actions">
-                            <div>
-                                <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')">
-                                    <i class="fa-solid fa-pencil"></i> 
-                                </button>
-                            </div>
-                            <div>
-                                <button id="btn-remove" onclick="eliminarAscensor('${asc.id}')">
-                                    <i class="fa-regular fa-circle-xmark"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>`;
+ascensores.map((asc) => {
+    const fila = `
+        <tr>
+            <td>${asc.id}</td>
+            <td>${asc.nombre}</td>
+            <td>${asc.pisos}</td>
+            <td>${asc.estado}</td>
+            <td class="table-actions">
+                <div>
+                    <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')"
+                        style="color: #007ea9;"> 
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                </div>
+                <div>
+                    <button id="btn-remove" onclick="eliminarAscensor('${asc.id}')"
+                        style="color: red;"> 
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>`;
 
-        tableContent += fila;
-
-    } )
-    
+    tableContent += fila;
+})
     cuerpoTabla.innerHTML = tableContent;
 };
 
@@ -71,25 +70,31 @@ window.actualizarAscensor = (id) => {
 
     modalWindow();
 
-    //TODO: extraer values de la ventana modal
-    let nombre = document.querySelector('#nombre-modal').value;
-    let selectionPisos = document.querySelector('#selectPisos-modal')
-    let estado = document.querySelector('#estado-modal').value;
+    document?.querySelector('#formAscensor-modal').addEventListener('submit', function(event) {
 
-    let pisos = selectPisos(selectionPisos);
+        event.preventDefault();
 
-    let ascensor = {
-        id,
-        nombre,
-        pisos,
-        estado
-    };
+        let nombre = document.querySelector('#nombre-modal').value;
+        let selectionPisos = document.querySelector('#selectPisos-modal')
+        let estado = selectionEstadoModal();
 
-    const path = '/ascensores';
+        let pisos = selectPisos(selectionPisos);
 
-    putRequest(path, ascensor);
+        let ascensor = {
+            id,
+            nombre,
+            pisos,
+            estado
+        };
 
-    cargarTabla();
+        const path = '/ascensores';
+
+        putRequest(path, ascensor);
+
+        cargarTabla();
+
+    });
+  
 }
 
 window.eliminarAscensor = (id) => {
@@ -104,6 +109,16 @@ window.eliminarAscensor = (id) => {
 
 const generarOpciones = (pisos) => {
     const target = document.getElementById('selectPisos');
+    let options = '';
+    
+    for (let i = 0; i < pisos; i++) {
+        options += `<option value="${i}">${i}</option>`;
+    }
+    target.innerHTML = options;
+}
+
+const generarOpcionesModal = (pisos) => {
+    const target = document.getElementById('selectPisos-modal');
     let options = '';
     
     for (let i = 0; i < pisos; i++) {
@@ -137,8 +152,23 @@ const selectionEstado = () => {
 
 }
 
+//Podria hacerse mas eficiente
+const selectionEstadoModal = () => {
+
+    let elementoActivo = document.querySelector('input[name="estado-modal"]:checked');
+    if(elementoActivo) {
+        return elementoActivo.value;
+    } else {
+        alert('No hay ninún elemento activo');
+    }
+
+}
+
 var select = document.querySelector('#selectPisos');
 select && select.addEventListener('change', generarOpciones(25));
+
+var selectModal = document.querySelector('#selectPisos-modal');
+selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
 
 document?.querySelector('#formAscensor').addEventListener('submit', crearAscensor);
 

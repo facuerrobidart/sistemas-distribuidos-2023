@@ -14,7 +14,7 @@ const obtenerVisitantes = () => {
 
 const obtenerVisitante = (id) => {
     const visitantes = obtenerVisitantes();
-    const visitanteObtenido =visitantes.find(a => a.id === id);
+    const visitanteObtenido = visitantes.find(a => a.id === id);
 
     return visitanteObtenido !== undefined ? visitanteObtenido : `No existe un visitante con id ${id}`;
 }
@@ -44,10 +44,12 @@ const crearVisitante = (visitante) => {
     const max = obtenerVisitantes().reduce(function(prev, current) {
         return (prev && prev.id > current.id) ? prev : current
     })
-    
+
     console.log(`ID max anterior: ${max.id}`)
     visitante.id = generarId(max.id);
     console.log(`Nuevo ID max: ${visitante.id}`)
+
+    visitante.fecha_checkIn = new Date().toISOString();
 
     const mensajeValidacion = validarVisitantes(visitante)
 

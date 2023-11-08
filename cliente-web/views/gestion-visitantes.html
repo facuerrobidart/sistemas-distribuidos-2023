@@ -1,62 +1,114 @@
 <div>
-    <div class="genericHeader">
-        <h1 class="genericTitle">Gestión de Visitantes</h1>
-    </div>
-   
-    <div class="formContainer">
-        
-      <form id="formVisitantes" class="genericForm">
+  <div class="genericHeader">
+    <h1 class="genericTitle">Gestión de Visitantes</h1>
+  </div>
+
+  <div class="formContainer">
+    <form id="formVisitantes" class="genericForm">
+      <div class="input-group">
+        <label for="nombre">Nombre</label>
+        <input class="textField" type="text" id="nombre" name="nombre" />
+      </div>
+
+      <div class="input-group">
+        <label for="edad">Edad</label>
+        <input class="textField" type="number" id="edad" name="edad" />
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input class="textField" type="email" id="email" name="email" />
+      </div>
+
+      <div class="input-group">
+        <label for="selectPisos">Pisos permitidos</label>
+        <select
+          multiple
+          id="selectPisos"
+          multiselect-search="true"
+          multiselect-select-all="true"
+          onload="generarOpciones(25)"
+        ></select>
+      </div>
+      <!-- Fecha checkIn (ver) -->
+
+      <input class="botonS" type="submit" value="Añadir visitante" />
+    </form>
+  </div>
+
+  <div class="genericHeader">
+    <h3 class="genericTitle">Lista de Visitantes</h3>
+  </div>
+
+  <div class="tableContainer">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Completo</th>
+          <th>Edad</th>
+          <th>Email</th>
+          <th>Pisos permitidos</th>
+          <th>Fecha de CheckIn</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-tabla-visitantes"></tbody>
+    </table>
+  </div>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="formContainer">
+        <span class="close">&times;</span>
+        <form id="formVisitantes-modal" class="genericForm">
           <div class="input-group">
-            <label for="nombre">Nombre</label>
-            <input class="textField" type="text" id="nombre" name="nombre">
+            <label for="nombre-modal">Nombre</label>
+            <input
+              class="textField"
+              type="text"
+              id="nombre-modal"
+              name="nombre-modal"
+            />
           </div>
-      
+
           <div class="input-group">
-            <label for="edad">Edad</label>
-            <input class="textField" type="number" id="edad" name="edad">
+            <label for="edad-modal">Edad</label>
+            <input
+              class="textField"
+              type="number"
+              id="edad-modal"
+              name="edad-modal"
+            />
           </div>
-      
+
           <div class="input-group">
-            <label for="email">Email</label>
-            <input class="textField" type="email" id="email" name="email">
+            <label for="email-modal">Email</label>
+            <input
+              class="textField"
+              type="email"
+              id="email-modal"
+              name="email-modal"
+            />
           </div>
-      
-        <div class="input-group">
-          <label for="selectPisos">Pisos permitidos</label>
-          <select
-             multiple
-            id="selectPisos"
-            multiselect-search="true"
-            multiselect-select-all="true"
-            onload="generarOpciones(25)"
-          ></select>
-        </div>
+
+          <div class="input-group">
+            <label for="selectPisos-modal">Pisos permitidos</label>
+            <select
+              multiple
+              id="selectPisos-modal"
+              multiselect-search="true"
+              multiselect-select-all="true"
+              onload="generarOpcionesModal(25)"
+            ></select>
+          </div>
           <!-- Fecha checkIn (ver) -->
-      
-          <input class="botonS" type="submit" value="Añadir visitante">
-      </form>
-      
+
+          <input class="botonS" type="submit" value="Actualizar visitante" />
+        </form>
+      </div>
     </div>
-    
-    <div class="genericHeader">
-        <h3 class="genericTitle">Lista de Visitantes</h3>
-    </div>
-    <div class="tableContainer">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre Completo</th>
-                    <th>Edad</th>
-                    <th>Email</th>
-                    <th>Pisos permitidos</th>
-                    <th>Fecha de CheckIn</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpo-tabla-visitantes">
-                
-            </tbody>
-        </table>
-    </div>
+  </div>
 </div>

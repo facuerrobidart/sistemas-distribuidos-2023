@@ -6,9 +6,16 @@ import servicioVisitantes from './index.js';
 import { parseUrlVisitantes } from '../utils/parseUrlUtils.js';
 
 const server = http.createServer((req, res) => {
+    
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Accept','application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, accept, token")
+    
 
-    if(req.url.includes('/visitantes') && !req.url.includes('/permisos')) {
+    if( req.url.includes('/visitantes') && !(req.url.includes('/permisos'))) {
+    
         const params = parseUrlVisitantes(req.url);
         let resultado;
 
