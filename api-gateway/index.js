@@ -1,5 +1,5 @@
 import http from 'http';
-import url from 'url';
+import { PasoReq } from './requests.js';
 import stringUtils from '../gestion/utils/stringUtils.js';
 import { parseUrlAscensores, parseUrlPermisos, parseUrlVisitantes } from '../gestion/utils/parseUrlUtils.js';
 
@@ -107,7 +107,7 @@ const server = http.createServer((req, res) => {
                             return res.end(responseBody)});
                         
                     });
-            }else{
+            } else {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
             }
@@ -134,7 +134,7 @@ const server = http.createServer((req, res) => {
     } else if( req.method === 'DELETE' ) { //Caso method = 'DELETE'
         if ( req.url.includes('/visitantes') && req.url.includes('/permisos')){
             const params = parseUrlPermisos(req.url);
-            if (params.idVisitante === undefined && params.piso==undefined) {
+            if (params.idVisitante === undefined && params.piso == undefined) {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
             } else { 
@@ -194,35 +194,3 @@ const server = http.createServer((req, res) => {
 server.listen(puertoGateway, () => {
     console.log(`API Gateway iniciada en el puerto ${puertoGateway}`);
 });
-
-const PasoReq = function (puerto, queryPath, queryMethod, body, callback){
-    let options = {
-            hostname: 'localhost', // Cambia esto a la dirección del servidor si es diferente
-            port: puerto,            // Puerto en el que se ejecuta el servidor
-            path: queryPath,
-            method: queryMethod          // Método de solicitud (GET en este caso)
-    };
-
-    const req = http.request(options, (res) => {
-        let responseBody= '';
-    
-        res.on('data', (chunk) => {
-            responseBody += chunk;
-        });
-        
-        res.on('end', () => {
-            callback(null, responseBody); 
-        });
-    });
-
-    if (body !== null) {
-        req.write(body);
-    }
-    
-    req.on('error', (error) => {
-        console.error('Error en la solicitud:', error);
-        callback(error);	
-    });
-    
-    req.end(); // Envía la solicitud al servidor
-}

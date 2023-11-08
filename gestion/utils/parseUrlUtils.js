@@ -23,7 +23,7 @@ const parseUrlPermisos = (url) => {
     const urlParts = url.split('/');
 
     const ScndLastItem = urlParts[urlParts.length - 2];
-    const thirdLastItem=urlParts[urlParts.length-3];
+    const thirdLastItem = urlParts[urlParts.length-3];
 
     //http://endpoint.host/visitantes/<id visitante>/<piso>/permisos
 
