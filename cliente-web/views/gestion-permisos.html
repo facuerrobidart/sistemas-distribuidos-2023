@@ -5,23 +5,23 @@
   <div class="formContainer">
     <form id="formPermisos" class="genericForm">
       <div class="input-group">
-        <label for="estado">Nombre</label>
-        <input class="textField" type="text" id="nombre" name="nombre" />
-      </div>
-      <br />
-
-      <div class="input-group">
-        <label for="selectPisos">Pisos permitidos</label>
+        <label for="select-visitantes-permisos"> Seleccione un visitante </label>
+        <select id="select-visitantes-permisos"> 
+          <option value="">--Please choose an option--</option>
+        </select>
+        
+        
+        <label for="selectPisosPermisos">Pisos permitidos</label>
         <select
           multiple
-          id="selectPisos"
+          id="selectPisosPermisos"
           multiselect-search="true"
           multiselect-select-all="true"
           onload="generarOpciones(25)"
         ></select>
       </div>
 
-      <input class="botonS" type="submit" value="Crear" />
+      <input class="botonS" type="submit" value="Cambiar" onclick="actualizarPisos()"/>
     </form>
   </div>
 
@@ -35,7 +35,6 @@
           <th>ID</th>
           <th>Nombre</th>
           <th>Pisos</th>
-          <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="cuerpo-tabla-permisos"></tbody>
