@@ -9,14 +9,14 @@ const PasoReq = function (puerto, queryPath, queryMethod, body, callback){
     };
 
     const req = http.request(options, (res) => {
-        let responseBody= '';
+        let responseBody = '';
     
         res.on('data', (chunk) => {
             responseBody += chunk;
         });
         
         res.on('end', () => {
-            callback(null, responseBody); 
+            callback(null, responseBody);
         });
     });
 

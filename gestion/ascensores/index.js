@@ -44,13 +44,15 @@ const crearAscensor = (ascensor) => {
 
     const mensajeValidacion = validarAscensor(ascensor);
 
-    if( mensajeValidacion !== 'ok' ) {
+    if (mensajeValidacion !== 'ok') {
         return mensajeValidacion ; 
     }
 
     const ascensores = obtenerAscensores();
     ascensores.push(ascensor);
     persistencia.guardarDatos(pathArchivo, ascensores);
+    
+    return mensajeValidacion;
 }
 
 const actualizarAscensor = (id, ascensor) => {

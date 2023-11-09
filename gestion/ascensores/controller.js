@@ -72,6 +72,9 @@ const server = http.createServer((req, res) => {
 
                 if (resultado === 'ok') {
                     res.statusCode = 201; // Created status
+                    resultado = errorUtils.generarRespuestaOk(
+                        "Ascensor creado correctamente"
+                    );
                 } else if (typeof(resultado) === 'string') {
                     res.statusCode = 400;
                 }
@@ -94,13 +97,17 @@ const server = http.createServer((req, res) => {
 
                 if (resultado === 'ok') {
                     res.statusCode = 200;
-                    res.end("Ascensor actualizado correctamente");
+                    resultado = errorUtils.generarRespuestaOk(
+                        "Ascensor actualizado correctamente"
+                    );
                 } else if (typeof(resultado) === 'string') {
                     res.statusCode = 400;
                 }
-            });
-        } else if (req.method === 'DELETE') {
 
+                res.end(resultado);
+            });
+
+        } else if (req.method === 'DELETE') {
             try {
                 resultado = servicioAscensores.eliminarAscensor(params.idAscensor);
             } catch (error) {
@@ -113,11 +120,14 @@ const server = http.createServer((req, res) => {
 
             if (resultado === 'ok') {
                 res.statusCode = 200;
-                return res.end("Ascensor eliminado correctamente");
+                resultado = errorUtils.generarRespuestaOk(
+                    "Ascensor eliminado correctamente"
+                );
             } else if (typeof(resultado) === 'string') {
                 res.statusCode = 404;
-                return res.end(resultado);
             }
+
+            return res.end(resultado);
         }else if (req.method === 'OPTIONS') {
             res.statusCode = 200;
             return res.end();

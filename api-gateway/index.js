@@ -48,7 +48,7 @@ const server = http.createServer((req, res) => {
                 else
                     return res.end(responseBody)});
         }else if (req.url.includes('/ascensores')){
-            let path;
+             let path;
             const params = parseUrlAscensores(req.url);
             if(params.idAscensor === undefined)
                 path = '/ascensores';
@@ -60,7 +60,7 @@ const server = http.createServer((req, res) => {
                     return res.end(error);
                 else
                     return res.end(responseBody)});
-        } else{
+        } else {
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
         }
@@ -82,12 +82,10 @@ const server = http.createServer((req, res) => {
                         return res.end(error);
                     else
                         return res.end(responseBody)});
-            }).catch(error => {
+            }).catch( error => {
                 res.statusCode = 500;
                 return res.end('Error al obtener el body');
             });
-
-            return res.end("Ascensor agregado");
         } else{
             res.statusCode = 400;
             return res.end('Recurso no encontrado');
