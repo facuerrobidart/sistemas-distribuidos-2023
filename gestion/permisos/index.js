@@ -65,13 +65,7 @@ const agregarPermisos = (id, pisos) => {
     const objIndex = visitantes.findIndex(a => a.id === id);
 
     if (guestObtenido !== undefined){
-        
-        let pisosAnt = guestObtenido.pisos_permitidos;
-        let aux = [].concat(pisosAnt, pisos);
-        let resultado = new Set(aux);
-
-        visitantes[objIndex].pisos_permitidos = Array.from(resultado);
-
+        visitantes[objIndex].pisos_permitidos = Array.from([pisos]);
     }
     else{
         return `No existe un visitante con id ${id}` ;
