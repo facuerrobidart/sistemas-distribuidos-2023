@@ -34,12 +34,12 @@ const server = http.createServer((req, res) => {
                 return res.end('Parametros incorrectos para el recurso requerido');
             }
         } else if (req.method === 'PUT') {
-            stringUtils.obtenerBody(req).then( body => {
+            stringUtils.obtenerBody(req).then(body => {
                 const parsedData = stringUtils.parsearBody(body);
 
                 try {
                     resultado = servicioPermisos.agregarPermisos(params.idVisitante, parsedData.pisos_permitidos);
-                } catch(error) {
+                } catch (error) {
                     resultado = errorUtils.generarRespuestaError(
                         "Ocurrio un error al agregar el permiso",
                         error
