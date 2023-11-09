@@ -3,7 +3,18 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-permisos'); 
-const select = document.querySelector('#select-visitantes-permisos')
+const selectVisitantes = document.querySelector('#select-visitantes-permisos')
+
+
+const generarOpciones = (pisos) => {
+    const target = document.getElementById('selectPisosPermisos');
+    let options = '';
+    
+    for (let i = 0; i < pisos; i++) {
+        options += `<option value="${i}">${i}</option>`;
+    }
+    target.innerHTML = options;
+}
 
 const cargarTabla = async () => {
 
@@ -33,18 +44,15 @@ const cargarTabla = async () => {
         selectContent+=option;
     } )
 
-    select.innerHTML=selectContent;
+    selectVisitantes.innerHTML=selectContent;
     cuerpoTabla.innerHTML = tableContent;
 };
 
-window.actualizarPisos = (id) => {
+window.actualizarPisos = () => {
 
-
-    document?.querySelector('#formPermisos').addEventListener('submit', function(event) {
-
-        event.preventDefault();
-        if(id!== ''){
-             let nombre = document.querySelector('#nombre').value;
+    let id = document.getElementById("select-visitantes-permisos").value
+    console.log("Query selector:  ",id);
+        if(id && id !== ''){
              let selectionPisos = document.querySelector('#selectPisosPermisos');
              let pisos_permitidos = selectPisos(selectionPisos);
              let body = {
@@ -58,8 +66,26 @@ window.actualizarPisos = (id) => {
             cargarTabla();
 
         }
-     });
+    
     
 }
 
+const selectPisos = (selectionPisos) => {
+    
+    let collection = selectionPisos.selectedOptions;
+
+    let pisos = [];
+
+    for (var i = 0; i < collection.length; i++) {
+        pisos.push(collection[i].label);
+    }
+    
+    return pisos;   
+
+}
+
 cargarTabla();
+generarOpciones(25);
+
+var select = document.querySelector('#selectPisos');
+select && select.addEventListener('change', generarOpciones(25));
