@@ -1,12 +1,10 @@
 import http from 'http';
-import url from 'url';
 import stringUtils from '../utils/stringUtils.js';
 import errorUtils from '../utils/errorUtils.js';
 import servicioVisitantes from './index.js';
 import { parseUrlVisitantes } from '../utils/parseUrlUtils.js';
 
 const server = http.createServer((req, res) => {
-    
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Accept','application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');

@@ -2,6 +2,7 @@ import http from 'http';
 import { PasoReq } from './requests.js';
 import stringUtils from '../gestion/utils/stringUtils.js';
 import { parseUrlAscensores, parseUrlPermisos, parseUrlVisitantes } from '../gestion/utils/parseUrlUtils.js';
+import errorUtils from '../gestion/utils/errorUtils.js';
 
 // TODO: TESTEAR TODO
 
@@ -17,11 +18,8 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Origin, Accept, accept, token")
 
-    //const urlParseada = url.parse(req.url, true);
-    //const query = urlParseada.query;
-
     if(req.method === 'GET'){
-        if (req.url.includes('/visitantes') && req.url.includes('/permisos') ){
+        if (req.url.includes('/visitantes') && req.url.includes('/permisos') ) {
             const params = parseUrlPermisos(req.url);
             
             if (params.idVisitante !== undefined){
@@ -61,8 +59,8 @@ const server = http.createServer((req, res) => {
                 else
                     return res.end(responseBody)});
         } else {
-            res.statusCode = 400;
-            return res.end('Recurso no encontrado');
+            res.statusCode = 404;
+            return res.end(errorUtils.generarRespuestaError('Recurso no encontrado'));
         }
     } else if (req.method === 'POST') {        ///Permisos no tiene Post
         if (req.url.includes('/visitantes')){
@@ -87,8 +85,8 @@ const server = http.createServer((req, res) => {
                 return res.end('Error al obtener el body');
             });
         } else{
-            res.statusCode = 400;
-            return res.end('Recurso no encontrado');
+            res.statusCode = 404;
+            return res.end(errorUtils.generarRespuestaError('Recurso no encontrado'));
         }
     } else if (req.method === 'PUT'){
         if (req.url.includes('/visitantes') && req.url.includes('/permisos') ){
@@ -126,8 +124,8 @@ const server = http.createServer((req, res) => {
                         return res.end(responseBody)});
             });
         } else {
-            res.statusCode = 400;
-            return res.end('Recurso no encontrado');
+            res.statusCode = 404;
+            return res.end(errorUtils.generarRespuestaError('Recurso no encontrado'));
         }
     } else if( req.method === 'DELETE' ) { //Caso method = 'DELETE'
         if ( req.url.includes('/visitantes') && req.url.includes('/permisos')){
@@ -172,20 +170,18 @@ const server = http.createServer((req, res) => {
                     if (error)
                         return res.end(error);
                     else
-                        return res.end(responseBody)});
-                
-                return res.end("Ascensor eliminado");
+                        return res.end(responseBody)});                
             } else {
                 res.statusCode = 400;
                 return res.end('Parametros incorrectos para la operacion solicitada');
             }
         } 
-    } else if(req.method === 'OPTIONS'){ //PREFLIGHT
+    } else if(req.method === 'OPTIONS') { //PREFLIGHT
         res.statusCode = 200;
         return res.end();
     } else {
-        res.statusCode = 400;
-        return res.end('Recurso no encontrado');
+        res.statusCode = 404;
+        return res.end(errorUtils.generarRespuestaError('Recurso no encontrado'));
     }
 });
 
