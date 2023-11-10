@@ -88,4 +88,4 @@ cargarTabla();
 generarOpciones(25);
 
 var select = document.querySelector('#selectPisos');
-select && select.addEventListener('change', generarOpciones(25));
+select && select.addEventListener('change', generarOpciones(25));   

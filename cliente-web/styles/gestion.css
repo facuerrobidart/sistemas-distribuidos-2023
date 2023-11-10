@@ -111,10 +111,10 @@ td{
     padding: 1em;
     text-align:center;
 }
-
 #selectPisos {
     width: 100%;
 }   
+
 
 .input-group {
     display: flex;
@@ -141,6 +141,14 @@ td{
     width: 100%;
     display: none;
 }
+
+#select-visitantes-permisos{
+    width:100%;
+    font-size: 80%;
+    font-family: "Montserrat", sans-serif;
+    background-color: #ffffff;
+}
+
 
 /* The Modal (background) */
 .modal {
