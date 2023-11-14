@@ -10,7 +10,9 @@ const configureClient = async () => {
     
     auth0Client = await auth0.createAuth0Client({
         domain: config.domain,
-        clientId: config.clientId
+        clientId: config.clientId,
+        useRefreshTokens: true,
+        cacheLocation: 'localstorage'
     });
 };
 
@@ -21,7 +23,7 @@ const updateUI = async () => {
 
     if (isAuthenticated && loginHash.includes(window.location.hash)) {
         console.log("User is authenticated");
-        window.location.hash = "admin";
+        window.location.href = "/cliente-web/index.html#admin";
     } else if (!loginHash.includes(window.location.hash) && !isAuthenticated) {
         console.log("User is not authenticated");
         window.location.hash = "login";
@@ -88,7 +90,7 @@ const logout = async () => {
         console.log("Logging out");
         await auth0Client.logout({
           logoutParams: {
-            returnTo: window.location.origin
+            returnTo: window.location.origin + "/cliente-web/index.html"
           }
         });
     } catch (err) {
