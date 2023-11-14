@@ -56,6 +56,9 @@ const server = http.createServer((req, res) => {
 
                 if (resultado === 'ok') {
                     res.statusCode = 201;
+                    resultado = errorUtils.generarRespuestaOk(
+                        "Visitante agregado correctamente"
+                    )
                 } else if (typeof resultado === 'string') {
                     res.statusCode = 400;
                 }
@@ -77,11 +80,15 @@ const server = http.createServer((req, res) => {
 
                 if (resultado === 'ok') {
                     res.statusCode = 200;
-                    return res.end("Visitante actualizado correctamente");
+                    resultado = errorUtils.generarRespuestaOk(
+                        "Visitante actualizado correctamente"
+                    )
                 } else if (typeof resultado === 'string') {
                     res.statusCode = 400;
-                    return res.end(resultado);
                 }
+
+                return res.end(resultado);
+
             });
         } else if (req.method === 'DELETE') {
             try {
@@ -96,11 +103,14 @@ const server = http.createServer((req, res) => {
 
             if (resultado === 'ok') {
                 res.statusCode = 200;
-                return res.end("Visitante eliminado correctamente");
+                resultado = errorUtils.generarRespuestaOk(
+                    "Visitante eliminado correctamente"
+                )
             } else if (typeof resultado === 'string') {
                 res.statusCode = 404;
-                return res.end(resultado);
             }
+
+            res.end(resultado);
         } else if (req.method === 'OPTIONS') {
             res.statusCode = 200;
             return res.end();

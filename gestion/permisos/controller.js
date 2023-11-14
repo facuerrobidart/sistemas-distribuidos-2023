@@ -48,6 +48,9 @@ const server = http.createServer((req, res) => {
                 }    
                 if (resultado === 'ok') {
                     res.statusCode = 201;
+                    resultado = errorUtils.generarRespuestaOk(
+                        "Permisos modificados correctamente"
+                    )
                 } else {
                     res.statusCode = 400;
                 }
