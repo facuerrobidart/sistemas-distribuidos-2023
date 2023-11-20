@@ -48,11 +48,6 @@ window.onload = async () => {
       console.log("> Parsing redirect");
       try {
         const result = await auth0Client.handleRedirectCallback();
-  
-        if (result.appState && result.appState.targetUrl) {
-          showContentFromUrl(result.appState.targetUrl);
-        }
-  
         console.log("Logged in!");
       } catch (err) {
         console.log("Error parsing redirect:", err);
