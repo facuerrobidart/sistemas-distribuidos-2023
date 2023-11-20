@@ -1,3 +1,21 @@
-#login_button_container {
-    margin-top: 1em;
+#login-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    width: 50%;
+}
+
+.login-panel {
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    width: 50vw;
+    margin-top: 3em;
+    align-items: center;
+    padding: 1em;
 }

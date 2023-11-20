@@ -26,7 +26,8 @@ const showContent = (id) => {
         );
   
         document.querySelectorAll("pre code").forEach(hljs.highlightBlock);
-  
+
+        // Estas clases existen para habilitar o deshabilitar elementos de la UI que dependen de la autenticación
         eachElement(".profile-image", (e) => (e.src = user.picture));
         eachElement(".user-name", (e) => (e.innerText = user.name));
         eachElement(".user-email", (e) => (e.innerText = user.email));
