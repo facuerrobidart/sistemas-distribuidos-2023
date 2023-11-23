@@ -13,7 +13,7 @@ const generarOpciones = (pisos) => {
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
     }
-    target.innerHTML = options;
+    target && (target.innerHTML = options);
 }
 
 const cargarTabla = async () => {
@@ -44,8 +44,8 @@ const cargarTabla = async () => {
         selectContent+=option;
     } )
 
-    selectVisitantes.innerHTML=selectContent;
-    cuerpoTabla.innerHTML = tableContent;
+    selectVisitantes && (selectVisitantes.innerHTML=selectContent);
+    cuerpoTabla && (cuerpoTabla.innerHTML = tableContent);
 };
 
 window.actualizarPisos = () => {
@@ -84,8 +84,12 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-cargarTabla();
-generarOpciones(25);
+window.onload = function() {
+    cargarTabla();
+    generarOpciones(25);
+    
+    var select = document.querySelector('#selectPisos');
+    select && select.addEventListener('change', generarOpciones(25));
+}
 
-var select = document.querySelector('#selectPisos');
-select && select.addEventListener('change', generarOpciones(25));   
+   

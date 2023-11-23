@@ -126,7 +126,7 @@ const generarOpciones = (pisos) => {
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
     }
-    target.innerHTML = options;
+    target && (target.innerHTML = options);
 }
 
 const generarOpcionesModal = (pisos) => {
@@ -136,7 +136,7 @@ const generarOpcionesModal = (pisos) => {
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
     }
-    target.innerHTML = options;
+    target && (target.innerHTML = options);
 }
 
 const selectPisos = (selectionPisos) => {
@@ -153,16 +153,19 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-
-var select = document.querySelector('#selectPisos');
-select && select.addEventListener('change', generarOpciones(25));
-
-var selectModal = document.querySelector('#selectPisos-modal');
-selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
-
-document?.querySelector('#formVisitantes').addEventListener('submit', crearVisitante);
-
-cargarTabla();
+window.onload = function() {
+    
+    var select = document.querySelector('#selectPisos');
+    select && select.addEventListener('change', generarOpciones(25));
+    
+    var selectModal = document.querySelector('#selectPisos-modal');
+    selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
+    
+    let doc = document.querySelector('#formVisitantes');
+    doc && (doc.addEventListener('submit', crearVisitante));
+    
+    cargarTabla();
+}
 
 getRequest('/visitantes');
 

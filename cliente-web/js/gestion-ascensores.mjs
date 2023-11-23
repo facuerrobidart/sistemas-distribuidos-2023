@@ -43,7 +43,7 @@ ascensores.map((asc) => {
 
 const crearAscensor = (event) => {
 
-    event.preventDefault();
+    //event.preventDefault();
 
     let nombre = document.querySelector('#nombre').value;
     let selectionPisos = document.querySelector('#selectPisos')
@@ -114,7 +114,7 @@ const generarOpciones = (pisos) => {
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
     }
-    target.innerHTML = options;
+    target && (target.innerHTML = options);
 }
 
 const generarOpcionesModal = (pisos) => {
@@ -124,7 +124,7 @@ const generarOpcionesModal = (pisos) => {
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
     }
-    target.innerHTML = options;
+    target && (target.innerHTML = options);
 }
 
 const selectPisos = (selectionPisos) => {
@@ -164,15 +164,18 @@ const selectionEstadoModal = () => {
 
 }
 
+
+
 var select = document.querySelector('#selectPisos');
 select && select.addEventListener('change', generarOpciones(25));
 
 var selectModal = document.querySelector('#selectPisos-modal');
 selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
 
-document?.querySelector('#formAscensor').addEventListener('submit', crearAscensor);
+var doc = document.querySelector('#formAscensor');
+doc && (doc.addEventListener('submit', crearAscensor));
 
-cargarTabla();
+window.onload = cargarTabla();
 
 getRequest('/ascensores');
 

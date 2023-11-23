@@ -1,4 +1,4 @@
-const urlGateway = 'http://localhost:8083';
+const urlGateway = 'http://localhost:8000';
 
 const getRequest = async (path) => {
     let url = `${urlGateway}${path}`;
