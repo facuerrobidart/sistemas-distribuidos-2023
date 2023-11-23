@@ -4,10 +4,10 @@ import ascensores from "../gestion/ascensores/index.js";
 const app = express();
 app.use(express.json())
 
-const puertoVisitantes = 8081;
-const puertoAscensores = 8080;
-const puertoPermisos = 8082;
-const PUERTO_GATEWAY = 8084;
+const puertoVisitantes = 8002;
+const puertoAscensores = 8001;
+const puertoPermisos = 8003;
+const PUERTO_GATEWAY = 8004;
 
 app.get("/ascensores", (req, res) => {
     const url = "/ascensores";
@@ -129,5 +129,5 @@ const manejarError = (res, body, error) => {
 
 
 app.listen(PUERTO_GATEWAY, () => {
-    console.log(`Example app listening at http://localhost:${PUERTO_GATEWAY}`);
+    console.log(`API Gateway express iniciada en el puerto ${PUERTO_GATEWAY}`);
 });

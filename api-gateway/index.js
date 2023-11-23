@@ -6,10 +6,10 @@ import errorUtils from '../gestion/utils/errorUtils.js';
 
 // TODO: TESTEAR TODO
 
-const puertoVisitantes = 8081;
-const puertoAscensores = 8080;
-const puertoPermisos = 8082;
-const puertoGateway = 8083;
+const puertoVisitantes = 8002;
+const puertoAscensores = 8001;
+const puertoPermisos = 8003;
+const puertoGateway = 8000;
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');

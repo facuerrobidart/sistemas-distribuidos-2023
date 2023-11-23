@@ -4,8 +4,8 @@
 
 # Buscamos los procesos de Node.js que estan corriendo
 # Define the range of ports you want to target
-start_port=8079
-end_port=8100
+start_port=8000
+end_port=8010
 
 # Lista de procesos que pueden estar corriendo
 echo "Procesos corriendo entre los puertos $start_port y $end_port:"
@@ -33,7 +33,7 @@ else
   echo "No mate ningun proceso."
 fi
 
-servicios=("gestion/ascensores/controller.js" "gestion/visitantes/controller.js" "gestion/permisos/controller.js" "api-gateway/index.js")
+servicios=("gestion/ascensores/controller.js" "gestion/visitantes/controller.js" "gestion/permisos/controller.js" "api-gateway/index.js" "api-gateway/expressGateway.js")
 
 for i in "${servicios[@]}"
 do
