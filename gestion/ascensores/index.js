@@ -2,12 +2,14 @@ import persistencia from '../persistencia/persistencia.js';
 import { randomUUID } from 'crypto';
 import stringUtils from '../utils/stringUtils.js';
 import { resolve } from 'path';
+import { spawn } from 'child_process';
 const scriptURL = import.meta.url;
 const url = new URL(scriptURL);
 let pathModulo = url.pathname.replace(/^\/[A-Za-z]:/, '');
 
 let pathArchivo = resolve(pathModulo, '../../persistencia/elevators.json');
 pathArchivo = decodeURI(pathArchivo); //Problema con %20. No lo reconocia como espacio en blanco
+const procesosAscensor = new Map();
 
 const obtenerAscensores = () => {
     return persistencia.obtenerDatos(pathArchivo);
@@ -92,8 +94,28 @@ const eliminarAscensor = (id) => {
 
     ascensores.splice(index, 1);
     persistencia.guardarDatos(pathArchivo, ascensores);
+    detenerProcesoAscensor(id);
     
     return "ok";
+}
+
+
+const arrancarProcesoAscensor = (ascensor) => {
+    const proceso = spawn('node', ['./scriptAscensor.js', JSON.stringify(ascensor)]);
+    procesosAscensor.set(ascensor.id, proceso);
+    console.log(`Ascensor ${ascensor.id} arrancado`);
+} 
+
+const detenerProcesoAscensor = (id) => {
+    const proceso = procesosAscensor.get(id);
+    proceso.kill();
+    procesosAscensor.delete(id);
+}
+
+if (procesosAscensor.size === 0) {
+    obtenerAscensores().forEach(ascensor => {
+        arrancarProcesoAscensor(ascensor);
+    });
 }
 
 export default {
