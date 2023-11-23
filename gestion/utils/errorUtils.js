@@ -3,7 +3,7 @@ const generarRespuestaError = (mensaje, error) => {
     
     return JSON.stringify({
         status: 'error',
-        mensaje: mensaje,
+        message: mensaje,
         error: error
     });
 }
@@ -11,7 +11,7 @@ const generarRespuestaError = (mensaje, error) => {
 const generarRespuestaOk = (mensaje) => {
     return JSON.stringify({
         status: 'ok',
-        mensaje: mensaje,
+        message: mensaje,
     });
 }
 

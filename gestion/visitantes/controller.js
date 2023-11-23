@@ -123,5 +123,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(8002, () => {
-  console.log('Server visitantes iniciado en puerto 0002');
+  console.log('Server visitantes iniciado en puerto 8002');
 });

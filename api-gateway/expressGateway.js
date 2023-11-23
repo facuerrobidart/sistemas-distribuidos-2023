@@ -1,6 +1,5 @@
 import express from "express";
 import { PasoReq } from "./requests.js"
-import ascensores from "../gestion/ascensores/index.js";
 const app = express();
 app.use(express.json())
 
