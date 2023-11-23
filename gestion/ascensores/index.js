@@ -77,6 +77,9 @@ const actualizarAscensor = (id, ascensor) => {
             console.log(error);
             mensajeResultado = 'Error al actualizar el ascensor';
         }
+
+        detenerProcesoAscensor(id);
+        arrancarProcesoAscensor(ascensor);
     }
 
     return mensajeResultado; 
