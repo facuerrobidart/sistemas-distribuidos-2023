@@ -3,9 +3,18 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
 
-const cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores'); 
+
 
 const cargarTabla = async () => {
+    let cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores'); 
+    if (cuerpoTabla) {
+        cuerpoTabla.innerHTML = '';
+    } else {
+        cuerpoTabla = document.createElement('tbody');
+        cuerpoTabla.id = 'cuerpo-tabla-ascensores';
+    }
+
+    console.log('Cargando tabla de ascensores...');
 
     const path = '/ascensores';
 
@@ -13,31 +22,37 @@ const cargarTabla = async () => {
 
     let tableContent = '';
 
-ascensores.map((asc) => {
-    const fila = `
-        <tr>
-            <td>${asc.id}</td>
-            <td>${asc.nombre}</td>
-            <td>${asc.pisos}</td>
-            <td>${asc.estado}</td>
-            <td class="table-actions">
-                <div>
-                    <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')"
-                        style="color: #007ea9;"> 
-                        <i class="fa-solid fa-pencil"></i>
-                    </button>
-                </div>
-                <div>
-                    <button id="btn-remove" onclick="eliminarAscensor('${asc.id}')"
-                        style="color: red;"> 
-                        <i class="fa-regular fa-circle-xmark"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>`;
+    ascensores.forEach((asc) => {
+        const fila = `
+            <tr>
+                <td>${asc.id}</td>
+                <td>${asc.nombre}</td>
+                <td>${asc.pisos}</td>
+                <td>${asc.estado}</td>
+                <td class="table-actions">
+                    <div>
+                        <button id="btn-edit" onclick="actualizarAscensor('${asc.id}')"
+                            style="color: #007ea9;"> 
+                            <i class="fa-solid fa-pencil"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <button id="btn-remove" onclick="eliminarAscensor('${asc.id}')"
+                            style="color: red;"> 
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>`;
 
-    tableContent += fila;
-})
+        tableContent += fila;
+    })
+
+    console.log("tableContent");
+    console.log(tableContent);
+    console.log("cuerpoTabla");
+    console.log(cuerpoTabla);
+
     cuerpoTabla.innerHTML = tableContent;
 };
 
@@ -176,6 +191,12 @@ var doc = document.querySelector('#formAscensor');
 doc && (doc.addEventListener('submit', crearAscensor));
 
 window.onload = cargarTabla();
+
+window.addEventListener('hashchange', function() {
+    if (location.hash === '#gestion-ascensores') {
+        this.setTimeout(cargarTabla, 100);
+    }
+});
 
 getRequest('/ascensores');
 
