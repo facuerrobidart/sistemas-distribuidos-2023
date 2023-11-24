@@ -9,6 +9,7 @@ let pathModulo = url.pathname.replace(/^\/[A-Za-z]:/, '');
 
 let pathArchivo = resolve(pathModulo, '../../persistencia/elevators.json');
 pathArchivo = decodeURI(pathArchivo); //Problema con %20. No lo reconocia como espacio en blanco
+let pathScript = resolve(pathModulo, '../../ascensores/scriptAscensor.js');
 const procesosAscensor = new Map();
 
 const obtenerAscensores = () => {
@@ -104,9 +105,18 @@ const eliminarAscensor = (id) => {
 
 
 const arrancarProcesoAscensor = (ascensor) => {
-    const proceso = spawn('node', ['./scriptAscensor.js', JSON.stringify(ascensor)]);
+    const proceso = spawn('node', [pathScript, JSON.stringify(ascensor)]);
     procesosAscensor.set(ascensor.id, proceso);
-    console.log(`Ascensor ${ascensor.id} arrancado`);
+    console.log(`Ascensor ${ascensor.id} arrancado, PID: ${proceso.pid}`);
+    proceso.stdout.on('data', (data) => {
+        console.log(`PROCESO ASCENSOR ${ascensor.id} stdout: ${data}`);
+    });
+    proceso.stderr.on('data', (data) => {
+        console.log(`PROCESO ASCENSOR ${ascensor.id} stderr: ${data}`);
+    });
+    proceso.on('close', (code) => {
+        console.log(`PROCESO ASCENSOR ${ascensor.id} cerrado con código: ${code}`);
+    });
 } 
 
 const detenerProcesoAscensor = (id) => {

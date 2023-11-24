@@ -1,8 +1,6 @@
-const fs = require('fs');
-
-const comunication = require('./comunication');
-
-const mqtt = require("mqtt");
+import fs from 'fs';
+import comunication from './comunication.js';
+import mqtt from "mqtt";
 
 //const comunication2 = require('./SelectorAscensorClienteBroker');
 
