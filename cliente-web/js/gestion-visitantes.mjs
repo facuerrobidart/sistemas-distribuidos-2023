@@ -1,9 +1,6 @@
-'use strict'
-
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
-const net = require('net');
-const client = new net.Socket();
+
 
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes'); 
 
@@ -129,9 +126,15 @@ window.eliminarVisitante = (id) => {
     cargarTabla();
 }
 
-const generarOpciones = (pisos) => {
-    const target = document.getElementById('selectPisos');
+window.generarOpciones = (pisos) => {
+    let target = document.getElementById('selectPisos');
+    if (!target) {
+        target = document.createElement('select');
+        target.id = 'selectPisos';
+    }
+
     let options = '';
+    console.log(target)
     
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
@@ -163,35 +166,23 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-window.onload = function() {
+window.addEventListener('hashchange', function() {
+    console.log(window.location.hash)
+    if (window.location.hash === '#gestion-visitantes') {
+        this.setTimeout(cargarTabla, 100);
+        this.setTimeout(window.generarOpciones(25), 100);
+    }
+});
     
-    var select = document.querySelector('#selectPisos');
-    select && select.addEventListener('change', generarOpciones(25));
-    
-    var selectModal = document.querySelector('#selectPisos-modal');
-    selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
-    
-    let doc = document.querySelector('#formVisitantes');
-    doc && (doc.addEventListener('submit', crearVisitante));
-    
-    cargarTabla();
-}
+var select = document.querySelector('#selectPisos');
+select && select.addEventListener('change', generarOpciones(25));
+
+var selectModal = document.querySelector('#selectPisos-modal');
+selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
+
+let doc = document.querySelector('#formVisitantes');
+doc && (doc.addEventListener('submit', crearVisitante));
+
+cargarTabla();
 
 getRequest('/visitantes');
-
-cargarTarjeta = (v) => {
-    client.connect('8085','localhost', function(){
-        console.log("Cliente y servidor conectado");
-        client.write(v);
-    })
-
-    client.on('data', function(data) {
-        //console.log('Resultado: ' + data);
-        client.end();
-    });
-
-    client.on('close', function() {
-       // console.log('Conexion terminada');
-       alert("Tarjeta grabada exitosamente");
-    });
-}

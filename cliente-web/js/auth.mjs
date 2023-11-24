@@ -19,7 +19,6 @@ const configureClient = async () => {
 const updateUI = async () => {
     const isAuthenticated = await auth0Client.isAuthenticated();
     const loginHash = ["", "#login"];
-    console.log(window.location.hash);
 
     if (isAuthenticated && loginHash.includes(window.location.hash)) {
         console.log("User is authenticated");

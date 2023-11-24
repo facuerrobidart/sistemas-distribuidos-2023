@@ -14,8 +14,6 @@ const cargarTabla = async () => {
         cuerpoTabla.id = 'cuerpo-tabla-ascensores';
     }
 
-    console.log('Cargando tabla de ascensores...');
-
     const path = '/ascensores';
 
     const ascensores = await getRequest(path);
@@ -47,11 +45,6 @@ const cargarTabla = async () => {
 
         tableContent += fila;
     })
-
-    console.log("tableContent");
-    console.log(tableContent);
-    console.log("cuerpoTabla");
-    console.log(cuerpoTabla);
 
     cuerpoTabla.innerHTML = tableContent;
 };

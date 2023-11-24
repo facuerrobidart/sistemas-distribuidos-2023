@@ -1,18 +1,19 @@
 'use strict'
 
-import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
+import { getRequest, putRequest } from '../../gestion/utils/httpRequestUtils.js';
 
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-permisos'); 
 const selectVisitantes = document.querySelector('#select-visitantes-permisos')
 
 
 const generarOpciones = (pisos) => {
-    const target = document.getElementById('selectPisosPermisos');
+    const target = document.getElementById('selectPisosPermitidos');
     let options = '';
     
     for (let i = 0; i < pisos; i++) {
         options += `<option value="${i}">${i}</option>`;
     }
+
     target && (target.innerHTML = options);
 }
 
@@ -86,10 +87,16 @@ const selectPisos = (selectionPisos) => {
 
 window.onload = function() {
     cargarTabla();
-    generarOpciones(25);
     
     var select = document.querySelector('#selectPisos');
     select && select.addEventListener('change', generarOpciones(25));
 }
+
+window.addEventListener('hashchange', () => [
+    setTimeout(() => {
+        cargarTabla();
+        generarOpciones(25);
+    }, 100)
+])
 
    
