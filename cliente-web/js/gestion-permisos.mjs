@@ -18,6 +18,14 @@ const generarOpciones = (pisos) => {
 }
 
 const cargarTabla = async () => {
+    let cuerpoTabla = document.querySelector('#cuerpo-tabla-permisos'); 
+    if (cuerpoTabla) {
+        cuerpoTabla.innerHTML = '';
+    } else {
+        cuerpoTabla = document.createElement('tbody');
+        cuerpoTabla.id = 'cuerpo-tabla-permisos';
+    }
+
 
     const path = '/visitantes';
 
@@ -85,18 +93,21 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-window.onload = function() {
+generarOpciones(25);
+
+var select = document.querySelector('#selectPisos');
+select && select.addEventListener('change', generarOpciones(25));
+
+window.addEventListener('hashchange', function() {
+    if (location.hash === '#gestion-permisos') {
+        this.setTimeout(init, 100);
+    }
+});
+
+const init = () => {
     cargarTabla();
-    
-    var select = document.querySelector('#selectPisos');
-    select && select.addEventListener('change', generarOpciones(25));
+    //generarOpciones(25);
 }
 
-window.addEventListener('hashchange', () => [
-    setTimeout(() => {
-        cargarTabla();
-        generarOpciones(25);
-    }, 100)
-])
 
    

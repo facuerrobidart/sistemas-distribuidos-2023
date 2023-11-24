@@ -5,6 +5,13 @@ import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes'); 
 
 const cargarTabla = async () => {
+    let cuerpoTabla =   document.querySelector('#cuerpo-tabla-visitantes'); 
+    if (cuerpoTabla) {
+        cuerpoTabla.innerHTML = '';
+    } else {
+        cuerpoTabla = document.createElement('tbody');
+        cuerpoTabla.id = 'cuerpo-tabla-visitantes';
+    }
 
     const path = '/visitantes';
 
@@ -126,20 +133,21 @@ window.eliminarVisitante = (id) => {
     cargarTabla();
 }
 
-window.generarOpciones = (pisos) => {
-    let target = document.getElementById('selectPisos');
-    if (!target) {
+const generarOpciones = (pisos) => {
+    let target = document.getElementById('selectPisos'); 
+    if (target) {
+        target.innerHTML = '';
+    } else {
         target = document.createElement('select');
         target.id = 'selectPisos';
-    }
+    }  
 
     let options = '';
     console.log(target)
-    
-    for (let i = 0; i < pisos; i++) {
-        options += `<option value="${i}">${i}</option>`;
-    }
-    target && (target.innerHTML = options);
+        for (let i = 0; i < pisos; i++) {
+            options += `<option value="${i}">${i}</option>`;
+        }
+        target.innerHTML = options;
 }
 
 const generarOpcionesModal = (pisos) => {
@@ -166,14 +174,6 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-window.addEventListener('hashchange', function() {
-    console.log(window.location.hash)
-    if (window.location.hash === '#gestion-visitantes') {
-        this.setTimeout(cargarTabla, 100);
-        this.setTimeout(window.generarOpciones(25), 100);
-    }
-});
-    
 var select = document.querySelector('#selectPisos');
 select && select.addEventListener('change', generarOpciones(25));
 
@@ -183,6 +183,14 @@ selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
 let doc = document.querySelector('#formVisitantes');
 doc && (doc.addEventListener('submit', crearVisitante));
 
-cargarTabla();
+window.addEventListener('hashchange', function() {
+    if (location.hash === '#gestion-visitantes') {
+        this.setTimeout(init, 100);
+    }
+});
+
+const init = () => {
+    cargarTabla();
+}
 
 getRequest('/visitantes');

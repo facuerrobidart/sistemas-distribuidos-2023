@@ -3,8 +3,6 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
 
-
-
 const cargarTabla = async () => {
     let cuerpoTabla = document.querySelector('#cuerpo-tabla-ascensores'); 
     if (cuerpoTabla) {
@@ -172,8 +170,6 @@ const selectionEstadoModal = () => {
 
 }
 
-
-
 var select = document.querySelector('#selectPisos');
 select && select.addEventListener('change', generarOpciones(25));
 
@@ -183,13 +179,16 @@ selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
 var doc = document.querySelector('#formAscensor');
 doc && (doc.addEventListener('submit', crearAscensor));
 
-window.onload = cargarTabla();
-
 window.addEventListener('hashchange', function() {
     if (location.hash === '#gestion-ascensores') {
-        this.setTimeout(cargarTabla, 100);
+        this.setTimeout(init, 100);
     }
 });
+
+const init = () => {
+    cargarTabla();
+    //generarOpciones();
+}
 
 getRequest('/ascensores');
 

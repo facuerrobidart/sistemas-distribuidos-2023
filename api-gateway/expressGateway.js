@@ -125,8 +125,6 @@ const manejarError = (res, body, error) => {
     }
 }
 
-
-
 app.listen(PUERTO_GATEWAY, () => {
     console.log(`API Gateway express iniciada en el puerto ${PUERTO_GATEWAY}`);
 });
