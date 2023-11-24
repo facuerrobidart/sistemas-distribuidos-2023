@@ -187,7 +187,7 @@ window.addEventListener('hashchange', function() {
 
 const init = () => {
     cargarTabla();
-    //generarOpciones();
+    generarOpciones();
 }
 
 cargarTabla();

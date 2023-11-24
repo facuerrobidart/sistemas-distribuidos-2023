@@ -6,8 +6,17 @@ const cuerpoTabla = document.querySelector('#cuerpo-tabla-permisos');
 const selectVisitantes = document.querySelector('#select-visitantes-permisos')
 
 
-const generarOpciones = (pisos) => {
-    const target = document.getElementById('selectPisosPermitidos');
+const generarOpcionesPermisos = (pisos) => {
+    console.log("Generando opciones de permisos");
+    let target = document.getElementById('selectPisosPermisos');
+
+    if (target) {
+        target.innerHTML = '';
+    } else {
+        target = document.createElement('select');
+        target.id = 'selectPisosPermisos';
+    }  
+
     let options = '';
     
     for (let i = 0; i < pisos; i++) {
@@ -58,9 +67,8 @@ const cargarTabla = async () => {
 };
 
 window.actualizarPisos = () => {
-
     let id = document.getElementById("select-visitantes-permisos").value
-    console.log("Query selector:  ",id);
+    console.log("Query selector:  ", id);
         if(id && id !== ''){
              let selectionPisos = document.querySelector('#selectPisosPermisos');
              let pisos_permitidos = selectPisos(selectionPisos);
@@ -93,10 +101,10 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-generarOpciones(25);
+generarOpcionesPermisos(25);
 
 var select = document.querySelector('#selectPisos');
-select && select.addEventListener('change', generarOpciones(25));
+select && select.addEventListener('change', generarOpcionesPermisos(25));
 
 window.addEventListener('hashchange', function() {
     if (location.hash === '#gestion-permisos') {
@@ -106,8 +114,10 @@ window.addEventListener('hashchange', function() {
 
 const init = () => {
     cargarTabla();
-    //generarOpciones(25);
+    generarOpcionesPermisos(25);
 }
+
+window.generarOpcionesPermisos = generarOpcionesPermisos;
 
 cargarTabla();
    
