@@ -2,6 +2,7 @@
 
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
+const net = require('net');
 
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes'); 
 
@@ -36,6 +37,14 @@ const cargarTabla = async () => {
                                     <i class="fa-regular fa-circle-xmark"></i>
                                 </button>
                             </div>
+
+                    <div>
+                         <button id="btn-tarjeta" onclick="cargarTarjeta('${v.id}')"
+                             style="color: #007ea9;"> 
+                             <i class="fa-regular fa-address-card"></i>
+                        </button>
+                   </div>
+
                         </td>
                     </tr>`;
 
@@ -169,4 +178,22 @@ window.onload = function() {
 
 getRequest('/visitantes');
 
+cargarTarjeta = (v) => {
+    const client = new net.Socket()
 
+    client.connect('8085','localhost', function(){
+        console.log("Cliente y servidor conectado")
+        //client.write('GET /2+2 HTTP/1.1')
+        client.write(v)
+    })
+
+    client.on('data', function(data) {
+        console.log('Resultado: ' + data);
+        client.end();
+    });
+
+    client.on('close', function() {
+       // console.log('Conexion terminada');
+       alert("Tarjeta grabada exitosamente");
+    });
+}
