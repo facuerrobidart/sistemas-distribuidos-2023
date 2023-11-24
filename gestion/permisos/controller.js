@@ -10,7 +10,6 @@ const server = http.createServer((req, res) => {
     let resultado;
 
     if(req.url.includes('/visitantes') && req.url.includes('/permisos') ){
-
         if (req.method === 'GET') {
             if (params.idVisitante !== undefined) {
                 try{

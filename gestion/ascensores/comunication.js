@@ -4,7 +4,7 @@ function sendDataSync(url, data) {
     const postData = JSON.stringify(data);
 
     const options = {
-        hostname: 'localhost',
+        hostname: '10.2.212.4',
         port: 3000,
         path: '/api' + url, // Concatena la URL con la ruta base',
         method: 'POST',
@@ -41,7 +41,7 @@ function sendDataSync(url, data) {
 
 function getDataSync(url) {
     const options = {
-        hostname: 'localhost',
+        hostname: '10.2.212.4',
         port: 3000,
         path: '/api' + url, // Concatena la URL con la ruta base
         method: 'GET',

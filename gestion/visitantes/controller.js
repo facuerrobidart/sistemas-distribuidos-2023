@@ -28,6 +28,7 @@ const server = http.createServer((req, res) => {
                     )
                     res.statusCode = 500;
                 }
+                res.statusCode = 200;
                 return res.end(JSON.stringify(resultado));
             } else {
                 try{

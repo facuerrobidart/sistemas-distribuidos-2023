@@ -1,8 +1,8 @@
 import fs from 'fs';
-import comunication from './comunication.js';
-import mqtt from "mqtt";
 
-//const comunication2 = require('./SelectorAscensorClienteBroker');
+import comunication from './comunication.js';
+
+import mqtt from 'mqtt';
 
 const pubBrokerAscensor = '/ascensores/publish';
 
@@ -33,6 +33,7 @@ if (fs.existsSync(fileName) && fs.lstatSync(fileName).isFile()) {
     elevator = JSON.parse(fileName);
 }
 elevator.pisoNuevo = 0;
+elevator.pisoact = 1;
 //elevator tiene los siguientes datos:
 // id: id del ascensor
 //nombre: nombre del ascensor

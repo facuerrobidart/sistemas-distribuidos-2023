@@ -44,6 +44,7 @@ const validarAscensor = (ascensor) => {
 
 const crearAscensor = (ascensor) => {
     ascensor.id = randomUUID();
+    ascensor.pisos = ascensor.pisos.map(p => parseInt(p));
 
     const mensajeValidacion = validarAscensor(ascensor);
 
@@ -54,6 +55,7 @@ const crearAscensor = (ascensor) => {
     const ascensores = obtenerAscensores();
     ascensores.push(ascensor);
     persistencia.guardarDatos(pathArchivo, ascensores);
+    arrancarProcesoAscensor(ascensor)
     
     return mensajeValidacion;
 }
@@ -71,6 +73,7 @@ const actualizarAscensor = (id, ascensor) => {
     const mensajeResultado = validarAscensor(ascensor);
 
     if (mensajeResultado === 'ok') {
+        ascensor.pisos = ascensor.pisos.map(p => parseInt(p));
         ascensores[index] = ascensor;
         try {
             persistencia.guardarDatos(pathArchivo, ascensores);
