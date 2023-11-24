@@ -193,4 +193,6 @@ const init = () => {
     cargarTabla();
 }
 
+cargarTabla();
+
 getRequest('/visitantes');

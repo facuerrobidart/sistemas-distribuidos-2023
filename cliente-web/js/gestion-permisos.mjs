@@ -109,5 +109,5 @@ const init = () => {
     //generarOpciones(25);
 }
 
-
+cargarTabla();
    

@@ -190,6 +190,6 @@ const init = () => {
     //generarOpciones();
 }
 
+cargarTabla();
+
 getRequest('/ascensores');
-
-
