@@ -2,12 +2,17 @@
 
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
-const net = require('net');
-const client = new net.Socket();
-
-const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes'); 
+//const net = require('net');
+//const client = new net.Socket();
 
 const cargarTabla = async () => {
+    let cuerpoTabla =   document.querySelector('#cuerpo-tabla-visitantes'); 
+    if (cuerpoTabla) {
+        cuerpoTabla.innerHTML = '';
+    } else {
+        cuerpoTabla = document.createElement('tbody');
+        cuerpoTabla.id = 'cuerpo-tabla-visitantes';
+    }
 
     const path = '/visitantes';
 
@@ -130,13 +135,19 @@ window.eliminarVisitante = (id) => {
 }
 
 const generarOpciones = (pisos) => {
-    const target = document.getElementById('selectPisos');
+    let target = document.getElementById('selectPisos'); 
+    if (target) {
+        target.innerHTML = '';
+    } else {
+        target = document.createElement('select');
+        target.id = 'selectPisos';
+    }  
+
     let options = '';
-    
-    for (let i = 0; i < pisos; i++) {
-        options += `<option value="${i}">${i}</option>`;
-    }
-    target && (target.innerHTML = options);
+        for (let i = 0; i < pisos; i++) {
+            options += `<option value="${i}">${i}</option>`;
+        }
+        target.innerHTML = options;
 }
 
 const generarOpcionesModal = (pisos) => {
@@ -163,21 +174,28 @@ const selectPisos = (selectionPisos) => {
 
 }
 
-window.onload = function() {
-    
-    var select = document.querySelector('#selectPisos');
-    select && select.addEventListener('change', generarOpciones(25));
-    
-    var selectModal = document.querySelector('#selectPisos-modal');
-    selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
-    
-    let doc = document.querySelector('#formVisitantes');
-    doc && (doc.addEventListener('submit', crearVisitante));
-    
+var select = document.querySelector('#selectPisos');
+select && select.addEventListener('change', generarOpciones(25));
+
+var selectModal = document.querySelector('#selectPisos-modal');
+selectModal && selectModal.addEventListener('change', generarOpcionesModal(25));
+
+let doc = document.querySelector('#formVisitantes');
+doc && (doc.addEventListener('submit', crearVisitante));
+
+window.addEventListener('hashchange', function() {
+    if (location.hash === '#gestion-visitantes') {
+        this.setTimeout(init, 100);
+    }
+});
+
+const init = () => {
     cargarTabla();
 }
 
 getRequest('/visitantes');
+
+/*
 
 cargarTarjeta = (v) => {
     client.connect('8085','localhost', function(){
@@ -195,3 +213,4 @@ cargarTarjeta = (v) => {
        alert("Tarjeta grabada exitosamente");
     });
 }
+*/
