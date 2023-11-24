@@ -2,12 +2,7 @@
 
 import { getRequest, putRequest } from '../../gestion/utils/httpRequestUtils.js';
 
-const cuerpoTabla = document.querySelector('#cuerpo-tabla-permisos'); 
-const selectVisitantes = document.querySelector('#select-visitantes-permisos')
-
-
 const generarOpcionesPermisos = (pisos) => {
-    console.log("Generando opciones de permisos");
     let target = document.getElementById('selectPisosPermisos');
 
     if (target) {
@@ -28,13 +23,18 @@ const generarOpcionesPermisos = (pisos) => {
 
 const cargarTabla = async () => {
     let cuerpoTabla = document.querySelector('#cuerpo-tabla-permisos'); 
-    if (cuerpoTabla) {
+    let selectVisitantes = document.querySelector('#select-visitantes-permisos')
+
+    if (cuerpoTabla && selectVisitantes) {
         cuerpoTabla.innerHTML = '';
+        selectVisitantes.innerHTML = '';
     } else {
         cuerpoTabla = document.createElement('tbody');
         cuerpoTabla.id = 'cuerpo-tabla-permisos';
-    }
 
+        selectVisitantes = document.createElement('select');
+        selectVisitantes.id = 'select-visitantes-permisos';
+    }
 
     const path = '/visitantes';
 
@@ -108,6 +108,7 @@ select && select.addEventListener('change', generarOpcionesPermisos(25));
 
 window.addEventListener('hashchange', function() {
     if (location.hash === '#gestion-permisos') {
+        window.location.reload();
         this.setTimeout(init, 100);
     }
 });

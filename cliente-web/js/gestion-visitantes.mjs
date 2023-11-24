@@ -185,7 +185,8 @@ doc && (doc.addEventListener('submit', crearVisitante));
 
 window.addEventListener('hashchange', function() {
     if (location.hash === '#gestion-visitantes') {
-        this.setTimeout(init, 100);
+        window.location.reload();
+        this.setTimeout(init, 70);
     }
 });
 

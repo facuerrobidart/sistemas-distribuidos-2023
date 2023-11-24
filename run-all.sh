@@ -33,7 +33,7 @@ else
   echo "No mate ningun proceso."
 fi
 
-servicios=("gestion/ascensores/controller.js" "gestion/visitantes/controller.js" "gestion/permisos/controller.js" "api-gateway/index.js" "api-gateway/expressGateway.js")
+servicios=("gestion/ascensores/controller.js" "gestion/visitantes/controller.js" "gestion/permisos/controller.js" "api-gateway/index.js" "api-gateway/expressGateway.js" "arduino/comunicacionArduino.cjs")
 
 for i in "${servicios[@]}"
 do

@@ -181,6 +181,7 @@ doc && (doc.addEventListener('submit', crearAscensor));
 
 window.addEventListener('hashchange', function() {
     if (location.hash === '#gestion-ascensores') {
+        window.location.reload();
         this.setTimeout(init, 100);
     }
 });

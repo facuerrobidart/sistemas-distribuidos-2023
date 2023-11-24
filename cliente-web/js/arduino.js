@@ -1,5 +1,4 @@
 window.cargarTarjeta = (v) => {
-    console.log(v)
     fetch('http://localhost:8085?id='+v)
         .then(response => response.json())
         .then(data => {
