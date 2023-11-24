@@ -2,8 +2,8 @@ const { SerialPort } = require('serialport')
 const { ReadlineParser } = require('@serialport/parser-readline');
 const http = require('http');
 
-// Crea el puerto
-/*const port = new SerialPort({
+//Crea el puerto
+const port = new SerialPort({
   path: 'COM3',
   baudRate: 9600,
   dataBits: 8,
@@ -11,11 +11,11 @@ const http = require('http');
   stopBits: 1,
   flowControl: false
 });
-*/
 
-//const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));  //Ayuda a leer lineas de codigo
 
-/*
+const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));  //Ayuda a leer lineas de codigo
+
+
 port.on('open', () => {
   console.log('Conexión establecida con el puerto serial');
 });
@@ -29,7 +29,7 @@ port.on('error', (err) => {
 
 port.on('end', (err) => {
   console.log('Datos del Arduino:', chunk);
-});*/
+});
 
 http.createServer((req, res) => {
   res.setHeader('Content-Type', 'text/plain');
@@ -53,10 +53,10 @@ http.createServer((req, res) => {
       //console.log('JSON:', jsonData);
       
       //Le mando el json al arduino
-      /*  
+        
       port.write(JSON.stringify(jsonData) + '\n', (err) => {
         if (err) {
-          return socket.write('Error al enviar datos al Arduino:', err.message);
+          return res.end('Error al enviar datos al Arduino:', err.message);
         }
         console.log('Datos enviados al Arduino');
       });
@@ -65,12 +65,12 @@ http.createServer((req, res) => {
       parser.on('data', (data) => {
         console.log('Datos del Arduino:', data.toString());
         if(data.toString() === "Escritura exitosa")
-          res.end("Escritura exitosa");
+          return res.end("Escritura exitosa");
         else
-          res.end("Fallo la escritura");
+          return res.end("Fallo la escritura");
       });
-      */
-     return res.end("prueba todo bien");
+      
+     //return res.end("prueba todo bien");
   }).listen(8086, () => {
   console.log('Servidor iniciado en puerto 8086');
 });
