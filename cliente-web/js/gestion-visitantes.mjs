@@ -3,6 +3,7 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from '../../gestion/utils/httpRequestUtils.js';
 import {modalWindow} from '../../gestion/utils/modalWindowUtil.js';
 const net = require('net');
+const client = new net.Socket();
 
 const cuerpoTabla = document.querySelector('#cuerpo-tabla-visitantes'); 
 
@@ -179,16 +180,13 @@ window.onload = function() {
 getRequest('/visitantes');
 
 cargarTarjeta = (v) => {
-    const client = new net.Socket()
-
     client.connect('8085','localhost', function(){
-        console.log("Cliente y servidor conectado")
-        //client.write('GET /2+2 HTTP/1.1')
-        client.write(v)
+        console.log("Cliente y servidor conectado");
+        client.write(v);
     })
 
     client.on('data', function(data) {
-        console.log('Resultado: ' + data);
+        //console.log('Resultado: ' + data);
         client.end();
     });
 
